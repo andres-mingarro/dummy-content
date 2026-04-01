@@ -1,4 +1,4 @@
-# Dammy Content
+# Dummy Content
 
 Genera imágenes SVG placeholder al instante desde una URL parametrizada. Sin almacenamiento en disco, todo en memoria.
 

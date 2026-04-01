@@ -20,7 +20,7 @@ export default function Header() {
   return (
     <header className={`${styles.header} Header`}>
       <Link href="/images" className={styles.logo}>
-        Dammy Content
+        Dummy Content
       </Link>
 
       <nav className={styles.nav}>

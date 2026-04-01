@@ -16,7 +16,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dammy Content",
+  title: "Dummy Content",
   description: "Genera imágenes placeholder dinámicas desde una URL parametrizada",
 };
 
