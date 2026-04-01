@@ -1,36 +1,12 @@
-.wrapper {
-  display: flex;
-  border-radius: 0.75rem;
-  overflow: hidden;
-  border: 1.5px solid var(--card-border);
-  view-transition-name: text-output;
-}
-
-.gutter {
-  padding: 1rem 0.75rem;
-  background: var(--muted-bg);
-  border-right: 1.5px solid var(--card-border);
-  user-select: none;
-  flex-shrink: 0;
-}
-
-.lineNumber {
-  text-align: right;
-  color: var(--muted);
-  opacity: 0.5;
-  font-size: 13px;
-  line-height: 1.75;
-  font-family: var(--font-geist-mono), monospace;
-}
-
 .content {
-  padding: 1rem 1.25rem;
   flex: 1;
   min-width: 0;
-  font-size: 14px;
+  font-size: 16px;
   line-height: 1.75;
   color: var(--foreground);
-  font-family: var(--font-geist-mono), "Geist Mono", "Fira Code", monospace;
+  font-family: var(--font-geist-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   word-break: break-word;
   display: flex;
   flex-direction: column;

@@ -8,7 +8,7 @@ interface ImagePreviewProps {
 
 export default function ImagePreview({ src, width, height }: ImagePreviewProps) {
   return (
-    <div className={styles.wrapper}>
+    <div className={`${styles.wrapper} ImagePreview`}>
       <div className={styles.canvas}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img

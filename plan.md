@@ -1,9 +1,14 @@
-# Plan: Dummy Content Generator con Next.js
+# Plan: Dummy Content
 
 ## Descripción
-Aplicación web Next.js que genera imágenes dummy dinámicamente mediante rutas URL parametrizadas. Las imágenes se crean en memoria sin almacenamiento en disco.
+Aplicación web Next.js con 3 sub-aplicaciones para generar contenido dummy dinámicamente.
 
-**Ejemplo de uso:**
+### Sub-aplicaciones
+1. **Generador de Imágenes** — genera imágenes SVG dinámicas via URL parametrizada
+2. **Generador de iframe** — genera iframes dummy
+3. **Generador de textos** — genera texto dummy
+
+**Ejemplo de uso (imágenes):**
 - URL: `https://dummy-content.com/600x600/fff/000`
 - Formulario: Inputs para ancho, alto, color fondo, color texto
 - Resultado: `<img src="https://dummy-content.com/600x600/fff/000">`
@@ -37,15 +42,17 @@ src/
 
 ---
 
-## Fases de Implementación
+## Sub-aplicación 1: Generador de Imágenes ✅
 
-### Fase 1: Inicialización & Setup
+### Fases de Implementación
+
+#### Fase 1: Inicialización & Setup
 1. Crear proyecto Next.js con App Router
 2. Instalar Tailwind CSS
 3. Instalar `sass` para módulos SCSS
 4. Configurar `next.config.js` (si es necesario)
 
-### Fase 2: Lógica de Generación de Imágenes
+#### Fase 2: Lógica de Generación de Imágenes
 1. Crear `lib/imageGenerator.ts`
    - Función para generar SVG con parámetros
    - Parsear dimensiones (ancho x alto)
@@ -58,7 +65,7 @@ src/
    - Devolver SVG con headers `image/svg+xml`
    - Headers de caché (max-age)
 
-### Fase 3: Interfaz de Usuario
+#### Fase 3: Interfaz de Usuario
 1. **DummyForm Component**
    - Inputs: ancho, alto, color fondo (hex), color texto (hex)
    - Actualización en tiempo real de URL
@@ -77,21 +84,57 @@ src/
    - Composición de componentes
    - Layout limpio con Tailwind
 
-### Fase 4: Estilos
+#### Fase 4: Estilos
 - Usar **SCSS modules** (`.module.scss`) para componentes específicos
 - Usar **Tailwind utilities** para layout, spacing, responsividad
 - Paleta de colores consistente
 
-### Fase 5: Validación & Robustez
+#### Fase 5: Validación & Robustez
 1. Validar parámetros en servidor
 2. Manejo de errores (400, 500)
 3. Mensajes claros al usuario
 4. Límites de tamaño (máximo 4000px)
 
-### Fase 6: Deploy
-1. Optimizar para Vercel
-2. Headers de caché estáticos
-3. Deploy y pruebas en producción
+#### Checklist
+- [x] Inicializar proyecto Next.js
+- [x] Configurar Tailwind CSS
+- [x] Instalar y configurar SASS
+- [x] Crear función imageGenerator.ts
+- [x] Implementar API route `/image/[...params]`
+- [x] Crear componente DummyForm
+- [x] Crear componente ImagePreview
+- [x] Crear componente CopyButton
+- [x] Integrar en página principal
+- [x] Validación en cliente y servidor
+- [x] Styling completo (Tailwind + SCSS)
+- [x] Testing básico
+- [x] Deploy a Vercel
+
+---
+
+## Sub-aplicación 2: Generador de iframe
+
+### Checklist
+- [ ] Definir parámetros de URL
+- [ ] Crear route handler `api/iframe/[...params]`
+- [ ] Crear componentes de interfaz
+- [ ] Validación en cliente y servidor
+- [ ] Styling
+- [ ] Testing básico
+
+---
+
+## Sub-aplicación 3: Generador de textos ✅
+
+### Checklist
+- [x] Definir parámetros (tipo, longitud, idioma, etc.)
+- [x] Crear componentes de interfaz (TextForm, TextOutput)
+- [x] Generación incremental (agrega/recorta sin regenerar todo)
+- [x] Multi-idioma ES/EN via faker-js + LangProvider
+- [x] Word count y char count en tiempo real
+- [x] Copy al portapapeles con feedback visual
+- [x] TextOutput con numeración de líneas real (ResizeObserver + @chenglou/pretext)
+- [x] Styling (SCSS modules)
 
 ---
 
@@ -108,7 +151,7 @@ Estructura: `/image/{ancho}x{alto}/{colorFondo}/{colorTexto}`
 - Fácil de compartir
 
 ### Sin Almacenamiento en Disco
-- Cada request genera SVG en memoria
+- Cada request genera contenido en memoria
 - Más rápido
 - Ideal para deploy serverless (Vercel)
 
@@ -145,21 +188,3 @@ Estructura: `/image/{ancho}x{alto}/{colorFondo}/{colorTexto}`
 - **Lenguaje:** TypeScript
 - **Generación de imágenes:** SVG nativo (memoria)
 - **Deploy:** Vercel
-
----
-
-## Checklist de Implementación
-
-- [x] Inicializar proyecto Next.js
-- [x] Configurar Tailwind CSS
-- [x] Instalar y configurar SASS
-- [x] Crear función imageGenerator.ts
-- [x] Implementar API route `/image/[...params]`
-- [x] Crear componente DummyForm
-- [x] Crear componente ImagePreview
-- [x] Crear componente CopyButton
-- [x] Integrar en página principal
-- [x] Validación en cliente y servidor
-- [x] Styling completo (Tailwind + SCSS)
-- [ ] Testing básico
-- [ ] Deploy a Vercel

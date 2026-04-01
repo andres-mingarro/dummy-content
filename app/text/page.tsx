@@ -7,19 +7,31 @@ import TextOutput from "@/components/text/TextOutput/TextOutput";
 import { generateUnits, unitsToText } from "@/lib/text/textGenerator";
 import type { TextType } from "@/lib/text/textGenerator";
 
-const DEFAULT_VALUES: TextFormValues = {
-  type: "paragraphs",
-  count: 3,
-};
+const TEXT_TYPES: TextType[] = ["paragraphs", "sentences", "words"];
 
 export default function TextPage() {
   const { t, lang } = useLang();
-  const [formValues, setFormValues] = useState<TextFormValues>(DEFAULT_VALUES);
+  const [formValues, setFormValues] = useState<TextFormValues>({ type: "paragraphs", count: 3 });
+  const [initialized, setInitialized] = useState(false);
   const [units, setUnits] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
 
-  const prevTypeRef = useRef<TextType>(DEFAULT_VALUES.type);
+  const prevTypeRef = useRef<TextType>("paragraphs");
   const prevLangRef = useRef(lang);
+
+  useEffect(() => {
+    const hash = window.location.hash.slice(1) as TextType;
+    const type = TEXT_TYPES.includes(hash) ? hash : "paragraphs";
+    const countParam = new URLSearchParams(window.location.search).get("count");
+    const count = countParam ? Math.max(1, parseInt(countParam, 10)) : 3;
+    setFormValues({ type, count });
+    setInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!initialized) return;
+    history.replaceState(null, "", `?count=${formValues.count}#${formValues.type}`);
+  }, [initialized, formValues.type, formValues.count]);
 
   useEffect(() => {
     const typeChanged = formValues.type !== prevTypeRef.current;
@@ -56,7 +68,7 @@ export default function TextPage() {
   const charCount = text.length;
 
   return (
-    <main className="flex-1 py-12 px-4" style={{ background: "var(--background)" }}>
+    <main className="flex-1 py-12 px-4 TextPage" style={{ background: "var(--background)" }}>
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center space-y-2">
           <h2 className="text-2xl font-bold tracking-tight" style={{ color: "var(--foreground)" }}>

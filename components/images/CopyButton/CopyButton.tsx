@@ -33,7 +33,7 @@ export default function CopyButton({ text, label = "Copiar URL", copiedLabel = "
   return (
     <button
       onClick={handleCopy}
-      className={`${styles.button} ${copied ? styles.copied : ""}`}
+      className={`${styles.button} ${copied ? styles.copied : ""} CopyButton`}
       type="button"
       aria-label={copied ? copiedLabel : label}
     >

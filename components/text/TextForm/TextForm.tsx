@@ -31,7 +31,7 @@ export default function TextForm({ values, onChange }: TextFormProps) {
     onChange({ ...values, count: Math.min(Math.max(1, count), max) });
 
   return (
-    <div className={styles.form}>
+    <div className={`${styles.form} TextForm`}>
       <div className={styles.row}>
         <div className={styles.field}>
           <label>{t.text.type}</label>

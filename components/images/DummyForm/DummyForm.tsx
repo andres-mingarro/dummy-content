@@ -104,7 +104,7 @@ export default function DummyForm({ onChange }: DummyFormProps) {
     t.form.textColor;
 
   return (
-    <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
+    <form className={`${styles.form} DummyForm`} onSubmit={(e) => e.preventDefault()}>
       <div className={styles.field}>
         <label>{t.form.design}</label>
         <div className={styles.designGrid}>
