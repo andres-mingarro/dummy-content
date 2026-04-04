@@ -1,3 +1,16 @@
+import type { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Terms & Conditions",
+  description: "Terms and Conditions for using Dummy Content — free placeholder tools for development and design.",
+  openGraph: {
+    title: "Terms & Conditions — Dummy Content",
+    description: "Terms and Conditions for using Dummy Content — free placeholder tools for development and design.",
+    url: "https://dummycontent.app/terms",
+  },
+  robots: { index: false, follow: false },
+};
+
 export default function TermsPage() {
   return (
     <main className="flex-1 py-12 px-4 TermsPage" style={{ background: "var(--background)" }}>

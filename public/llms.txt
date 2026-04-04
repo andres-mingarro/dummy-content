@@ -1,0 +1,39 @@
+# Dummy Content
+
+> Free tools to generate placeholder images, text, and embeddable iframes for development and design projects.
+
+## Tools
+
+- [Image Generator](https://dummycontent.app/images): Generate placeholder images via a parametrized URL. Supports custom dimensions (1–4000px), background color, text color, and 4 designs: `solid`, `landscape`, `user`, `texture`. API: `GET /api/image/{w}x{h}/{bg}/{text}[/{label}]?design=`
+- [Text Generator](https://dummycontent.app/text): Generate placeholder text in English and Spanish using Faker.js. Supports paragraphs (up to 20), sentences (up to 50), and words (up to 100).
+- [Iframe Generator](https://dummycontent.app/iframe): Generate embeddable iframes with dummy content. 4 types: `article`, `article-image`, `images-list`, `card-list`. Supports custom dimensions, border styles, and EN/ES language.
+
+## Image API
+
+```
+GET /api/image/{width}x{height}/{bgColor}/{textColor}[/{label}]?design={design}
+```
+
+- `width`, `height`: 1–4000 (pixels)
+- `bgColor`, `textColor`: hex color without `#` (3 or 6 digits)
+- `label`: optional text label (solid design only)
+- `design`: `solid` (default), `landscape`, `user`, `texture`
+
+Example: `https://dummycontent.app/api/image/800x600/cccccc/333333`
+
+## Embeddable Iframes
+
+```
+GET /iframe/{type}?lang={lang}
+```
+
+- `type`: `article`, `article-image`, `images-list`, `card-list`
+- `lang`: `en` (default), `es`
+
+Returns a full standalone HTML page suitable for embedding.
+
+## Notes
+
+- All tools are free, no authentication required.
+- Generated content is for placeholder/prototype use only.
+- No user data is collected beyond anonymous analytics.
