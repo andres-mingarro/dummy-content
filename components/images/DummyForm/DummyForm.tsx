@@ -4,6 +4,7 @@ import { useState, useCallback } from "react";
 import type { DesignType } from "@/lib/images/imageGenerator";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
+import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
 import styles from "./DummyForm.module.scss";
 
 export interface FormValues {
@@ -110,15 +111,17 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         <label>{t.form.design}</label>
         <div className={styles.designGrid}>
           {DESIGNS.map((d) => (
-            <RippleButton
-              key={d.id}
-              type="button"
-              className={`${styles.designCard} ${values.design === d.id ? styles.designCardActive : ""}`}
-              onClick={() => handleDesign(d.id)}
-            >
-              <span className={styles.designPreview}>{DESIGN_PREVIEWS[d.id]}</span>
-              <span className={styles.designLabel}>{d.label}</span>
-            </RippleButton>
+            <div key={d.id} style={{ position: "relative", borderRadius: "0.75rem" }}>
+              <RippleButton
+                type="button"
+                className={`${styles.designCard} ${values.design === d.id ? styles.designCardActive : ""}`}
+                onClick={() => handleDesign(d.id)}
+              >
+                <span className={styles.designPreview}>{DESIGN_PREVIEWS[d.id]}</span>
+                <span className={styles.designLabel}>{d.label}</span>
+              </RippleButton>
+              {values.design === d.id && <ShineBorder borderWidth={1.5} />}
+            </div>
           ))}
         </div>
       </div>

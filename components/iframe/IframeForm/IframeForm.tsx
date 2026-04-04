@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
+import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
 import styles from "./IframeForm.module.scss";
 
 export type IframeType = "article" | "article-image" | "images-list" | "card-list";
@@ -119,15 +120,17 @@ export default function IframeForm({ onChange }: Props) {
         <label>{t.iframe.type}</label>
         <div className={styles.typeGrid}>
           {TYPES.map((tp) => (
-            <RippleButton
-              key={tp.id}
-              type="button"
-              className={`${styles.typeCard} ${values.type === tp.id ? styles.typeCardActive : ""}`}
-              onClick={() => update({ type: tp.id })}
-            >
-              <span className={styles.typePreview}>{TYPE_PREVIEWS[tp.id]}</span>
-              <span className={styles.typeLabel}>{tp.label}</span>
-            </RippleButton>
+            <div key={tp.id} style={{ position: "relative", borderRadius: "0.75rem" }}>
+              <RippleButton
+                type="button"
+                className={`${styles.typeCard} ${values.type === tp.id ? styles.typeCardActive : ""}`}
+                onClick={() => update({ type: tp.id })}
+              >
+                <span className={styles.typePreview}>{TYPE_PREVIEWS[tp.id]}</span>
+                <span className={styles.typeLabel}>{tp.label}</span>
+              </RippleButton>
+              {values.type === tp.id && <ShineBorder borderWidth={1.5} />}
+            </div>
           ))}
         </div>
       </div>
