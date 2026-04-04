@@ -5,7 +5,13 @@ export default function robots(): MetadataRoute.Robots {
     rules: {
       userAgent: "*",
       allow: "/",
-      disallow: ["/iframe/article", "/iframe/article-image", "/iframe/images-list", "/iframe/card-list"],
+      disallow: [
+        "/api/",
+        "/iframe/article",
+        "/iframe/article-image",
+        "/iframe/images-list",
+        "/iframe/card-list",
+      ],
     },
     sitemap: "https://dummycontent.app/sitemap.xml",
   };

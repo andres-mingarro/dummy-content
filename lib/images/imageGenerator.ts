@@ -1,6 +1,15 @@
 const MAX_SIZE = 4000;
 const MIN_SIZE = 1;
 
+function escXml(s: string): string {
+  return s
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export type DesignType = "solid" | "landscape" | "user" | "texture";
 const DESIGN_TYPES: DesignType[] = ["solid", "landscape", "user", "texture"];
 
@@ -66,7 +75,7 @@ function solidSVG({ width, height, bgColor, textColor, label }: ImageParams): st
   <rect width="${width}" height="${height}" fill="${bgColor}"/>
   <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
     font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}" fill="${textColor}"
-  >${label}</text>
+  >${escXml(label ?? "")}</text>
 </svg>`;
 }
 
