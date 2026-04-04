@@ -21,7 +21,7 @@ export default function Header() {
   return (
     <header className={`${styles.header} Header`}>
       <Link href="/images" className={styles.logo}>
-        <Logo logo={false} />
+        <Logo variant={3} name={false} />
       </Link>
 
       <nav className={styles.nav}>
