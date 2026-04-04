@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useLang } from "@/providers/LangProvider";
+import { PulsatingButton } from "@/components/shared/PulsatingButton/PulsatingButton";
 import { lobster } from "@/components/shared/Logo/Logo";
 import TextForm, { TextFormValues } from "@/components/text/TextForm/TextForm";
 import TextOutput from "@/components/text/TextOutput/TextOutput";
@@ -12,17 +13,17 @@ const TEXT_TYPES: TextType[] = ["paragraphs", "sentences", "words"];
 
 export default function TextPageClient() {
   const { t, lang } = useLang();
-  const [formValues, setFormValues] = useState<TextFormValues>({ type: "paragraphs", count: 3 });
+  const [formValues, setFormValues] = useState<TextFormValues>({ type: "words", count: 3 });
   const [initialized, setInitialized] = useState(false);
   const [units, setUnits] = useState<string[]>([]);
   const [copied, setCopied] = useState(false);
 
-  const prevTypeRef = useRef<TextType>("paragraphs");
+  const prevTypeRef = useRef<TextType>("words");
   const prevLangRef = useRef(lang);
 
   useEffect(() => {
     const hash = window.location.hash.slice(1) as TextType;
-    const type = TEXT_TYPES.includes(hash) ? hash : "paragraphs";
+    const type = TEXT_TYPES.includes(hash) ? hash : "words";
     const countParam = new URLSearchParams(window.location.search).get("count");
     const count = countParam ? Math.max(1, parseInt(countParam, 10)) : 3;
     setFormValues({ type, count });
@@ -94,9 +95,10 @@ export default function TextPageClient() {
                 <span className="text-xs" style={{ color: "var(--muted)" }}>
                   {wordCount} {t.text.wordCount} · {charCount} {t.text.charCount}
                 </span>
-                <button
+                <PulsatingButton
                   type="button"
                   onClick={handleCopy}
+                  pulseColor="var(--accent)"
                   className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
                   style={{
                     border: "1.5px solid var(--input-border)",
@@ -105,7 +107,7 @@ export default function TextPageClient() {
                   }}
                 >
                   {copied ? t.text.copied : t.text.copy}
-                </button>
+                </PulsatingButton>
               </div>
             </div>
             <TextOutput key={text} text={text} />

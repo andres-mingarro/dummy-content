@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import type { DesignType } from "@/lib/images/imageGenerator";
 import { useLang } from "@/providers/LangProvider";
+import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import styles from "./DummyForm.module.scss";
 
 export interface FormValues {
@@ -109,7 +110,7 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         <label>{t.form.design}</label>
         <div className={styles.designGrid}>
           {DESIGNS.map((d) => (
-            <button
+            <RippleButton
               key={d.id}
               type="button"
               className={`${styles.designCard} ${values.design === d.id ? styles.designCardActive : ""}`}
@@ -117,7 +118,7 @@ export default function DummyForm({ onChange }: DummyFormProps) {
             >
               <span className={styles.designPreview}>{DESIGN_PREVIEWS[d.id]}</span>
               <span className={styles.designLabel}>{d.label}</span>
-            </button>
+            </RippleButton>
           ))}
         </div>
       </div>

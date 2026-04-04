@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 import { useTheme } from "@/providers/ThemeProvider";
 import { useLang } from "@/providers/LangProvider";
 import Logo from "@/components/shared/Logo/Logo";
+import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import styles from "./Header.module.scss";
 
 export default function Header() {
@@ -37,13 +38,13 @@ export default function Header() {
       </nav>
 
       <div className={styles.controls}>
-        <button type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
+        <RippleButton type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
           {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
-        </button>
+        </RippleButton>
 
-        <button type="button" className={styles.controlBtn} onClick={toggleTheme} aria-label="Toggle theme">
+        <RippleButton type="button" className={styles.controlBtn} onClick={toggleTheme} aria-label="Toggle theme">
           {theme === "dark" ? <SunIcon /> : <MoonIcon />}
-        </button>
+        </RippleButton>
       </div>
     </header>
   );

@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useLang } from "@/providers/LangProvider";
+import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import styles from "./IframeForm.module.scss";
 
 export type IframeType = "article" | "article-image" | "images-list" | "card-list";
@@ -118,7 +119,7 @@ export default function IframeForm({ onChange }: Props) {
         <label>{t.iframe.type}</label>
         <div className={styles.typeGrid}>
           {TYPES.map((tp) => (
-            <button
+            <RippleButton
               key={tp.id}
               type="button"
               className={`${styles.typeCard} ${values.type === tp.id ? styles.typeCardActive : ""}`}
@@ -126,7 +127,7 @@ export default function IframeForm({ onChange }: Props) {
             >
               <span className={styles.typePreview}>{TYPE_PREVIEWS[tp.id]}</span>
               <span className={styles.typeLabel}>{tp.label}</span>
-            </button>
+            </RippleButton>
           ))}
         </div>
       </div>
@@ -162,20 +163,20 @@ export default function IframeForm({ onChange }: Props) {
       <div className={styles.field}>
         <label>{t.iframe.border}</label>
         <div className={styles.borderToggle}>
-          <button
+          <RippleButton
             type="button"
             className={`${styles.toggleBtn} ${!values.border ? styles.toggleBtnActive : ""}`}
             onClick={() => update({ border: false })}
           >
             {t.iframe.noBorder}
-          </button>
-          <button
+          </RippleButton>
+          <RippleButton
             type="button"
             className={`${styles.toggleBtn} ${values.border ? styles.toggleBtnActive : ""}`}
             onClick={() => update({ border: true })}
           >
             {t.iframe.withBorder}
-          </button>
+          </RippleButton>
         </div>
       </div>
 

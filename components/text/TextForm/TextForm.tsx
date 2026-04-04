@@ -2,6 +2,7 @@
 
 import { useLang } from "@/providers/LangProvider";
 import type { TextType } from "@/lib/text/textGenerator";
+import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import styles from "./TextForm.module.scss";
 
 export interface TextFormValues {
@@ -14,7 +15,7 @@ interface TextFormProps {
   onChange: (values: TextFormValues) => void;
 }
 
-const TYPE_OPTIONS: TextType[] = ["paragraphs", "sentences", "words"];
+const TYPE_OPTIONS: TextType[] = ["words", "sentences", "paragraphs"];
 
 const MAX_COUNT: Record<TextType, number> = {
   paragraphs: 20,
@@ -37,14 +38,14 @@ export default function TextForm({ values, onChange }: TextFormProps) {
           <label>{t.text.type}</label>
           <div className={styles.typeGrid}>
             {TYPE_OPTIONS.map((type) => (
-              <button
+              <RippleButton
                 key={type}
                 type="button"
                 className={`${styles.typeBtn} ${values.type === type ? styles.typeBtnActive : ""}`}
                 onClick={() => onChange({ ...values, type, count: Math.min(values.count, MAX_COUNT[type]) })}
               >
                 {t.text.types[type]}
-              </button>
+              </RippleButton>
             ))}
           </div>
         </div>

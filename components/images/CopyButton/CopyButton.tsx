@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useCallback } from "react";
+import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import styles from "./CopyButton.module.scss";
 
 interface CopyButtonProps {
@@ -31,7 +32,7 @@ export default function CopyButton({ text, label = "Copiar URL", copiedLabel = "
   }, [text]);
 
   return (
-    <button
+    <RippleButton
       onClick={handleCopy}
       className={`${styles.button} ${copied ? styles.copied : ""} CopyButton`}
       type="button"
@@ -48,7 +49,7 @@ export default function CopyButton({ text, label = "Copiar URL", copiedLabel = "
           {label}
         </>
       )}
-    </button>
+    </RippleButton>
   );
 }
 
