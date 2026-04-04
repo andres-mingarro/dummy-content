@@ -20,7 +20,7 @@ export default function Header() {
 
   return (
     <header className={`${styles.header} Header`}>
-      <Link href="/images" className={styles.logo}>
+      <Link href="/" className={styles.logo}>
         <Logo variant={3} name={false} />
       </Link>
 

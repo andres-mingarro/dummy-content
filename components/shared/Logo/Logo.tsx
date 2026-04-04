@@ -1,7 +1,7 @@
 import { Lobster, Bebas_Neue } from "next/font/google";
 
 export const lobster = Lobster({ weight: "400", subsets: ["latin"] });
-const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
+export const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
 interface LogoProps {
   logo?: boolean;
