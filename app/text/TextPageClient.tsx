@@ -4,6 +4,7 @@ import { useState, useCallback, useEffect, useRef } from "react";
 import { useLang } from "@/providers/LangProvider";
 import { PulsatingButton } from "@/components/shared/PulsatingButton/PulsatingButton";
 import { lobster } from "@/components/shared/Logo/Logo";
+import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
 import TextForm, { TextFormValues } from "@/components/text/TextForm/TextForm";
 import TextOutput from "@/components/text/TextOutput/TextOutput";
 import { generateUnits, unitsToText } from "@/lib/text/textGenerator";
@@ -73,45 +74,53 @@ export default function TextPageClient() {
     <main className="flex-1 py-12 px-4 TextPage" style={{ background: "var(--background)" }}>
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center space-y-2">
-          <h1 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
-            {t.text.title}
-          </h1>
-          <p className="text-sm" style={{ color: "var(--muted)" }}>
-            {t.text.subtitle}
-          </p>
+          <BlurFade delay={0} direction="up">
+            <h1 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
+              {t.text.title}
+            </h1>
+          </BlurFade>
+          <BlurFade delay={0.05} direction="up">
+            <p className="text-sm" style={{ color: "var(--muted)" }}>
+              {t.text.subtitle}
+            </p>
+          </BlurFade>
         </div>
 
-        <div className="rounded-2xl shadow-sm p-6 space-y-6" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-          <TextForm values={formValues} onChange={setFormValues} />
-        </div>
+        <BlurFade delay={0.1} direction="up">
+          <div className="rounded-2xl shadow-sm p-6 space-y-6" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
+            <TextForm values={formValues} onChange={setFormValues} />
+          </div>
+        </BlurFade>
 
         {text && (
-          <div className="rounded-2xl shadow-sm p-6 space-y-4" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-            <div className="flex items-center justify-between">
-              <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-                {t.text.result}
-              </span>
-              <div className="flex items-center gap-3">
-                <span className="text-xs" style={{ color: "var(--muted)" }}>
-                  {wordCount} {t.text.wordCount} · {charCount} {t.text.charCount}
+          <BlurFade delay={0.15} direction="up">
+            <div className="rounded-2xl shadow-sm p-6 space-y-4" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
+              <div className="flex items-center justify-between">
+                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+                  {t.text.result}
                 </span>
-                <PulsatingButton
-                  type="button"
-                  onClick={handleCopy}
-                  pulseColor="var(--accent)"
-                  className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-                  style={{
-                    border: "1.5px solid var(--input-border)",
-                    background: copied ? "var(--accent-bg)" : "var(--card)",
-                    color: copied ? "var(--accent)" : "var(--foreground)",
-                  }}
-                >
-                  {copied ? t.text.copied : t.text.copy}
-                </PulsatingButton>
+                <div className="flex items-center gap-3">
+                  <span className="text-xs" style={{ color: "var(--muted)" }}>
+                    {wordCount} {t.text.wordCount} · {charCount} {t.text.charCount}
+                  </span>
+                  <PulsatingButton
+                    type="button"
+                    onClick={handleCopy}
+                    pulseColor="var(--accent)"
+                    className="text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
+                    style={{
+                      border: "1.5px solid var(--input-border)",
+                      background: copied ? "var(--accent-bg)" : "var(--card)",
+                      color: copied ? "var(--accent)" : "var(--foreground)",
+                    }}
+                  >
+                    {copied ? t.text.copied : t.text.copy}
+                  </PulsatingButton>
+                </div>
               </div>
+              <TextOutput key={text} text={text} />
             </div>
-            <TextOutput key={text} text={text} />
-          </div>
+          </BlurFade>
         )}
       </div>
     </main>

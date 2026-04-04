@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useLang } from "@/providers/LangProvider";
 import { lobster } from "@/components/shared/Logo/Logo";
+import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
 import IframeForm, { IframeFormValues } from "@/components/iframe/IframeForm/IframeForm";
 import CopyButton from "@/components/images/CopyButton/CopyButton";
 
@@ -64,59 +65,69 @@ export default function IframePageClient() {
 
         {/* Título */}
         <div className="text-center space-y-2">
-          <h1 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
-            {t.iframe.title}
-          </h1>
-          <p className="text-sm" style={{ color: "var(--muted)" }}>
-            {t.iframe.subtitle}
-          </p>
+          <BlurFade delay={0} direction="up">
+            <h1 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
+              {t.iframe.title}
+            </h1>
+          </BlurFade>
+          <BlurFade delay={0.05} direction="up">
+            <p className="text-sm" style={{ color: "var(--muted)" }}>
+              {t.iframe.subtitle}
+            </p>
+          </BlurFade>
         </div>
 
         {/* Formulario + URLs */}
         <div className="rounded-2xl shadow-sm p-6 space-y-6" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-          <IframeForm onChange={handleChange} />
+          <BlurFade delay={0.1} direction="up">
+            <IframeForm onChange={handleChange} />
+          </BlurFade>
 
-          {/* URL generada */}
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-              {t.iframe.generatedUrl}
-            </span>
-            <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
-              <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--accent)" }}>
-                {fullUrl}
-              </code>
-              <CopyButton text={fullUrl} label={t.copy.url} copiedLabel={t.copy.copied} />
+          <BlurFade delay={0.2} direction="up">
+            <div className="space-y-2">
+              <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+                {t.iframe.generatedUrl}
+              </span>
+              <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
+                <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--accent)" }}>
+                  {fullUrl}
+                </code>
+                <CopyButton text={fullUrl} label={t.copy.url} copiedLabel={t.copy.copied} />
+              </div>
             </div>
-          </div>
+          </BlurFade>
 
-          {/* HTML snippet */}
-          <div className="space-y-2">
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-              {t.iframe.html}
-            </span>
-            <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
-              <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--foreground)" }}>
-                {htmlSnippet}
-              </code>
-              <CopyButton text={htmlSnippet} label={t.copy.html} copiedLabel={t.copy.copied} />
+          <BlurFade delay={0.3} direction="up">
+            <div className="space-y-2">
+              <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+                {t.iframe.html}
+              </span>
+              <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
+                <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--foreground)" }}>
+                  {htmlSnippet}
+                </code>
+                <CopyButton text={htmlSnippet} label={t.copy.html} copiedLabel={t.copy.copied} />
+              </div>
             </div>
-          </div>
+          </BlurFade>
         </div>
 
         {/* Preview */}
-        <div className="rounded-2xl shadow-sm p-6 space-y-4" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-          <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-            {t.iframe.preview}
-          </span>
-          <div style={{ overflow: "auto" }}>
-            <iframe
-              key={embedPath}
-              src={embedPath}
-              style={iframeStyle}
-              loading="lazy"
-            />
+        <BlurFade delay={0.4} direction="up">
+          <div className="rounded-2xl shadow-sm p-6 space-y-4" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
+            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
+              {t.iframe.preview}
+            </span>
+            <div style={{ overflow: "auto" }}>
+              <iframe
+                key={embedPath}
+                src={embedPath}
+                style={iframeStyle}
+                loading="lazy"
+              />
+            </div>
           </div>
-        </div>
+        </BlurFade>
 
       </div>
     </main>
