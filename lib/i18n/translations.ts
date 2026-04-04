@@ -3,9 +3,9 @@ export type Lang = "en" | "es";
 export const translations = {
   en: {
     header: {
-      image: "Image",
-      iframe: "Iframe",
-      text: "Text",
+      image: "IMAGE",
+      iframe: "IFRAME",
+      text: "TEXT",
     },
     images: {
       title: "Image Generator",
@@ -78,12 +78,16 @@ export const translations = {
       html: "Copy HTML",
       copied: "Copied!",
     },
+    footer: {
+      copyright: "All rights reserved.",
+      terms: "Terms & Conditions",
+    },
   },
   es: {
     header: {
-      image: "Image",
-      iframe: "Iframe",
-      text: "Text",
+      image: "IMAGE",
+      iframe: "IFRAME",
+      text: "TEXT",
     },
     images: {
       title: "Generador de Imágenes",
@@ -155,6 +159,10 @@ export const translations = {
       url: "Copiar URL",
       html: "Copiar HTML",
       copied: "¡Copiado!",
+    },
+    footer: {
+      copyright: "Todos los derechos reservados.",
+      terms: "Términos y Condiciones",
     },
   },
 } as const;

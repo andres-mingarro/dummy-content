@@ -4,6 +4,7 @@ import Script from "next/script";
 import { ThemeProvider } from "@/providers/ThemeProvider";
 import { LangProvider } from "@/providers/LangProvider";
 import Header from "@/components/shared/Header/Header";
+import Footer from "@/components/shared/Footer/Footer";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -37,6 +38,7 @@ export default function RootLayout({
           <LangProvider>
             <Header />
             {children}
+            <Footer />
           </LangProvider>
         </ThemeProvider>
       </body>

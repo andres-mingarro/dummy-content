@@ -1,0 +1,26 @@
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1.5rem;
+  height: 3rem;
+  background: var(--card);
+  border-top: 1.5px solid var(--card-border);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+.copy {
+  font-size: 0.75rem;
+  color: var(--muted);
+}
+
+.link {
+  font-size: 0.75rem;
+  color: var(--muted);
+  text-decoration: none;
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--accent);
+  }
+}

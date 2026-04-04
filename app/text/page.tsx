@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useEffect, useRef } from "react";
 import { useLang } from "@/providers/LangProvider";
+import { lobster } from "@/components/shared/Logo/Logo";
 import TextForm, { TextFormValues } from "@/components/text/TextForm/TextForm";
 import TextOutput from "@/components/text/TextOutput/TextOutput";
 import { generateUnits, unitsToText } from "@/lib/text/textGenerator";
@@ -71,7 +72,7 @@ export default function TextPage() {
     <main className="flex-1 py-12 px-4 TextPage" style={{ background: "var(--background)" }}>
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight" style={{ color: "var(--foreground)" }}>
+          <h2 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
             {t.text.title}
           </h2>
           <p className="text-sm" style={{ color: "var(--muted)" }}>

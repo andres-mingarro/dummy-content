@@ -2,6 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useLang } from "@/providers/LangProvider";
+import { lobster } from "@/components/shared/Logo/Logo";
 import IframeForm, { IframeFormValues } from "@/components/iframe/IframeForm/IframeForm";
 import CopyButton from "@/components/images/CopyButton/CopyButton";
 
@@ -63,7 +64,7 @@ export default function IframePage() {
 
         {/* Título */}
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight" style={{ color: "var(--foreground)" }}>
+          <h2 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
             {t.iframe.title}
           </h2>
           <p className="text-sm" style={{ color: "var(--muted)" }}>

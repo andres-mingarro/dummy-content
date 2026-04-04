@@ -5,6 +5,7 @@ import DummyForm, { FormValues } from "@/components/images/DummyForm/DummyForm";
 import ImagePreview from "@/components/images/ImagePreview/ImagePreview";
 import CopyButton from "@/components/images/CopyButton/CopyButton";
 import { useLang } from "@/providers/LangProvider";
+import { lobster } from "@/components/shared/Logo/Logo";
 
 const DEFAULT_FORM: FormValues = {
   width: "600",
@@ -40,7 +41,7 @@ export default function ImagesPage() {
     <main className="flex-1 py-12 px-4 ImagesPage" style={{ background: "var(--background)" }}>
       <div className="max-w-2xl mx-auto space-y-8">
         <div className="text-center space-y-2">
-          <h2 className="text-2xl font-bold tracking-tight" style={{ color: "var(--foreground)" }}>
+          <h2 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
             {t.images.title}
           </h2>
           <p className="text-sm" style={{ color: "var(--muted)" }}>

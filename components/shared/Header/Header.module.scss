@@ -35,6 +35,7 @@
   border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 500;
+  letter-spacing: 1px;
   color: var(--muted);
   text-decoration: none;
   transition: background 0.15s, color 0.15s;
@@ -65,8 +66,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 2rem;
   height: 2rem;
+  padding: 0 0.625rem;
   border-radius: 0.5rem;
   border: 1.5px solid var(--card-border);
   background: transparent;
