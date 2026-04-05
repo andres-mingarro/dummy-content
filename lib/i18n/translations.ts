@@ -3,9 +3,9 @@ export type Lang = "en" | "es";
 export const translations = {
   en: {
     header: {
-      image: "IMAGE",
-      iframe: "IFRAME",
-      text: "TEXT",
+      image: "DUMMY IMAGE",
+      iframe: "DUMMY IFRAME",
+      text: "DUMMY TEXT",
     },
     images: {
       title: "Image Generator",
@@ -85,9 +85,9 @@ export const translations = {
   },
   es: {
     header: {
-      image: "IMAGE",
-      iframe: "IFRAME",
-      text: "TEXT",
+      image: "DUMMY IMAGE",
+      iframe: "DUMMY IFRAME",
+      text: "DUMMY TEXT",
     },
     images: {
       title: "Generador de Imágenes",

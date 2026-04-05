@@ -44,8 +44,8 @@ export default function ImagesPageClient() {
 
         <div className="text-center space-y-2">
           <BlurFade delay={0} direction="up">
-            <h1 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
-              {t.images.title}
+            <h1 className={lobster.className} style={{ fontSize: "40px", color: "#fff" }}>
+              &lt;Dummy Image&gt;
             </h1>
           </BlurFade>
           <BlurFade delay={0.05} direction="up">

@@ -53,8 +53,8 @@ const tools = [
 ];
 
 const labels = {
-  en: { image: "IMAGE", text: "TEXT", iframe: "IFRAME" },
-  es: { image: "IMAGE", text: "TEXT", iframe: "IFRAME" },
+  en: { image: "DUMMY IMAGE", text: "DUMMY TEXT", iframe: "DUMMY IFRAME" },
+  es: { image: "DUMMY IMAGE", text: "DUMMY TEXT", iframe: "DUMMY IFRAME" },
 };
 
 export default function Home() {

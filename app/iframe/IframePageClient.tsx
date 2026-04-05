@@ -66,8 +66,8 @@ export default function IframePageClient() {
         {/* Título */}
         <div className="text-center space-y-2">
           <BlurFade delay={0} direction="up">
-            <h1 className={lobster.className} style={{ color: "var(--foreground)", fontSize: "40px" }}>
-              {t.iframe.title}
+            <h1 className={lobster.className} style={{ fontSize: "40px", color: "#fff" }}>
+              &lt;Dummy Iframe&gt;
             </h1>
           </BlurFade>
           <BlurFade delay={0.05} direction="up">
