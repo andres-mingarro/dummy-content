@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useState, useEffect } from "react";
 import { useLang } from "@/providers/LangProvider";
 import Logo from "@/components/shared/Logo/Logo";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
@@ -11,6 +12,16 @@ import styles from "./Header.module.scss";
 export default function Header() {
   const pathname = usePathname();
   const { lang, t, toggleLang } = useLang();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  // Cerrar menu al cambiar de ruta
+  useEffect(() => { setMenuOpen(false); }, [pathname]);
+
+  // Bloquear scroll cuando el menu está abierto
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [menuOpen]);
 
   const navItems = [
     { href: "/images", label: t.header.image },
@@ -19,31 +30,72 @@ export default function Header() {
   ];
 
   return (
-    <header className={`${styles.header} Header`}>
-      <Link href="/" className={styles.logo}>
-        <Logo variant={3} name={false} />
-      </Link>
+    <>
+      <header className={`${styles.header} Header`}>
+        <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
+          <Logo variant={3} name={false} />
+        </Link>
 
-      <nav className={styles.nav}>
-        {navItems.map(({ href, label }) => (
-          <Link
-            key={href}
-            href={href}
-            className={`${styles.link} ${pathname.startsWith(href) ? styles.linkActive : ""}`}
-          >
-            {label}
-          </Link>
-        ))}
-      </nav>
+        {/* Nav desktop */}
+        <nav className={`${styles.nav} ${styles.navDesktop}`}>
+          {navItems.map(({ href, label }) => (
+            <Link
+              key={href}
+              href={href}
+              className={`${styles.link} ${pathname.startsWith(href) ? styles.linkActive : ""}`}
+            >
+              {label}
+            </Link>
+          ))}
+        </nav>
 
-      <div className={styles.controls}>
-        <RippleButton type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
-          {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
-        </RippleButton>
+        {/* Controls desktop */}
+        <div className={`${styles.controls} ${styles.controlsDesktop}`}>
+          <RippleButton type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
+            {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
+          </RippleButton>
+          <AnimatedThemeToggler className={styles.controlBtn} />
+        </div>
 
-        <AnimatedThemeToggler className={styles.controlBtn} />
-      </div>
-    </header>
+        {/* Hamburger mobile */}
+        <button
+          className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
+          onClick={() => setMenuOpen((v) => !v)}
+          aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
+          aria-expanded={menuOpen}
+        >
+          <span className={styles.hamburgerBar} />
+          <span className={styles.hamburgerBar} />
+          <span className={styles.hamburgerBar} />
+        </button>
+      </header>
+
+      {/* Mobile menu */}
+      {menuOpen && (
+        <div className={`${styles.mobileMenu} MobileMenu`}>
+          <nav className={styles.mobileNav}>
+            {navItems.map(({ href, label }) => (
+              <Link
+                key={href}
+                href={href}
+                className={`${styles.mobileLink} ${pathname.startsWith(href) ? styles.mobileLinkActive : ""}`}
+              >
+                {label}
+              </Link>
+            ))}
+          </nav>
+
+          <div className={styles.mobileDivider} />
+
+          <div className={styles.mobileControls}>
+            <RippleButton type="button" className={styles.mobileControlBtn} onClick={toggleLang} aria-label="Toggle language">
+              {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
+            </RippleButton>
+            <AnimatedThemeToggler className={styles.mobileControlBtn} />
+          </div>
+        </div>
+      )}
+    </>
   );
 }
 
@@ -71,4 +123,3 @@ function FlagAR() {
     </svg>
   );
 }
-
