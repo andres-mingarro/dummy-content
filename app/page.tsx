@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { bebasNeue } from "@/components/shared/Logo/Logo";
 import { useLang } from "@/providers/LangProvider";
+import styles from "./page.module.scss";
 
 const tools = [
   {
@@ -66,8 +67,8 @@ export default function Home() {
       style={{ background: "var(--background)" }}
     >
       {/* Hero */}
-      <div className="text-center space-y-4 mb-16">
-        <h1 className={bebasNeue.className} style={{ fontSize: "72px", color: "#07CFFE", lineHeight: 1 }}>
+      <div className={`text-center space-y-4 mb-16 ${styles.hero}`}>
+        <h1 className={bebasNeue.className} style={{ color: "#07CFFE", lineHeight: 1 }}>
           &lt;DummyContent/&gt;
         </h1>
         <p style={{ fontSize: "1.125rem", color: "var(--muted)", maxWidth: "480px", margin: "0 auto" }}>

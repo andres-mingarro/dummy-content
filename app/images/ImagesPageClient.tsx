@@ -7,6 +7,7 @@ import CopyButton from "@/components/images/CopyButton/CopyButton";
 import { useLang } from "@/providers/LangProvider";
 import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
+import styles from "./ImagesPageClient.module.scss";
 
 const DEFAULT_FORM: FormValues = {
   width: "600",
@@ -65,7 +66,7 @@ export default function ImagesPageClient() {
               <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
                 {t.images.generatedUrl}
               </span>
-              <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
+              <div className={`flex items-center gap-2 rounded-xl px-4 py-3 ${styles.snippetBox}`} style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
                 <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--accent)" }}>
                   {fullUrl}
                 </code>
@@ -79,7 +80,7 @@ export default function ImagesPageClient() {
               <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
                 {t.images.html}
               </span>
-              <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
+              <div className={`flex items-center gap-2 rounded-xl px-4 py-3 ${styles.snippetBox}`} style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
                 <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--foreground)" }}>
                   {`<img src="${fullUrl}" alt="placeholder ${widthNum}x${heightNum}">`}
                 </code>

@@ -1,0 +1,12 @@
+@use "@/scss/mixins/breakpoints" as *;
+
+.snippetBox {
+  @include mobile {
+    flex-direction: column-reverse;
+
+    :global(.CopyButton) {
+      width: 100%;
+      justify-content: center;
+    }
+  }
+}

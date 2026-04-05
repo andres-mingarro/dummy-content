@@ -4,6 +4,7 @@ import { useState, useCallback, useMemo, useEffect } from "react";
 import { useLang } from "@/providers/LangProvider";
 import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
+import styles from "./IframePageClient.module.scss";
 import IframeForm, { IframeFormValues } from "@/components/iframe/IframeForm/IframeForm";
 import CopyButton from "@/components/images/CopyButton/CopyButton";
 
@@ -88,7 +89,7 @@ export default function IframePageClient() {
               <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
                 {t.iframe.generatedUrl}
               </span>
-              <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
+              <div className={`flex items-center gap-2 rounded-xl px-4 py-3 ${styles.snippetBox}`} style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
                 <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--accent)" }}>
                   {fullUrl}
                 </code>
@@ -102,7 +103,7 @@ export default function IframePageClient() {
               <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
                 {t.iframe.html}
               </span>
-              <div className="flex items-center gap-2 rounded-xl px-4 py-3" style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
+              <div className={`flex items-center gap-2 rounded-xl px-4 py-3 ${styles.snippetBox}`} style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
                 <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--foreground)" }}>
                   {htmlSnippet}
                 </code>

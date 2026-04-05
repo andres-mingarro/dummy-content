@@ -13,9 +13,15 @@ export default function Header() {
   const pathname = usePathname();
   const { lang, t, toggleLang } = useLang();
   const [menuOpen, setMenuOpen] = useState(false);
+  const [isClosing, setIsClosing] = useState(false);
+
+  const closeMenu = () => {
+    setIsClosing(true);
+    setTimeout(() => { setMenuOpen(false); setIsClosing(false); }, 200);
+  };
 
   // Cerrar menu al cambiar de ruta
-  useEffect(() => { setMenuOpen(false); }, [pathname]);
+  useEffect(() => { if (menuOpen) closeMenu(); }, [pathname]); // eslint-disable-line react-hooks/exhaustive-deps
 
   // Bloquear scroll cuando el menu está abierto
   useEffect(() => {
@@ -60,7 +66,7 @@ export default function Header() {
         {/* Hamburger mobile */}
         <button
           className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
-          onClick={() => setMenuOpen((v) => !v)}
+          onClick={() => menuOpen ? closeMenu() : setMenuOpen(true)}
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
         >
@@ -71,8 +77,8 @@ export default function Header() {
       </header>
 
       {/* Mobile menu */}
-      {menuOpen && (
-        <div className={`${styles.mobileMenu} MobileMenu`}>
+      {(menuOpen || isClosing) && (
+        <div className={`${styles.mobileMenu} ${isClosing ? styles.closing : ""} MobileMenu`}>
           <nav className={styles.mobileNav}>
             {navItems.map(({ href, label }) => (
               <Link
