@@ -1,4 +1,5 @@
 import { Lobster, Bebas_Neue } from "next/font/google";
+import styles from "./Logo.module.scss";
 
 export const lobster = Lobster({ weight: "400", subsets: ["latin"] });
 export const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
@@ -112,11 +113,9 @@ function LogoVariant3({ bebasClass, name }: { bebasClass: string; name: boolean 
       aria-hidden={name ? true : undefined}
       aria-label={name ? undefined : "Dummy Content logo"}
     >
-      <span
-        className={bebasClass}
-        style={{ color: "#07CFFE", fontSize: "36px", letterSpacing: "-0.5px", lineHeight: 1 }}
-      >
-        &lt;DummyContent/&gt;
+      <span className={bebasClass} style={{ color: "#07CFFE", fontSize: "36px", letterSpacing: "-0.5px", lineHeight: 1 }}>
+        <span className={styles.full}>&lt;DummyContent/&gt;</span>
+        <span className={styles.short}>&lt;DC/&gt;</span>
       </span>
     </div>
   );

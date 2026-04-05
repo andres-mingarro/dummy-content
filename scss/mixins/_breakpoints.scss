@@ -1,0 +1,48 @@
+// Breakpoints alineados con Tailwind CSS defaults
+// https://tailwindcss.com/docs/responsive-design
+//
+// sm:  640px
+// md:  768px  ← límite mobile / desktop
+// lg: 1024px
+// xl: 1280px
+// 2xl: 1536px
+
+$breakpoints: (
+  "sm":  640px,
+  "md":  768px,
+  "lg": 1024px,
+  "xl": 1280px,
+  "2xl": 1536px,
+);
+
+// Mobile-first: min-width (≥ breakpoint)
+// Uso: @include up(md) { ... }
+@mixin up($bp) {
+  $value: map-get($breakpoints, $bp);
+  @media (min-width: #{$value}) {
+    @content;
+  }
+}
+
+// Max-width: strictly below breakpoint
+// Uso: @include down(md) { ... }  →  < 768px  (mobile)
+@mixin down($bp) {
+  $value: map-get($breakpoints, $bp);
+  @media (max-width: calc(#{$value} - 1px)) {
+    @content;
+  }
+}
+
+// Rango entre dos breakpoints
+// Uso: @include between(sm, lg) { ... }
+@mixin between($lower, $upper) {
+  $min: map-get($breakpoints, $lower);
+  $max: map-get($breakpoints, $upper);
+  @media (min-width: #{$min}) and (max-width: calc(#{$max} - 1px)) {
+    @content;
+  }
+}
+
+// Atajos semánticos
+@mixin mobile  { @include down(md)  { @content; } }
+@mixin desktop { @include up(md)    { @content; } }

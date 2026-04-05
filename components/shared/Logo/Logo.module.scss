@@ -1,0 +1,10 @@
+@use "@/scss/mixins/breakpoints" as *;
+
+.full {
+  @include mobile { display: none; }
+}
+
+.short {
+  display: none;
+  @include mobile { display: inline; }
+}
