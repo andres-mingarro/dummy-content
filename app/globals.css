@@ -11,6 +11,7 @@
   --accent-bg: #eef2ff;
   --input-border: #e5e7eb;
   --input-border-focus: #6366f1;
+  --heading: #4c76bc;
 }
 
 .dark {
@@ -23,6 +24,7 @@
   --accent: #818cf8;
   --accent-bg: #1e1b4b;
   --input-border: #334155;
+  --heading: #ffffff;
   --input-border-focus: #818cf8;
 }
 

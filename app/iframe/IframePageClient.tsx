@@ -68,7 +68,7 @@ export default function IframePageClient() {
         {/* Título */}
         <div className="text-center space-y-2">
           <BlurFade delay={0} direction="up">
-            <h1 className={lobster.className} style={{ fontSize: "40px", color: "#fff" }}>
+            <h1 className={lobster.className} style={{ fontSize: "40px", color: "var(--heading)" }}>
               &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>Dummy</AuroraText> Iframe&gt;
             </h1>
           </BlurFade>
