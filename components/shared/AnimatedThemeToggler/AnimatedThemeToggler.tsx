@@ -59,7 +59,7 @@ export function AnimatedThemeToggler({
       type="button"
       ref={buttonRef}
       onClick={handleToggle}
-      className={className}
+      className={`AnimatedThemeToggler ${className ?? ""}`}
       aria-label="Toggle theme"
       {...props}
     >

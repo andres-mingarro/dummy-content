@@ -61,7 +61,7 @@ function BlurFadeInner({
       animate={isInView ? "visible" : "hidden"}
       variants={variants}
       transition={{ delay: 0.04 + delay, duration, ease: "easeOut" }}
-      className={className}
+      className={`BlurFade ${className ?? ""}`}
       {...props}
     >
       {children}

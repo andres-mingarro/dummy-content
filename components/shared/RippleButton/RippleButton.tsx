@@ -1,6 +1,7 @@
 "use client";
 
 import React, { MouseEvent, useEffect, useState } from "react";
+import styles from "./RippleButton.module.scss";
 
 interface RippleButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   rippleColor?: string;
@@ -46,27 +47,22 @@ export const RippleButton = React.forwardRef<HTMLButtonElement, RippleButtonProp
     return (
       <button
         ref={ref}
-        className={className}
-        style={{ position: "relative", overflow: "hidden", ...style }}
+        className={`RippleButton ${styles.button} ${className ?? ""}`}
+        style={style}
         onClick={handleClick}
         {...props}
       >
-        <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
+        <span className={styles.inner}>{children}</span>
         {ripples.map((r) => (
           <span
             key={r.key}
-            className="animate-rippling"
+            className={`animate-rippling ${styles.ripple}`}
             style={{
-              position: "absolute",
-              borderRadius: "50%",
-              pointerEvents: "none",
               width: r.size,
               height: r.size,
               top: r.y,
               left: r.x,
               backgroundColor: rippleColor,
-              opacity: 0.25,
-              transform: "scale(0)",
               ["--duration" as string]: `${duration}ms`,
             }}
           />

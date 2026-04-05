@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useImperativeHandle, useLayoutEffect, useRef } from "react";
+import styles from "./PulsatingButton.module.scss";
 
 interface PulsatingButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
   pulseColor?: string;
@@ -71,9 +72,8 @@ export const PulsatingButton = React.forwardRef<HTMLButtonElement, PulsatingButt
     return (
       <button
         ref={innerRef}
-        className={className}
+        className={`PulsatingButton ${styles.button} ${className ?? ""}`}
         style={{
-          position: "relative",
           ...(pulseColor && { "--pulse-color": pulseColor } as React.CSSProperties),
           "--duration": duration,
           "--distance": distance,
@@ -81,17 +81,10 @@ export const PulsatingButton = React.forwardRef<HTMLButtonElement, PulsatingButt
         } as React.CSSProperties}
         {...props}
       >
-        <span style={{ position: "relative", zIndex: 1 }}>{children}</span>
+        <span className={styles.inner}>{children}</span>
         <span
           aria-hidden="true"
-          className="animate-pulse-ripple"
-          style={{
-            pointerEvents: "none",
-            position: "absolute",
-            inset: 0,
-            borderRadius: "inherit",
-            background: "inherit",
-          }}
+          className={`animate-pulse-ripple ${styles.pulse}`}
         />
       </button>
     );

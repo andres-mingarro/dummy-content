@@ -104,3 +104,4 @@ providers/
 ## Convenciones
 - Todos los componentes tienen un className con su nombre (ej. `Header`, `DummyForm`, `TextOutput`) en el elemento raíz
 - Páginas con interactividad se dividen en `page.tsx` (server) + `*PageClient.tsx` (client)
+- No usar estilos inline en el DOM — cada componente tiene su propio `ComponentName.module.scss` con todos los estilos estáticos; solo se permiten estilos inline para valores genuinamente dinámicos en runtime (ej. posición de ripple, CSS custom properties derivadas de props)
