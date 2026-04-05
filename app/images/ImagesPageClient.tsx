@@ -7,6 +7,7 @@ import CopyButton from "@/components/images/CopyButton/CopyButton";
 import { useLang } from "@/providers/LangProvider";
 import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
+import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
 import styles from "./ImagesPageClient.module.scss";
 
 const DEFAULT_FORM: FormValues = {
@@ -46,7 +47,7 @@ export default function ImagesPageClient() {
         <div className="text-center space-y-2">
           <BlurFade delay={0} direction="up">
             <h1 className={lobster.className} style={{ fontSize: "40px", color: "#fff" }}>
-              &lt;Dummy Image&gt;
+              &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>Dummy</AuroraText> Image&gt;
             </h1>
           </BlurFade>
           <BlurFade delay={0.05} direction="up">

@@ -3,6 +3,8 @@
 import Link from "next/link";
 import { bebasNeue } from "@/components/shared/Logo/Logo";
 import { useLang } from "@/providers/LangProvider";
+import { LightRays } from "@/components/shared/LightRays/LightRays";
+import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
 import styles from "./page.module.scss";
 
 const tools = [
@@ -64,12 +66,13 @@ export default function Home() {
   return (
     <main
       className="flex-1 flex flex-col items-center justify-center px-4 py-16 HomePage"
-      style={{ background: "var(--background)" }}
+      style={{ background: "var(--background)", position: "relative" }}
     >
+      <LightRays color="#036b83" blur={48} count={8} speed={12} length="80vh" />
       {/* Hero */}
       <div className={`text-center space-y-4 mb-16 ${styles.hero}`}>
         <h1 className={bebasNeue.className} style={{ color: "#07CFFE", lineHeight: 1 }}>
-          &lt;DummyContent/&gt;
+          &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>DUMMY</AuroraText>Content/&gt;
         </h1>
         <p style={{ fontSize: "1.125rem", color: "var(--muted)", maxWidth: "480px", margin: "0 auto" }}>
           {lang === "en"

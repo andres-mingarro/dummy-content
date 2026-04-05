@@ -6,7 +6,7 @@ Aplicación web Next.js con 3 sub-aplicaciones para generar contenido dummy din�
 
 ## Páginas
 
-- **Home** — `/` — hero con título `<DummyContent/>` (Bebas Neue, #07CFFE) + lista de 3 herramientas como cards navegables
+- **Home** — `/` — hero con título `<DummyContent/>` (Bebas Neue, #07CFFE) + LightRays de fondo + lista de 3 herramientas como cards navegables
 - **Terms & Conditions** — `/terms`
 
 ## Sub-aplicaciones
@@ -67,6 +67,8 @@ components/
     PulsatingButton/         # Botón con animación pulsante
     RippleButton/            # Botón con efecto ripple
     ShineBorder/             # Borde animado shine para cards activos
+    LightRays/               # Efecto rayos de luz animados (home background)
+    AuroraText/              # Texto con gradiente aurora animado
 lib/
   images/imageGenerator.ts
   text/textGenerator.ts      # usa @faker-js/faker (fakerEN, fakerES)
@@ -109,3 +111,4 @@ scss/
 - Páginas con interactividad se dividen en `page.tsx` (server) + `*PageClient.tsx` (client)
 - No usar estilos inline en el DOM — cada componente tiene su propio `ComponentName.module.scss` con todos los estilos estáticos; solo se permiten estilos inline para valores genuinamente dinámicos en runtime (ej. posición de ripple, CSS custom properties derivadas de props)
 - Responsive via mixins SCSS: `@use "@/scss/mixins/breakpoints" as *;` — usar `@include mobile` / `@include desktop` para el split 0–768px / 768px+; usar `@include up(lg)` etc. para breakpoints específicos (alineados con Tailwind: sm 640, md 768, lg 1024, xl 1280, 2xl 1536)
+- AuroraText: la palabra `DUMMY` en el logo y en los títulos de cada sección usa `<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>` — mantener esos colores para consistencia visual

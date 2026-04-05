@@ -1,4 +1,5 @@
 import { Lobster, Bebas_Neue } from "next/font/google";
+import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
 import styles from "./Logo.module.scss";
 
 export const lobster = Lobster({ weight: "400", subsets: ["latin"] });
@@ -114,8 +115,12 @@ function LogoVariant3({ bebasClass, name }: { bebasClass: string; name: boolean 
       aria-label={name ? undefined : "Dummy Content logo"}
     >
       <span className={bebasClass} style={{ color: "#07CFFE", fontSize: "36px", letterSpacing: "-0.5px", lineHeight: 1 }}>
-        <span className={styles.full}>&lt;DummyContent/&gt;</span>
-        <span className={styles.short}>&lt;DC/&gt;</span>
+        <span className={styles.full}>
+          &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>DUMMY</AuroraText>Content/&gt;
+        </span>
+        <span className={styles.short}>
+          &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>DC</AuroraText>/&gt;
+        </span>
       </span>
     </div>
   );

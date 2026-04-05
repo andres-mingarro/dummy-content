@@ -5,6 +5,7 @@ import { useLang } from "@/providers/LangProvider";
 import { PulsatingButton } from "@/components/shared/PulsatingButton/PulsatingButton";
 import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
+import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
 import TextForm, { TextFormValues } from "@/components/text/TextForm/TextForm";
 import TextOutput from "@/components/text/TextOutput/TextOutput";
 import { generateUnits, unitsToText } from "@/lib/text/textGenerator";
@@ -76,7 +77,7 @@ export default function TextPageClient() {
         <div className="text-center space-y-2">
           <BlurFade delay={0} direction="up">
             <h1 className={lobster.className} style={{ fontSize: "40px", color: "#fff" }}>
-              &lt;Dummy Text&gt;
+              &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>Dummy</AuroraText> Text&gt;
             </h1>
           </BlurFade>
           <BlurFade delay={0.05} direction="up">
