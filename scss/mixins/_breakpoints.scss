@@ -1,3 +1,5 @@
+@use "sass:map";
+
 // Breakpoints alineados con Tailwind CSS defaults
 // https://tailwindcss.com/docs/responsive-design
 //
@@ -18,7 +20,7 @@ $breakpoints: (
 // Mobile-first: min-width (≥ breakpoint)
 // Uso: @include up(md) { ... }
 @mixin up($bp) {
-  $value: map-get($breakpoints, $bp);
+  $value: map.get($breakpoints,$bp);
   @media (min-width: #{$value}) {
     @content;
   }
@@ -27,7 +29,7 @@ $breakpoints: (
 // Max-width: strictly below breakpoint
 // Uso: @include down(md) { ... }  →  < 768px  (mobile)
 @mixin down($bp) {
-  $value: map-get($breakpoints, $bp);
+  $value: map.get($breakpoints,$bp);
   @media (max-width: calc(#{$value} - 1px)) {
     @content;
   }
@@ -36,8 +38,8 @@ $breakpoints: (
 // Rango entre dos breakpoints
 // Uso: @include between(sm, lg) { ... }
 @mixin between($lower, $upper) {
-  $min: map-get($breakpoints, $lower);
-  $max: map-get($breakpoints, $upper);
+  $min: map.get($breakpoints,$lower);
+  $max: map.get($breakpoints,$upper);
   @media (min-width: #{$min}) and (max-width: calc(#{$max} - 1px)) {
     @content;
   }
