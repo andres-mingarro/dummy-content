@@ -1,8 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseImageParams, parseDesign, generateSVG } from "@/lib/images/imageGenerator";
 
-export const runtime = "edge";
-
 export async function GET(
   req: NextRequest,
   { params }: { params: Promise<{ params: string[] }> }
