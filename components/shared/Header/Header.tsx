@@ -58,7 +58,7 @@ export default function Header() {
         {/* Controls desktop */}
         <div className={`${styles.controls} ${styles.controlsDesktop}`}>
           <a
-            href="https://www.buymeacoffee.com/YOUR_USERNAME"
+            href="https://ko-fi.com/YOUR_USERNAME"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.coffeeBtn}
@@ -103,7 +103,7 @@ export default function Header() {
           <div className={styles.mobileDivider} />
 
           <a
-            href="https://www.buymeacoffee.com/YOUR_USERNAME"
+            href="https://ko-fi.com/YOUR_USERNAME"
             target="_blank"
             rel="noopener noreferrer"
             className={styles.mobileCoffeeBtn}

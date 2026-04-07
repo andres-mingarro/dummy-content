@@ -5,7 +5,7 @@ import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
 import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
 
-const BMC_URL = "https://www.buymeacoffee.com/YOUR_USERNAME";
+const KOFI_URL = "https://ko-fi.com/YOUR_USERNAME";
 
 export default function SupportPage() {
   const { t } = useLang();
@@ -22,12 +22,16 @@ export default function SupportPage() {
 
         <BlurFade delay={0.08} direction="up">
           <div className="rounded-2xl p-8 space-y-6" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-            <p style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--foreground)" }}>
-              {t.support.description}
-            </p>
+            <div className="space-y-4 text-left">
+              {t.support.description.split("\n\n").map((p, i) => (
+                <p key={i} style={{ fontSize: "1rem", lineHeight: 1.75, color: "var(--foreground)" }}>
+                  {p}
+                </p>
+              ))}
+            </div>
 
             <a
-              href={BMC_URL}
+              href={KOFI_URL}
               target="_blank"
               rel="noopener noreferrer"
               className="block w-full py-3 rounded-xl text-sm font-semibold tracking-wide transition-all text-center"
