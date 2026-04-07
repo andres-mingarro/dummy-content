@@ -8,9 +8,10 @@ interface CopyButtonProps {
   text: string;
   label?: string;
   copiedLabel?: string;
+  fullWidth?: boolean;
 }
 
-export default function CopyButton({ text, label = "Copiar URL", copiedLabel = "¡Copiado!" }: CopyButtonProps) {
+export default function CopyButton({ text, label = "Copiar URL", copiedLabel = "¡Copiado!", fullWidth }: CopyButtonProps) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -34,7 +35,7 @@ export default function CopyButton({ text, label = "Copiar URL", copiedLabel = "
   return (
     <PulsatingButton
       onClick={handleCopy}
-      className={`${styles.button} ${copied ? styles.copied : ""} CopyButton`}
+      className={`${styles.button} ${copied ? styles.copied : ""} ${fullWidth ? styles.fullWidth : ""} CopyButton`}
       type="button"
       aria-label={copied ? copiedLabel : label}
     >

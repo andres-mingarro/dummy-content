@@ -23,6 +23,11 @@
   }
 }
 
+.fullWidth {
+  width: 100%;
+  justify-content: center;
+}
+
 .copied {
   background: var(--accent-bg);
   border-color: var(--accent);

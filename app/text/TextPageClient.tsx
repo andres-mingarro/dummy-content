@@ -1,8 +1,8 @@
 "use client";
 
-import { useState, useCallback, useEffect, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useLang } from "@/providers/LangProvider";
-import { PulsatingButton } from "@/components/shared/PulsatingButton/PulsatingButton";
+import CopyButton from "@/components/images/CopyButton/CopyButton";
 import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
 import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
@@ -23,7 +23,6 @@ export default function TextPageClient() {
   });
   const [initialized, setInitialized] = useState(false);
   const [units, setUnits] = useState<string[]>([]);
-  const [copied, setCopied] = useState(false);
 
   const prevLangRef = useRef(lang);
 
@@ -56,12 +55,6 @@ export default function TextPageClient() {
   const copyText = formValues.displayTags
     ? units.map((p) => `<p>${p}</p>`).join("\n\n")
     : plainText;
-
-  const handleCopy = useCallback(async () => {
-    await navigator.clipboard.writeText(copyText);
-    setCopied(true);
-    setTimeout(() => setCopied(false), 2000);
-  }, [copyText]);
 
   const wordCount = plainText.trim().split(/\s+/).filter(Boolean).length;
   const charCount = plainText.length;
@@ -100,19 +93,7 @@ export default function TextPageClient() {
                 </span>
               </div>
               <TextOutput key={copyText} paragraphs={units} displayTags={formValues.displayTags} />
-              <PulsatingButton
-                type="button"
-                onClick={handleCopy}
-                pulseColor="var(--accent)"
-                className="w-full py-2.5 rounded-xl text-sm font-semibold tracking-wide transition-all flex items-center justify-center gap-2"
-                style={{
-                  border: "1.5px solid var(--accent)",
-                  background: copied ? "var(--accent-bg)" : "transparent",
-                  color: "var(--accent)",
-                }}
-              >
-                {copied ? t.text.copied : t.text.copy}
-              </PulsatingButton>
+              <CopyButton text={copyText} label={t.text.copy} copiedLabel={t.text.copied} fullWidth />
             </div>
           </BlurFade>
         )}

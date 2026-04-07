@@ -21,6 +21,9 @@
   font-size: 0.875rem;
   font-weight: 500;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 
   &:hover {
