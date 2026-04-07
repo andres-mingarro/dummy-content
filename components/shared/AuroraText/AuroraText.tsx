@@ -19,7 +19,7 @@ export const AuroraText = memo(({
     backgroundImage: `linear-gradient(135deg, ${colors.join(", ")}, ${colors[0]})`,
     WebkitBackgroundClip: "text" as const,
     WebkitTextFillColor: "transparent" as const,
-    backgroundSize: "200% auto",
+    backgroundSize: "400% auto",
     "--aurora-duration": `${10 / speed}s`,
   };
 
@@ -30,6 +30,7 @@ export const AuroraText = memo(({
         className="animate-aurora relative bg-clip-text text-transparent"
         style={gradientStyle}
         aria-hidden="true"
+        suppressHydrationWarning
       >
         {children}
       </span>

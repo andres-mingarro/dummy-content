@@ -47,7 +47,7 @@ export default function ImagesPageClient() {
         <div className="text-center space-y-2">
           <BlurFade delay={0} direction="up">
             <h1 className={lobster.className} style={{ fontSize: "40px", color: "var(--heading)" }}>
-              &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>Dummy</AuroraText> Image&gt;
+              &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={2}>Dummy</AuroraText> Image&gt;
             </h1>
           </BlurFade>
           <BlurFade delay={0.05} direction="up">

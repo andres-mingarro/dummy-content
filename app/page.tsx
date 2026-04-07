@@ -1,7 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { bebasNeue } from "@/components/shared/Logo/Logo";
+import { Bebas_Neue } from "next/font/google";
+
+const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 import { useLang } from "@/providers/LangProvider";
 import { LightRays } from "@/components/shared/LightRays/LightRays";
 import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
@@ -71,8 +73,8 @@ export default function Home() {
       <LightRays color="#036b83" blur={48} count={8} speed={12} length="80vh" />
       {/* Hero */}
       <div className={`text-center space-y-4 mb-16 ${styles.hero}`}>
-        <h1 className={bebasNeue.className} style={{ color: "#07CFFE", lineHeight: 1 }}>
-          &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={0.8}>DUMMY</AuroraText>Content/&gt;
+        <h1 className={bebasNeue.className} style={{ color: "var(--logo-text)", lineHeight: 1 }}>
+          &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={2}>Dummy</AuroraText>Content/&gt;
         </h1>
         <p style={{ fontSize: "1.125rem", color: "var(--muted)", maxWidth: "480px", margin: "0 auto" }}>
           {lang === "en"
