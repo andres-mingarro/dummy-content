@@ -57,6 +57,15 @@ export default function Header() {
 
         {/* Controls desktop */}
         <div className={`${styles.controls} ${styles.controlsDesktop}`}>
+          <a
+            href="https://www.buymeacoffee.com/YOUR_USERNAME"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.coffeeBtn}
+            aria-label={t.support.buyMeCoffee}
+          >
+            ☕ {t.support.buyMeCoffee}
+          </a>
           <RippleButton type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
             {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
           </RippleButton>
@@ -90,6 +99,17 @@ export default function Header() {
               </Link>
             ))}
           </nav>
+
+          <div className={styles.mobileDivider} />
+
+          <a
+            href="https://www.buymeacoffee.com/YOUR_USERNAME"
+            target="_blank"
+            rel="noopener noreferrer"
+            className={styles.mobileCoffeeBtn}
+          >
+            ☕ {t.support.buyMeCoffee}
+          </a>
 
           <div className={styles.mobileDivider} />
 

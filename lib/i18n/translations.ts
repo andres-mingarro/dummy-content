@@ -80,6 +80,13 @@ export const translations = {
       copyright: "All rights reserved.",
       terms: "Terms & Conditions",
     },
+    support: {
+      buyMeCoffee: "Buy me a coffee",
+      heading: "Support Dummy Content",
+      description: "Dummy Content is a free tool. If it saved you some time, consider buying me a coffee — it helps keep the project alive and free for everyone.",
+      cta: "Buy me a coffee ☕",
+      disclaimer: "No pressure at all. Thanks for using the tool!",
+    },
   },
   es: {
     header: {
@@ -159,6 +166,13 @@ export const translations = {
     footer: {
       copyright: "Todos los derechos reservados.",
       terms: "Términos y Condiciones",
+    },
+    support: {
+      buyMeCoffee: "Invitame un café",
+      heading: "Apoyá Dummy Content",
+      description: "Dummy Content es una herramienta gratuita. Si te ahorró algo de tiempo, considerá invitarme un café — ayuda a mantener el proyecto activo y gratuito para todos.",
+      cta: "Invitame un café ☕",
+      disclaimer: "Sin ninguna presión. ¡Gracias por usar la herramienta!",
     },
   },
 } as const;
