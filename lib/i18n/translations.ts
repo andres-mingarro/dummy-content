@@ -70,6 +70,14 @@ export const translations = {
         user: "User",
         texture: "Texture",
       },
+      landscapes: {
+        nature: "Nature",
+        desert: "Desert",
+        "mountain-river": "Mountain",
+        "tree-forest": "Forest",
+        river: "River",
+        waterfall: "Waterfall",
+      },
     },
     copy: {
       url: "Copy URL",
@@ -149,6 +157,14 @@ export const translations = {
         landscape: "Paisaje",
         user: "Usuario",
         texture: "Textura",
+      },
+      landscapes: {
+        nature: "Naturaleza",
+        desert: "Desierto",
+        "mountain-river": "Montaña",
+        "tree-forest": "Bosque",
+        river: "Río",
+        waterfall: "Cascada",
       },
     },
     copy: {

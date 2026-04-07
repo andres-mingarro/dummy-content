@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import type { DesignType } from "@/lib/images/imageGenerator";
+import { type LandscapeSubType, LANDSCAPE_SUB_TYPES, LANDSCAPE_SVG_INNER, LANDSCAPE_BG_COLORS } from "@/lib/images/landscapes";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
@@ -14,6 +15,7 @@ export interface FormValues {
   textColor: string;
   label: string;
   design: DesignType;
+  landscapeSubType: LandscapeSubType;
 }
 
 interface DummyFormProps {
@@ -27,7 +29,14 @@ const DEFAULT_VALUES: FormValues = {
   textColor: "333333",
   label: "",
   design: "solid",
+  landscapeSubType: "nature",
 };
+
+function LandscapePreview({ subType }: { subType: LandscapeSubType }) {
+  const bg = LANDSCAPE_BG_COLORS[subType];
+  const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><rect width="600" height="400" fill="${bg}"/><svg x="0" y="0" width="600" height="400" viewBox="0 0 64 64" preserveAspectRatio="xMidYMax slice">${LANDSCAPE_SVG_INNER[subType]}</svg></svg>`;
+  return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
+}
 
 const DESIGN_PREVIEWS: Record<DesignType, React.ReactNode> = {
   solid: (
@@ -37,14 +46,7 @@ const DESIGN_PREVIEWS: Record<DesignType, React.ReactNode> = {
         fontFamily="Arial" fontSize="8" fill="#555">600×400</text>
     </svg>
   ),
-  landscape: (
-    <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
-      <rect width="60" height="40" fill="#87ceeb" />
-      <polygon points="23,40 44,16 60,40" fill="#2e7d32" />
-      <polygon points="0,40 27,16 50,40" fill="#4caf50" />
-      <circle cx="43" cy="11" r="5" fill="#ffa726" />
-    </svg>
-  ),
+  landscape: null, // rendered dynamically
   user: (
     <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
       <rect width="60" height="40" fill="#e5e7eb" />
@@ -87,6 +89,15 @@ export default function DummyForm({ onChange }: DummyFormProps) {
     [values, onChange]
   );
 
+  const handleLandscapeSubType = useCallback(
+    (landscapeSubType: LandscapeSubType) => {
+      const updated = { ...values, landscapeSubType };
+      setValues(updated);
+      onChange(updated);
+    },
+    [values, onChange]
+  );
+
   const DESIGNS: { id: DesignType; label: string }[] = [
     { id: "solid",     label: t.form.designs.solid },
     { id: "landscape", label: t.form.designs.landscape },
@@ -117,13 +128,39 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                 className={`${styles.designCard} ${values.design === d.id ? styles.designCardActive : ""}`}
                 onClick={() => handleDesign(d.id)}
               >
-                <span className={styles.designPreview}>{DESIGN_PREVIEWS[d.id]}</span>
+                <span className={styles.designPreview}>
+                  {d.id === "landscape"
+                    ? <LandscapePreview subType={values.landscapeSubType} />
+                    : DESIGN_PREVIEWS[d.id]}
+                </span>
                 <span className={styles.designLabel}>{d.label}</span>
               </RippleButton>
               {values.design === d.id && <ShineBorder borderWidth={1.5} />}
             </div>
           ))}
         </div>
+
+        {values.design === "landscape" && (
+          <div className={styles.landscapeSubGrid}>
+            {LANDSCAPE_SUB_TYPES.map((sub) => (
+              <div key={sub} style={{ position: "relative", borderRadius: "0.5rem" }}>
+                <RippleButton
+                  type="button"
+                  className={`${styles.landscapeSubCard} ${values.landscapeSubType === sub ? styles.landscapeSubCardActive : ""}`}
+                  onClick={() => handleLandscapeSubType(sub)}
+                >
+                  <span className={styles.landscapeSubPreview}>
+                    <LandscapePreview subType={sub} />
+                  </span>
+                  <span className={styles.landscapeSubLabel}>
+                    {t.form.landscapes[sub]}
+                  </span>
+                </RippleButton>
+                {values.landscapeSubType === sub && <ShineBorder borderWidth={1.5} />}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className={styles.row}>

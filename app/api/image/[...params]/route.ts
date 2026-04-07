@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import { parseImageParams, parseDesign, generateSVG } from "@/lib/images/imageGenerator";
+import { parseLandscapeSubType } from "@/lib/images/landscapes";
 
 export async function GET(
   req: NextRequest,
@@ -7,8 +8,9 @@ export async function GET(
 ) {
   const { params: segments } = await params;
   const design = parseDesign(req.nextUrl.searchParams.get("design"));
+  const landscapeSubType = parseLandscapeSubType(req.nextUrl.searchParams.get("landscape"));
 
-  const result = parseImageParams(segments, design);
+  const result = parseImageParams(segments, design, landscapeSubType);
 
   if ("error" in result) {
     return new NextResponse(result.error, { status: 400 });

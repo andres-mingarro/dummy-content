@@ -17,13 +17,17 @@ const DEFAULT_FORM: FormValues = {
   textColor: "333333",
   label: "",
   design: "solid",
+  landscapeSubType: "nature",
 };
 
 function buildImagePath(values: FormValues): string {
-  const { width, height, bgColor, textColor, label, design } = values;
+  const { width, height, bgColor, textColor, label, design, landscapeSubType } = values;
   let path = `/api/image/${width}x${height}/${bgColor}/${textColor}`;
   if (design === "solid" && label.trim()) path += `/${encodeURIComponent(label.trim())}`;
-  if (design !== "solid") path += `?design=${design}`;
+  if (design !== "solid") {
+    path += `?design=${design}`;
+    if (design === "landscape") path += `&landscape=${landscapeSubType}`;
+  }
   return path;
 }
 

@@ -10,6 +10,10 @@ function escXml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
+export type { LandscapeSubType } from "./landscapes";
+export { LANDSCAPE_SUB_TYPES, parseLandscapeSubType } from "./landscapes";
+import { buildLandscapeSVG, parseLandscapeSubType, type LandscapeSubType } from "./landscapes";
+
 export type DesignType = "solid" | "landscape" | "user" | "texture";
 const DESIGN_TYPES: DesignType[] = ["solid", "landscape", "user", "texture"];
 
@@ -45,9 +49,14 @@ export interface ImageParams {
   textColor: string;
   label?: string;
   design: DesignType;
+  landscapeSubType?: LandscapeSubType;
 }
 
-export function parseImageParams(params: string[], design: DesignType): ImageParams | { error: string } {
+export function parseImageParams(
+  params: string[],
+  design: DesignType,
+  landscapeSubType?: LandscapeSubType,
+): ImageParams | { error: string } {
   if (params.length < 1) return { error: "Parámetros insuficientes" };
 
   const size = parseSize(params[0]);
@@ -64,7 +73,7 @@ export function parseImageParams(params: string[], design: DesignType): ImagePar
 
   const label = params[3] ? decodeURIComponent(params[3]) : `${size.width}x${size.height}`;
 
-  return { width: size.width, height: size.height, bgColor, textColor, label, design };
+  return { width: size.width, height: size.height, bgColor, textColor, label, design, landscapeSubType };
 }
 
 // ── Solid ────────────────────────────────────────────────────────────────────
@@ -81,22 +90,8 @@ function solidSVG({ width, height, bgColor, textColor, label }: ImageParams): st
 
 // ── Landscape ────────────────────────────────────────────────────────────────
 
-function landscapeSVG({ width: W, height: H }: ImageParams): string {
-  const sunR = Math.max(8, Math.min(W, H) * 0.08);
-  const sunCx = W * 0.72;
-  const sunCy = H * 0.26;
-
-  // back mountain (darker, right)
-  const bm = `${W * 0.38},${H} ${W * 0.73},${H * 0.4} ${W},${H}`;
-  // front mountain (bright, center-left)
-  const fm = `0,${H} ${W * 0.44},${H * 0.27} ${W * 0.82},${H}`;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="#87ceeb"/>
-  <polygon points="${bm}" fill="#2e7d32"/>
-  <polygon points="${fm}" fill="#4caf50"/>
-  <circle cx="${sunCx}" cy="${sunCy}" r="${sunR}" fill="#ffa726"/>
-</svg>`;
+function landscapeSVG({ width: W, height: H, landscapeSubType }: ImageParams): string {
+  return buildLandscapeSVG(W, H, parseLandscapeSubType(landscapeSubType ?? null));
 }
 
 // ── User ─────────────────────────────────────────────────────────────────────
