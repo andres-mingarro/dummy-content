@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import type { DesignType } from "@/lib/images/imageGenerator";
-import { type LandscapeSubType, LANDSCAPE_SUB_TYPES, LANDSCAPE_SVG_INNER, LANDSCAPE_BG_COLORS } from "@/lib/images/landscapes";
+import { type LandscapeSubType, LANDSCAPE_SUB_TYPES, LANDSCAPE_SVG_INNER } from "@/lib/images/landscapes";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
@@ -33,8 +33,7 @@ const DEFAULT_VALUES: FormValues = {
 };
 
 function LandscapePreview({ subType }: { subType: LandscapeSubType }) {
-  const bg = LANDSCAPE_BG_COLORS[subType];
-  const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><rect width="600" height="400" fill="${bg}"/><svg x="0" y="0" width="600" height="400" viewBox="0 0 64 64" preserveAspectRatio="xMidYMax slice">${LANDSCAPE_SVG_INNER[subType]}</svg></svg>`;
+  const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" overflow="hidden">${LANDSCAPE_SVG_INNER[subType]}</svg>`;
   return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
 }
 
