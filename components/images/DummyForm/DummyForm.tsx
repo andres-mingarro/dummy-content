@@ -4,6 +4,8 @@ import { useState, useCallback } from "react";
 import type { DesignType } from "@/lib/images/imageGenerator";
 import { type LandscapeSubType, LANDSCAPE_SUB_TYPES, LANDSCAPE_SVG_INNER } from "@/lib/images/landscapes";
 import { type UserSubType, USER_SUB_TYPES, USER_SVG_INNER_MAP } from "@/lib/images/users";
+import { type TextureSubType, TEXTURE_SUB_TYPES } from "@/lib/images/textures";
+import { TEXTURE_SVG_MAP } from "@/components/images/SvgPresetGenerator";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
@@ -18,6 +20,7 @@ export interface FormValues {
   design: DesignType;
   landscapeSubType: LandscapeSubType;
   userSubType: UserSubType;
+  textureSubType: TextureSubType;
 }
 
 interface DummyFormProps {
@@ -33,6 +36,7 @@ const DEFAULT_VALUES: FormValues = {
   design: "solid",
   landscapeSubType: "nature",
   userSubType: "style-1",
+  textureSubType: "bullseye-gradient",
 };
 
 function LandscapePreview({ subType }: { subType: LandscapeSubType }) {
@@ -42,6 +46,19 @@ function LandscapePreview({ subType }: { subType: LandscapeSubType }) {
 
 function UserPreview({ subType }: { subType: UserSubType }) {
   const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" overflow="hidden">${USER_SVG_INNER_MAP[subType]}</svg>`;
+  return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
+}
+
+function TexturePreview({ subType }: { subType: TextureSubType }) {
+  const { inner, mode } = TEXTURE_SVG_MAP[subType];
+  let svgString: string;
+  if (mode.type === "gradient") {
+    svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" overflow="hidden"><svg viewBox="${mode.viewBox}" width="600" height="400" preserveAspectRatio="xMidYMid slice">${inner}</svg></svg>`;
+  } else {
+    const tw = mode.width!;
+    const th = mode.height!;
+    svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400"><defs><pattern id="prev-tex-${subType}" x="0" y="0" width="${tw}" height="${th}" patternUnits="userSpaceOnUse">${inner}</pattern></defs><rect width="600" height="400" fill="url(#prev-tex-${subType})"/></svg>`;
+  }
   return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
 }
 
@@ -55,17 +72,7 @@ const DESIGN_PREVIEWS: Record<DesignType, React.ReactNode> = {
   ),
   landscape: null, // rendered dynamically
   user: null,      // rendered dynamically
-  texture: (
-    <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
-      <defs>
-        <pattern id="prev-diag" width="6" height="6" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-          <line x1="0" y1="0" x2="0" y2="6" stroke="#6366f1" strokeWidth="1.5" strokeOpacity="0.3" />
-        </pattern>
-      </defs>
-      <rect width="60" height="40" fill="#eef2ff" />
-      <rect width="60" height="40" fill="url(#prev-diag)" />
-    </svg>
-  ),
+  texture: null, // rendered dynamically
 };
 
 export default function DummyForm({ onChange }: DummyFormProps) {
@@ -108,6 +115,15 @@ export default function DummyForm({ onChange }: DummyFormProps) {
     [values, onChange]
   );
 
+  const handleTextureSubType = useCallback(
+    (textureSubType: TextureSubType) => {
+      const updated = { ...values, textureSubType };
+      setValues(updated);
+      onChange(updated);
+    },
+    [values, onChange]
+  );
+
   const DESIGNS: { id: DesignType; label: string }[] = [
     { id: "solid",     label: t.form.designs.solid },
     { id: "landscape", label: t.form.designs.landscape },
@@ -117,8 +133,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
 
   const bgColorLabel =
     values.design === "landscape" ? t.form.skyColor :
-    values.design === "user"      ? t.form.background :
-    values.design === "texture"   ? t.form.background :
     t.form.bgColor;
 
   return (
@@ -138,6 +152,8 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                     ? <LandscapePreview subType={values.landscapeSubType} />
                     : d.id === "user"
                     ? <UserPreview subType={values.userSubType} />
+                    : d.id === "texture"
+                    ? <TexturePreview subType={values.textureSubType} />
                     : DESIGN_PREVIEWS[d.id]}
                 </span>
                 <span className={styles.designLabel}>{d.label}</span>
@@ -190,6 +206,28 @@ export default function DummyForm({ onChange }: DummyFormProps) {
             ))}
           </div>
         )}
+
+        {values.design === "texture" && (
+          <div className={styles.landscapeSubGrid}>
+            {TEXTURE_SUB_TYPES.map((sub) => (
+              <div key={sub} style={{ position: "relative", borderRadius: "0.5rem" }}>
+                <RippleButton
+                  type="button"
+                  className={`${styles.landscapeSubCard} ${values.textureSubType === sub ? styles.landscapeSubCardActive : ""}`}
+                  onClick={() => handleTextureSubType(sub)}
+                >
+                  <span className={styles.landscapeSubPreview}>
+                    <TexturePreview subType={sub} />
+                  </span>
+                  <span className={styles.landscapeSubLabel}>
+                    {t.form.textures[sub]}
+                  </span>
+                </RippleButton>
+                {values.textureSubType === sub && <ShineBorder borderWidth={1.5} />}
+              </div>
+            ))}
+          </div>
+        )}
       </div>
 
       <div className={styles.row}>
@@ -206,43 +244,43 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         </div>
       </div>
 
-      <div className={styles.row}>
-        <div className={styles.field}>
-          <label htmlFor="bgColor">{bgColorLabel}</label>
-          <div className={styles.colorInput}>
-            <input type="color"
-              value={`#${values.bgColor.replace(/^#/, "")}`}
-              onChange={(e) => handleChange({
-                target: { name: "bgColor", value: e.target.value.replace("#", "") },
-              } as React.ChangeEvent<HTMLInputElement>)}
-              className={styles.colorPicker}
-            />
-            <span>#</span>
-            <input id="bgColor" name="bgColor" type="text" maxLength={6}
-              value={values.bgColor} onChange={handleChange} placeholder="cccccc" />
-          </div>
-        </div>
-
-        {values.design !== "landscape" && values.design !== "user" && (
+      {values.design !== "texture" && (
+        <div className={styles.row}>
           <div className={styles.field}>
-            <label htmlFor="textColor">
-              {values.design === "texture" ? t.form.lineColor : t.form.textColor}
-            </label>
+            <label htmlFor="bgColor">{bgColorLabel}</label>
             <div className={styles.colorInput}>
               <input type="color"
-                value={`#${values.textColor.replace(/^#/, "")}`}
+                value={`#${values.bgColor.replace(/^#/, "")}`}
                 onChange={(e) => handleChange({
-                  target: { name: "textColor", value: e.target.value.replace("#", "") },
+                  target: { name: "bgColor", value: e.target.value.replace("#", "") },
                 } as React.ChangeEvent<HTMLInputElement>)}
                 className={styles.colorPicker}
               />
               <span>#</span>
-              <input id="textColor" name="textColor" type="text" maxLength={6}
-                value={values.textColor} onChange={handleChange} placeholder="333333" />
+              <input id="bgColor" name="bgColor" type="text" maxLength={6}
+                value={values.bgColor} onChange={handleChange} placeholder="cccccc" />
             </div>
           </div>
-        )}
-      </div>
+
+          {values.design !== "landscape" && values.design !== "user" && (
+            <div className={styles.field}>
+              <label htmlFor="textColor">{t.form.textColor}</label>
+              <div className={styles.colorInput}>
+                <input type="color"
+                  value={`#${values.textColor.replace(/^#/, "")}`}
+                  onChange={(e) => handleChange({
+                    target: { name: "textColor", value: e.target.value.replace("#", "") },
+                  } as React.ChangeEvent<HTMLInputElement>)}
+                  className={styles.colorPicker}
+                />
+                <span>#</span>
+                <input id="textColor" name="textColor" type="text" maxLength={6}
+                  value={values.textColor} onChange={handleChange} placeholder="333333" />
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       {values.design === "solid" && (
         <div className={styles.field}>

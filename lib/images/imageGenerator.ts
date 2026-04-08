@@ -18,6 +18,10 @@ export type { UserSubType } from "./users";
 export { USER_SUB_TYPES, parseUserSubType } from "./users";
 import { buildUserSVG, parseUserSubType, type UserSubType } from "./users";
 
+export type { TextureSubType } from "./textures";
+export { TEXTURE_SUB_TYPES, parseTextureSubType } from "./textures";
+import { buildTextureSVG, parseTextureSubType, type TextureSubType } from "./textures";
+
 export type DesignType = "solid" | "landscape" | "user" | "texture";
 const DESIGN_TYPES: DesignType[] = ["solid", "landscape", "user", "texture"];
 
@@ -55,6 +59,7 @@ export interface ImageParams {
   design: DesignType;
   landscapeSubType?: LandscapeSubType;
   userSubType?: UserSubType;
+  textureSubType?: TextureSubType;
 }
 
 export function parseImageParams(
@@ -62,6 +67,7 @@ export function parseImageParams(
   design: DesignType,
   landscapeSubType?: LandscapeSubType,
   userSubType?: UserSubType,
+  textureSubType?: TextureSubType,
 ): ImageParams | { error: string } {
   if (params.length < 1) return { error: "Parámetros insuficientes" };
 
@@ -79,7 +85,7 @@ export function parseImageParams(
 
   const label = params[3] ? decodeURIComponent(params[3]) : `${size.width}x${size.height}`;
 
-  return { width: size.width, height: size.height, bgColor, textColor, label, design, landscapeSubType, userSubType };
+  return { width: size.width, height: size.height, bgColor, textColor, label, design, landscapeSubType, userSubType, textureSubType };
 }
 
 // ── Solid ────────────────────────────────────────────────────────────────────
@@ -108,17 +114,8 @@ function userSVG({ width: W, height: H, userSubType }: ImageParams): string {
 
 // ── Texture ──────────────────────────────────────────────────────────────────
 
-function textureSVG({ width: W, height: H, bgColor, textColor }: ImageParams): string {
-  const spacing = Math.max(12, Math.min(W, H) * 0.055);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <defs>
-    <pattern id="diag" width="${spacing}" height="${spacing}" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
-      <line x1="0" y1="0" x2="0" y2="${spacing}" stroke="${textColor}" stroke-width="1.5" stroke-opacity="0.25"/>
-    </pattern>
-  </defs>
-  <rect width="${W}" height="${H}" fill="${bgColor}"/>
-  <rect width="${W}" height="${H}" fill="url(#diag)"/>
-</svg>`;
+function textureSVG({ width: W, height: H, textureSubType }: ImageParams): string {
+  return buildTextureSVG(W, H, parseTextureSubType(textureSubType ?? null));
 }
 
 // ── Dispatcher ───────────────────────────────────────────────────────────────

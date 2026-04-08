@@ -86,6 +86,14 @@ export const translations = {
         "style-5": "Style 5",
         "style-6": "Style 6",
       },
+      textures: {
+        "bullseye-gradient": "Bullseye",
+        "liquid-cheese":     "Liquid",
+        "radiant-gradient":  "Radiant",
+        "subtle-prism":      "Prism",
+        "wavey-fingerprint": "Waves",
+        "zig-zag":           "Zig Zag",
+      },
     },
     copy: {
       url: "Copy URL",
@@ -181,6 +189,14 @@ export const translations = {
         "style-4": "Estilo 4",
         "style-5": "Estilo 5",
         "style-6": "Estilo 6",
+      },
+      textures: {
+        "bullseye-gradient": "Bullseye",
+        "liquid-cheese":     "Líquido",
+        "radiant-gradient":  "Radiante",
+        "subtle-prism":      "Prisma",
+        "wavey-fingerprint": "Ondas",
+        "zig-zag":           "Zig Zag",
       },
     },
     copy: {

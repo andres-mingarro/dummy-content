@@ -12,12 +12,15 @@ Aplicación web Next.js con 3 sub-aplicaciones para generar contenido dummy din�
 ## Sub-aplicaciones
 
 1. **Generador de Imágenes** ✅ — `/images` — SVG en memoria via URL parametrizada (`/api/image/[...params]`).
-   - API: `GET /api/image/{w}x{h}/{bg}/{text}[/{label}]?design=[&landscape=]` · validación 1–4000px · hex 3 o 6 dígitos · cache immutable
+   - API: `GET /api/image/{w}x{h}/{bg}/{text}[/{label}]?design=[&landscape=][&user=][&texture=]` · validación 1–4000px · hex 3 o 6 dígitos · cache immutable
    - 4 diseños: `solid`, `landscape`, `user`, `texture` — cada uno con su SVG generator
    - `landscape` tiene 6 sub-tipos (`nature`, `desert`, `mountain-river`, `tree-forest`, `river`, `waterfall`) seleccionables via `?landscape=` — definidos en `lib/images/landscapes.ts`
-   - Cada sub-tipo landscape: SVG 64×64 escalado con `preserveAspectRatio="xMidYMax slice"` (cover, centrado, anclado al fondo) + fondo sólido definido en `LANDSCAPE_BG_COLORS`
-   - DummyForm: selector de diseño con previews SVG inline · al seleccionar `landscape` aparece sub-grid de 6 opciones (mismas dimensiones que cards principales) · la card landscape muestra el sub-tipo activo · color picker + input hex · labels dinámicos según diseño · campo label solo en `solid` · textColor oculto en `landscape`
-   - Sub-grid landscape: 6 columnas desktop / 3 columnas mobile · previews via `dangerouslySetInnerHTML` con SVG inline
+   - Cada sub-tipo landscape: SVG exportado desde Illustrator (viewBox 600×400), inner content con fill inline (sin `<style>`), envuelto en `<svg viewBox="0 0 600 400" preserveAspectRatio="xMidYMid slice" overflow="hidden">` — `overflow="hidden"` para recortar el rect de fondo que excede el viewBox
+   - `user` tiene 6 sub-tipos (`style-1` … `style-6`) seleccionables via `?user=` — definidos en `lib/images/users.ts`, mismo patrón SVG que landscape
+   - `texture` tiene 7 sub-tipos seleccionables via `?texture=` — definidos en `lib/images/textures.ts` — dos categorías: **gradient** (scale-to-fill con `preserveAspectRatio`) y **tile** (inner content envuelto en `<pattern patternUnits="userSpaceOnUse">` + rect de relleno)
+   - SVG source files en `components/images/SvgPresetGenerator/SvgSource/{nature,user,textures}/` — procesados con Python para convertir clases CSS a fill inline; exportados desde `components/images/SvgPresetGenerator/{nature,user,texture}/index.ts` y agregados en `components/images/SvgPresetGenerator/index.ts`
+   - DummyForm: selector de diseño con previews SVG inline · al seleccionar `landscape`/`user`/`texture` aparece sub-grid de opciones (mismas dimensiones que cards principales) · textColor/iconColor oculto en `landscape` y `user` (colores fijos en presets) · color picker + input hex · labels dinámicos según diseño · campo label solo en `solid`
+   - Sub-grids: 6 col desktop / 3 col mobile para landscape y user; misma estructura SCSS reutilizada
    - Page (server) + ImagesPageClient (client): muestra URL + snippet `<img>` con CopyButton · origin resuelto en cliente (evita SSR mismatch)
    - CopyButton: con fallback `execCommand` para navegadores viejos
 2. **Generador de iframe** ✅ — `/iframe` — configurador con selector de tipo, dimensiones y borde; preview en vivo.
@@ -61,7 +64,16 @@ app/                         # Páginas (App Router)
     IframePageClient.tsx     # Client component
     [type]/route.ts          # Route handler HTML completo (sin layout)
 components/
-  images/                    # DummyForm, ImagePreview, CopyButton
+  images/                    # DummyForm, ImagePreview, CopyButton, SvgPresetGenerator
+    SvgPresetGenerator/
+      SvgSource/             # SVGs originales (Illustrator / externos) — solo lectura
+        nature/              # 6 SVGs landscape (600×400 viewBox)
+        user/                # 6 SVGs user (600×400 viewBox)
+        textures/            # 7 SVGs texture (viewBoxes variables)
+      nature/                # TS files con SVG_INNER procesado + index.ts
+      user/                  # TS files con SVG_INNER procesado + index.ts
+      texture/               # TS files con SVG_INNER + metadata (type, tileW, tileH) + index.ts
+      index.ts               # re-exporta NATURE_LANDSCAPE_SVG_INNER, USER_SVG_INNER, TEXTURE_SVG_MAP
   text/                      # TextForm, TextOutput
   iframe/                    # IframeForm
   shared/
@@ -77,7 +89,9 @@ components/
     AuroraText/              # Texto con gradiente aurora animado
 lib/
   images/imageGenerator.ts
-  images/landscapes.ts          # sub-tipos landscape: SVG inner content, BG colors, parser
+  images/landscapes.ts          # sub-tipos landscape: importa de SvgPresetGenerator, buildLandscapeSVG
+  images/users.ts               # sub-tipos user: importa de SvgPresetGenerator, buildUserSVG
+  images/textures.ts            # sub-tipos texture: importa de SvgPresetGenerator, buildTextureSVG (gradient/tile)
   text/textGenerator.ts      # usa @faker-js/faker (fakerEN, fakerES)
   embed/
     utils.ts                 # paletas, categorías, helpers compartidos
