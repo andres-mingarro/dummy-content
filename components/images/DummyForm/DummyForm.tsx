@@ -3,6 +3,7 @@
 import { useState, useCallback } from "react";
 import type { DesignType } from "@/lib/images/imageGenerator";
 import { type LandscapeSubType, LANDSCAPE_SUB_TYPES, LANDSCAPE_SVG_INNER } from "@/lib/images/landscapes";
+import { type UserSubType, USER_SUB_TYPES, USER_SVG_INNER_MAP } from "@/lib/images/users";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
@@ -16,6 +17,7 @@ export interface FormValues {
   label: string;
   design: DesignType;
   landscapeSubType: LandscapeSubType;
+  userSubType: UserSubType;
 }
 
 interface DummyFormProps {
@@ -30,10 +32,16 @@ const DEFAULT_VALUES: FormValues = {
   label: "",
   design: "solid",
   landscapeSubType: "nature",
+  userSubType: "style-1",
 };
 
 function LandscapePreview({ subType }: { subType: LandscapeSubType }) {
   const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" overflow="hidden">${LANDSCAPE_SVG_INNER[subType]}</svg>`;
+  return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
+}
+
+function UserPreview({ subType }: { subType: UserSubType }) {
+  const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" overflow="hidden">${USER_SVG_INNER_MAP[subType]}</svg>`;
   return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
 }
 
@@ -46,13 +54,7 @@ const DESIGN_PREVIEWS: Record<DesignType, React.ReactNode> = {
     </svg>
   ),
   landscape: null, // rendered dynamically
-  user: (
-    <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
-      <rect width="60" height="40" fill="#e5e7eb" />
-      <circle cx="30" cy="14" r="7" fill="#9ca3af" />
-      <ellipse cx="30" cy="32" rx="10" ry="8" fill="#9ca3af" />
-    </svg>
-  ),
+  user: null,      // rendered dynamically
   texture: (
     <svg viewBox="0 0 60 40" xmlns="http://www.w3.org/2000/svg">
       <defs>
@@ -97,6 +99,15 @@ export default function DummyForm({ onChange }: DummyFormProps) {
     [values, onChange]
   );
 
+  const handleUserSubType = useCallback(
+    (userSubType: UserSubType) => {
+      const updated = { ...values, userSubType };
+      setValues(updated);
+      onChange(updated);
+    },
+    [values, onChange]
+  );
+
   const DESIGNS: { id: DesignType; label: string }[] = [
     { id: "solid",     label: t.form.designs.solid },
     { id: "landscape", label: t.form.designs.landscape },
@@ -109,11 +120,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
     values.design === "user"      ? t.form.background :
     values.design === "texture"   ? t.form.background :
     t.form.bgColor;
-
-  const textColorLabel =
-    values.design === "user"    ? t.form.iconColor :
-    values.design === "texture" ? t.form.lineColor :
-    t.form.textColor;
 
   return (
     <form className={`${styles.form} DummyForm`} onSubmit={(e) => e.preventDefault()}>
@@ -130,6 +136,8 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                 <span className={styles.designPreview}>
                   {d.id === "landscape"
                     ? <LandscapePreview subType={values.landscapeSubType} />
+                    : d.id === "user"
+                    ? <UserPreview subType={values.userSubType} />
                     : DESIGN_PREVIEWS[d.id]}
                 </span>
                 <span className={styles.designLabel}>{d.label}</span>
@@ -156,6 +164,28 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                   </span>
                 </RippleButton>
                 {values.landscapeSubType === sub && <ShineBorder borderWidth={1.5} />}
+              </div>
+            ))}
+          </div>
+        )}
+
+        {values.design === "user" && (
+          <div className={styles.landscapeSubGrid}>
+            {USER_SUB_TYPES.map((sub) => (
+              <div key={sub} style={{ position: "relative", borderRadius: "0.5rem" }}>
+                <RippleButton
+                  type="button"
+                  className={`${styles.landscapeSubCard} ${values.userSubType === sub ? styles.landscapeSubCardActive : ""}`}
+                  onClick={() => handleUserSubType(sub)}
+                >
+                  <span className={styles.landscapeSubPreview}>
+                    <UserPreview subType={sub} />
+                  </span>
+                  <span className={styles.landscapeSubLabel}>
+                    {t.form.users[sub]}
+                  </span>
+                </RippleButton>
+                {values.userSubType === sub && <ShineBorder borderWidth={1.5} />}
               </div>
             ))}
           </div>
@@ -193,9 +223,11 @@ export default function DummyForm({ onChange }: DummyFormProps) {
           </div>
         </div>
 
-        {values.design !== "landscape" && (
+        {values.design !== "landscape" && values.design !== "user" && (
           <div className={styles.field}>
-            <label htmlFor="textColor">{textColorLabel}</label>
+            <label htmlFor="textColor">
+              {values.design === "texture" ? t.form.lineColor : t.form.textColor}
+            </label>
             <div className={styles.colorInput}>
               <input type="color"
                 value={`#${values.textColor.replace(/^#/, "")}`}

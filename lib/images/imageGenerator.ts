@@ -14,6 +14,10 @@ export type { LandscapeSubType } from "./landscapes";
 export { LANDSCAPE_SUB_TYPES, parseLandscapeSubType } from "./landscapes";
 import { buildLandscapeSVG, parseLandscapeSubType, type LandscapeSubType } from "./landscapes";
 
+export type { UserSubType } from "./users";
+export { USER_SUB_TYPES, parseUserSubType } from "./users";
+import { buildUserSVG, parseUserSubType, type UserSubType } from "./users";
+
 export type DesignType = "solid" | "landscape" | "user" | "texture";
 const DESIGN_TYPES: DesignType[] = ["solid", "landscape", "user", "texture"];
 
@@ -50,12 +54,14 @@ export interface ImageParams {
   label?: string;
   design: DesignType;
   landscapeSubType?: LandscapeSubType;
+  userSubType?: UserSubType;
 }
 
 export function parseImageParams(
   params: string[],
   design: DesignType,
   landscapeSubType?: LandscapeSubType,
+  userSubType?: UserSubType,
 ): ImageParams | { error: string } {
   if (params.length < 1) return { error: "Parámetros insuficientes" };
 
@@ -73,7 +79,7 @@ export function parseImageParams(
 
   const label = params[3] ? decodeURIComponent(params[3]) : `${size.width}x${size.height}`;
 
-  return { width: size.width, height: size.height, bgColor, textColor, label, design, landscapeSubType };
+  return { width: size.width, height: size.height, bgColor, textColor, label, design, landscapeSubType, userSubType };
 }
 
 // ── Solid ────────────────────────────────────────────────────────────────────
@@ -96,20 +102,8 @@ function landscapeSVG({ width: W, height: H, landscapeSubType }: ImageParams): s
 
 // ── User ─────────────────────────────────────────────────────────────────────
 
-function userSVG({ width: W, height: H, bgColor, textColor }: ImageParams): string {
-  const cx = W / 2;
-  const unit = Math.min(W, H) * 0.14;
-  const headR = unit;
-  const headCy = H * 0.37;
-  const bodyRx = unit * 1.3;
-  const bodyRy = unit * 1.1;
-  const bodyCy = headCy + headR + unit * 0.9;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="${bgColor}"/>
-  <circle cx="${cx}" cy="${headCy}" r="${headR}" fill="${textColor}" opacity="0.55"/>
-  <ellipse cx="${cx}" cy="${bodyCy}" rx="${bodyRx}" ry="${bodyRy}" fill="${textColor}" opacity="0.55"/>
-</svg>`;
+function userSVG({ width: W, height: H, userSubType }: ImageParams): string {
+  return buildUserSVG(W, H, parseUserSubType(userSubType ?? null));
 }
 
 // ── Texture ──────────────────────────────────────────────────────────────────

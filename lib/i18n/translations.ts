@@ -78,6 +78,14 @@ export const translations = {
         river: "River",
         waterfall: "Waterfall",
       },
+      users: {
+        "style-1": "Style 1",
+        "style-2": "Style 2",
+        "style-3": "Style 3",
+        "style-4": "Style 4",
+        "style-5": "Style 5",
+        "style-6": "Style 6",
+      },
     },
     copy: {
       url: "Copy URL",
@@ -165,6 +173,14 @@ export const translations = {
         "tree-forest": "Bosque",
         river: "Río",
         waterfall: "Cascada",
+      },
+      users: {
+        "style-1": "Estilo 1",
+        "style-2": "Estilo 2",
+        "style-3": "Estilo 3",
+        "style-4": "Estilo 4",
+        "style-5": "Estilo 5",
+        "style-6": "Estilo 6",
       },
     },
     copy: {

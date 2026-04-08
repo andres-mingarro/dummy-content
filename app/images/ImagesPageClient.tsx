@@ -18,15 +18,17 @@ const DEFAULT_FORM: FormValues = {
   label: "",
   design: "solid",
   landscapeSubType: "nature",
+  userSubType: "style-1",
 };
 
 function buildImagePath(values: FormValues): string {
-  const { width, height, bgColor, textColor, label, design, landscapeSubType } = values;
+  const { width, height, bgColor, textColor, label, design, landscapeSubType, userSubType } = values;
   let path = `/api/image/${width}x${height}/${bgColor}/${textColor}`;
   if (design === "solid" && label.trim()) path += `/${encodeURIComponent(label.trim())}`;
   if (design !== "solid") {
     path += `?design=${design}`;
     if (design === "landscape") path += `&landscape=${landscapeSubType}`;
+    if (design === "user") path += `&user=${userSubType}`;
   }
   return path;
 }
