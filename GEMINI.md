@@ -78,6 +78,7 @@ components/
     AuroraText/              # Texto con gradiente aurora animado
 lib/
   images/imageGenerator.ts
+  images/landscapes.ts          # sub-tipos landscape: SVG inner content, BG colors, parser
   text/textGenerator.ts      # usa @faker-js/faker (fakerEN, fakerES)
   embed/
     utils.ts                 # paletas, categorías, helpers compartidos
