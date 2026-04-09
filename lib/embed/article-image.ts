@@ -1,14 +1,18 @@
 import type { Lang } from "@/lib/i18n/translations";
-import { CATEGORIES, HERO_PALETTES, BASE_CSS, getFaker, pick, esc, capitalize, formatDate, imgUrl } from "./utils";
+import { CATEGORIES, TEXTURE_HERO_PALETTES, BASE_CSS, getFaker, pick, esc, capitalize, formatDate, imgUrl } from "./utils";
+
+const USER_STYLES = ["style-1", "style-2", "style-3", "style-4", "style-5", "style-6"] as const;
 
 export function generateArticleImage(lang: Lang): string {
   const f = getFaker(lang);
-  const heroPalette = pick(HERO_PALETTES);
+  const heroPalette = pick(TEXTURE_HERO_PALETTES);
   const heroSrc = imgUrl(800, 380, heroPalette);
   const caption = f.lorem.sentence();
   const category = pick(CATEGORIES[lang]);
   const title = capitalize(f.lorem.words({ min: 7, max: 14 }));
   const author = `${f.person.firstName()} ${f.person.lastName()}`;
+  const avatarStyle = pick([...USER_STYLES]);
+  const avatarSrc = `/api/image/64x64/e0e0e0/555555?design=user&user=${avatarStyle}`;
   const date = formatDate(new Date(f.date.recent({ days: 30 })), lang);
   const readTime = Math.floor(Math.random() * 7) + 3;
   const readLabel = lang === "es" ? "min de lectura" : "min read";
@@ -31,13 +35,13 @@ body {
   color: #1a1a1a;
   background: #fff;
 }
-.hero { margin: 0 0 1.5rem; background: #f3f4f6; }
+.hero { margin: 0 0 1.5rem; background: #f3f4f6; border-radius: 8px; overflow: hidden; }
 .hero img { width: 100%; height: auto; display: block; max-height: 300px; object-fit: cover; }
 .hero figcaption {
   font-family: system-ui, sans-serif;
   font-size: .75rem;
   color: #888;
-  padding: .5rem 1.5rem;
+  padding: .5rem .75rem;
   border-top: 1px solid #f0f0f0;
 }
 .content {
@@ -72,9 +76,19 @@ h1 {
   border-bottom: 1px solid #f0f0f0;
   display: flex;
   flex-wrap: wrap;
-  gap: .25rem .5rem;
+  gap: .375rem .5rem;
   align-items: center;
 }
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1.5px solid #e5e7eb;
+  display: inline-block;
+}
+.avatar img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .author { color: #444; font-weight: 600; }
 .sep { color: #ddd; }
 .lead { font-size: 1.0625rem; color: #222; margin-bottom: 1.25rem; line-height: 1.8; }
@@ -91,20 +105,21 @@ blockquote {
 </style>
 </head>
 <body>
-<figure class="hero">
-  <img src="${heroSrc}" alt="${esc(title)}" loading="eager">
-  <figcaption>${esc(caption)}</figcaption>
-</figure>
 <div class="content">
   <span class="cat">${esc(category)}</span>
   <h1>${esc(title)}</h1>
   <div class="meta">
+    <span class="avatar"><img src="${avatarSrc}" alt="${esc(author)}" loading="eager"></span>
     <span class="author">${esc(author)}</span>
     <span class="sep">·</span>
     <time>${esc(date)}</time>
     <span class="sep">·</span>
     <span>${readTime} ${readLabel}</span>
   </div>
+  <figure class="hero">
+    <img src="${heroSrc}" alt="${esc(title)}" loading="eager">
+    <figcaption>${esc(caption)}</figcaption>
+  </figure>
   <p class="lead">${esc(lead)}</p>
   <p>${esc(body1)}</p>
   <blockquote>${esc(quote)}</blockquote>
