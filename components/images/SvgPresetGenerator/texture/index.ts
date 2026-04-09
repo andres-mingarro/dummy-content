@@ -14,22 +14,23 @@ export interface TextureRenderMode {
 }
 
 export interface TextureEntry {
-  inner: string;
+  buildInner: (colors?: Record<string, string>) => string;
+  defaultColors: Record<string, string>;
   mode: TextureRenderMode;
 }
 
-import { SVG_INNER as BULLSEYE_I, RENDER_MODE as BULLSEYE_M } from "./bullseye-gradient";
-import { SVG_INNER as CHEESE_I,   RENDER_MODE as CHEESE_M }   from "./liquid-cheese";
-import { SVG_INNER as RADIANT_I,  RENDER_MODE as RADIANT_M }  from "./radiant-gradient";
-import { SVG_INNER as PRISM_I,    RENDER_MODE as PRISM_M }    from "./subtle-prism";
-import { SVG_INNER as WAVEY_I,    RENDER_MODE as WAVEY_M }    from "./wavey-fingerprint";
-import { SVG_INNER as ZIGZAG_I,   RENDER_MODE as ZIGZAG_M }   from "./zig-zag";
+import { buildInner as BULLSEYE_I, DEFAULT_COLORS as BULLSEYE_C, RENDER_MODE as BULLSEYE_M } from "./bullseye-gradient";
+import { buildInner as CHEESE_I,   DEFAULT_COLORS as CHEESE_C,   RENDER_MODE as CHEESE_M }   from "./liquid-cheese";
+import { buildInner as RADIANT_I,  DEFAULT_COLORS as RADIANT_C,  RENDER_MODE as RADIANT_M }  from "./radiant-gradient";
+import { buildInner as PRISM_I,    DEFAULT_COLORS as PRISM_C,    RENDER_MODE as PRISM_M }    from "./subtle-prism";
+import { buildInner as WAVEY_I,    DEFAULT_COLORS as WAVEY_C,    RENDER_MODE as WAVEY_M }    from "./wavey-fingerprint";
+import { buildInner as ZIGZAG_I,   DEFAULT_COLORS as ZIGZAG_C,   RENDER_MODE as ZIGZAG_M }   from "./zig-zag";
 
 export const TEXTURE_SVG_MAP: Record<TextureSubType, TextureEntry> = {
-  "bullseye-gradient": { inner: BULLSEYE_I, mode: BULLSEYE_M },
-  "liquid-cheese":     { inner: CHEESE_I,   mode: CHEESE_M },
-  "radiant-gradient":  { inner: RADIANT_I,  mode: RADIANT_M },
-  "subtle-prism":      { inner: PRISM_I,    mode: PRISM_M },
-  "wavey-fingerprint": { inner: WAVEY_I,    mode: WAVEY_M },
-  "zig-zag":           { inner: ZIGZAG_I,   mode: ZIGZAG_M },
+  "bullseye-gradient": { buildInner: BULLSEYE_I, defaultColors: BULLSEYE_C, mode: BULLSEYE_M },
+  "liquid-cheese":     { buildInner: CHEESE_I,   defaultColors: CHEESE_C,   mode: CHEESE_M },
+  "radiant-gradient":  { buildInner: RADIANT_I,  defaultColors: RADIANT_C,  mode: RADIANT_M },
+  "subtle-prism":      { buildInner: PRISM_I,    defaultColors: PRISM_C,    mode: PRISM_M },
+  "wavey-fingerprint": { buildInner: WAVEY_I,    defaultColors: WAVEY_C,    mode: WAVEY_M },
+  "zig-zag":           { buildInner: ZIGZAG_I,   defaultColors: ZIGZAG_C,   mode: ZIGZAG_M },
 };

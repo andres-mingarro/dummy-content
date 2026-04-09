@@ -56,6 +56,7 @@ export interface ImageParams {
   bgColor: string;
   textColor: string;
   label?: string;
+  noText?: boolean;
   design: DesignType;
   landscapeSubType?: LandscapeSubType;
   userSubType?: UserSubType;
@@ -68,6 +69,7 @@ export function parseImageParams(
   landscapeSubType?: LandscapeSubType,
   userSubType?: UserSubType,
   textureSubType?: TextureSubType,
+  noText?: boolean,
 ): ImageParams | { error: string } {
   if (params.length < 1) return { error: "Parámetros insuficientes" };
 
@@ -85,18 +87,16 @@ export function parseImageParams(
 
   const label = params[3] ? decodeURIComponent(params[3]) : `${size.width}x${size.height}`;
 
-  return { width: size.width, height: size.height, bgColor, textColor, label, design, landscapeSubType, userSubType, textureSubType };
+  return { width: size.width, height: size.height, bgColor, textColor, label, noText, design, landscapeSubType, userSubType, textureSubType };
 }
 
 // ── Solid ────────────────────────────────────────────────────────────────────
 
-function solidSVG({ width, height, bgColor, textColor, label }: ImageParams): string {
+function solidSVG({ width, height, bgColor, textColor, label, noText }: ImageParams): string {
   const fontSize = Math.max(10, Math.min(Math.floor(Math.min(width, height) * 0.12), 48));
+  const textEl = noText ? "" : `\n  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"\n    font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}" fill="${textColor}"\n  >${escXml(label ?? "")}</text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <rect width="${width}" height="${height}" fill="${bgColor}"/>
-  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-    font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}" fill="${textColor}"
-  >${escXml(label ?? "")}</text>
+  <rect width="${width}" height="${height}" fill="${bgColor}"/>${textEl}
 </svg>`;
 }
 
@@ -114,8 +114,8 @@ function userSVG({ width: W, height: H, userSubType }: ImageParams): string {
 
 // ── Texture ──────────────────────────────────────────────────────────────────
 
-function textureSVG({ width: W, height: H, textureSubType }: ImageParams): string {
-  return buildTextureSVG(W, H, parseTextureSubType(textureSubType ?? null));
+function textureSVG({ width: W, height: H, textureSubType, label, noText }: ImageParams): string {
+  return buildTextureSVG(W, H, parseTextureSubType(textureSubType ?? null), undefined, noText ? "" : label);
 }
 
 // ── Dispatcher ───────────────────────────────────────────────────────────────

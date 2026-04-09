@@ -17,6 +17,7 @@ export interface FormValues {
   bgColor: string;
   textColor: string;
   label: string;
+  showLabel: boolean;
   design: DesignType;
   landscapeSubType: LandscapeSubType;
   userSubType: UserSubType;
@@ -33,6 +34,7 @@ const DEFAULT_VALUES: FormValues = {
   bgColor: "cccccc",
   textColor: "333333",
   label: "",
+  showLabel: true,
   design: "solid",
   landscapeSubType: "nature",
   userSubType: "style-1",
@@ -50,7 +52,8 @@ function UserPreview({ subType }: { subType: UserSubType }) {
 }
 
 function TexturePreview({ subType }: { subType: TextureSubType }) {
-  const { inner, mode } = TEXTURE_SVG_MAP[subType];
+  const { buildInner, mode } = TEXTURE_SVG_MAP[subType];
+  const inner = buildInner();
   let svgString: string;
   if (mode.type === "gradient") {
     svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" overflow="hidden"><svg viewBox="${mode.viewBox}" width="600" height="400" preserveAspectRatio="xMidYMid slice">${inner}</svg></svg>`;
@@ -165,8 +168,8 @@ export default function DummyForm({ onChange }: DummyFormProps) {
 
         {values.design === "landscape" && (
           <div className={styles.landscapeSubGrid}>
-            {LANDSCAPE_SUB_TYPES.map((sub) => (
-              <div key={sub} style={{ position: "relative", borderRadius: "0.5rem" }}>
+            {LANDSCAPE_SUB_TYPES.map((sub, i) => (
+              <div key={sub} className={styles.subCardAnimated} style={{ position: "relative", borderRadius: "0.5rem", "--i": i } as React.CSSProperties}>
                 <RippleButton
                   type="button"
                   className={`${styles.landscapeSubCard} ${values.landscapeSubType === sub ? styles.landscapeSubCardActive : ""}`}
@@ -187,8 +190,8 @@ export default function DummyForm({ onChange }: DummyFormProps) {
 
         {values.design === "user" && (
           <div className={styles.landscapeSubGrid}>
-            {USER_SUB_TYPES.map((sub) => (
-              <div key={sub} style={{ position: "relative", borderRadius: "0.5rem" }}>
+            {USER_SUB_TYPES.map((sub, i) => (
+              <div key={sub} className={styles.subCardAnimated} style={{ position: "relative", borderRadius: "0.5rem", "--i": i } as React.CSSProperties}>
                 <RippleButton
                   type="button"
                   className={`${styles.landscapeSubCard} ${values.userSubType === sub ? styles.landscapeSubCardActive : ""}`}
@@ -209,8 +212,8 @@ export default function DummyForm({ onChange }: DummyFormProps) {
 
         {values.design === "texture" && (
           <div className={styles.landscapeSubGrid}>
-            {TEXTURE_SUB_TYPES.map((sub) => (
-              <div key={sub} style={{ position: "relative", borderRadius: "0.5rem" }}>
+            {TEXTURE_SUB_TYPES.map((sub, i) => (
+              <div key={sub} className={styles.subCardAnimated} style={{ position: "relative", borderRadius: "0.5rem", "--i": i } as React.CSSProperties}>
                 <RippleButton
                   type="button"
                   className={`${styles.landscapeSubCard} ${values.textureSubType === sub ? styles.landscapeSubCardActive : ""}`}
@@ -249,14 +252,16 @@ export default function DummyForm({ onChange }: DummyFormProps) {
           <div className={styles.field}>
             <label htmlFor="bgColor">{bgColorLabel}</label>
             <div className={styles.colorInput}>
-              <input type="color"
-                value={`#${values.bgColor.replace(/^#/, "")}`}
-                onChange={(e) => handleChange({
-                  target: { name: "bgColor", value: e.target.value.replace("#", "") },
-                } as React.ChangeEvent<HTMLInputElement>)}
-                className={styles.colorPicker}
-              />
-              <span>#</span>
+              <span className={styles.colorSwatch} style={{ background: `#${values.bgColor.replace(/^#/, "")}` }}>
+                <input type="color"
+                  value={`#${values.bgColor.replace(/^#/, "")}`}
+                  onChange={(e) => handleChange({
+                    target: { name: "bgColor", value: e.target.value.replace("#", "") },
+                  } as React.ChangeEvent<HTMLInputElement>)}
+                  className={styles.colorPicker}
+                />
+              </span>
+              <span className={styles.colorHash}>#</span>
               <input id="bgColor" name="bgColor" type="text" maxLength={6}
                 value={values.bgColor} onChange={handleChange} placeholder="cccccc" />
             </div>
@@ -266,14 +271,16 @@ export default function DummyForm({ onChange }: DummyFormProps) {
             <div className={styles.field}>
               <label htmlFor="textColor">{t.form.textColor}</label>
               <div className={styles.colorInput}>
-                <input type="color"
-                  value={`#${values.textColor.replace(/^#/, "")}`}
-                  onChange={(e) => handleChange({
-                    target: { name: "textColor", value: e.target.value.replace("#", "") },
-                  } as React.ChangeEvent<HTMLInputElement>)}
-                  className={styles.colorPicker}
-                />
-                <span>#</span>
+                <span className={styles.colorSwatch} style={{ background: `#${values.textColor.replace(/^#/, "")}` }}>
+                  <input type="color"
+                    value={`#${values.textColor.replace(/^#/, "")}`}
+                    onChange={(e) => handleChange({
+                      target: { name: "textColor", value: e.target.value.replace("#", "") },
+                    } as React.ChangeEvent<HTMLInputElement>)}
+                    className={styles.colorPicker}
+                  />
+                </span>
+                <span className={styles.colorHash}>#</span>
                 <input id="textColor" name="textColor" type="text" maxLength={6}
                   value={values.textColor} onChange={handleChange} placeholder="333333" />
               </div>
@@ -282,12 +289,28 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         </div>
       )}
 
-      {values.design === "solid" && (
+      {(values.design === "solid" || values.design === "texture") && (
         <div className={styles.field}>
-          <label htmlFor="label">{t.form.customLabel}</label>
+          <div className={styles.labelRow}>
+            <label htmlFor="label">{t.form.customLabel}</label>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={values.showLabel}
+              className={`${styles.switch} ${values.showLabel ? styles.switchOn : ""}`}
+              onClick={() => {
+                const updated = { ...values, showLabel: !values.showLabel };
+                setValues(updated);
+                onChange(updated);
+              }}
+            >
+              <span className={styles.switchThumb} />
+            </button>
+          </div>
           <input id="label" name="label" type="text"
             value={values.label} onChange={handleChange}
-            placeholder={`${values.width}×${values.height}`} />
+            placeholder={`${values.width}×${values.height}`}
+            disabled={!values.showLabel} />
         </div>
       )}
     </form>

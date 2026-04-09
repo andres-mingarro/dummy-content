@@ -1,10 +1,10 @@
 import type { Lang } from "@/lib/i18n/translations";
-import { PALETTES, BASE_CSS, getFaker, esc, capitalize, imgUrl } from "./utils";
+import { IMAGES_LIST_PALETTES, BASE_CSS, getFaker, esc, capitalize, imgUrl } from "./utils";
 
 export function generateImagesList(lang: Lang): string {
   const f = getFaker(lang);
 
-  const items = PALETTES.map((p) => ({
+  const items = IMAGES_LIST_PALETTES.map((p) => ({
     src: imgUrl(400, 280, p),
     label: capitalize(f.lorem.words({ min: 2, max: 4 })),
   }));
