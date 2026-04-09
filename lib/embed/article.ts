@@ -6,6 +6,8 @@ export function generateArticle(lang: Lang): string {
   const category = pick(CATEGORIES[lang]);
   const title = capitalize(f.lorem.words({ min: 7, max: 14 }));
   const author = `${f.person.firstName()} ${f.person.lastName()}`;
+  const avatarStyle = ["style-1","style-2","style-3","style-4","style-5","style-6"][Math.floor(Math.random() * 6)];
+  const avatarSrc = `/api/image/64x64/e0e0e0/555555?design=user&user=${avatarStyle}`;
   const date = formatDate(new Date(f.date.recent({ days: 30 })), lang);
   const readTime = Math.floor(Math.random() * 7) + 3;
   const readLabel = lang === "es" ? "min de lectura" : "min read";
@@ -58,9 +60,19 @@ h1 {
   border-bottom: 1px solid #f0f0f0;
   display: flex;
   flex-wrap: wrap;
-  gap: .25rem .5rem;
+  gap: .375rem .5rem;
   align-items: center;
 }
+.avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  flex-shrink: 0;
+  border: 1.5px solid #e5e7eb;
+  display: inline-block;
+}
+.avatar img { width: 100%; height: 100%; display: block; object-fit: cover; }
 .author { color: #444; font-weight: 600; }
 .sep { color: #ddd; }
 .lead { font-size: 1.0625rem; color: #222; margin-bottom: 1.25rem; line-height: 1.8; }
@@ -80,6 +92,7 @@ blockquote {
 <span class="cat">${esc(category)}</span>
 <h1>${esc(title)}</h1>
 <div class="meta">
+  <span class="avatar"><img src="${avatarSrc}" alt="${esc(author)}" loading="eager"></span>
   <span class="author">${esc(author)}</span>
   <span class="sep">·</span>
   <time>${esc(date)}</time>

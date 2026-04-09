@@ -10,6 +10,18 @@ function escXml(s: string): string {
     .replace(/'/g, "&#39;");
 }
 
+export type { LandscapeSubType } from "./landscapes";
+export { LANDSCAPE_SUB_TYPES, parseLandscapeSubType } from "./landscapes";
+import { buildLandscapeSVG, parseLandscapeSubType, type LandscapeSubType } from "./landscapes";
+
+export type { UserSubType } from "./users";
+export { USER_SUB_TYPES, parseUserSubType } from "./users";
+import { buildUserSVG, parseUserSubType, type UserSubType } from "./users";
+
+export type { TextureSubType } from "./textures";
+export { TEXTURE_SUB_TYPES, parseTextureSubType } from "./textures";
+import { buildTextureSVG, parseTextureSubType, type TextureSubType } from "./textures";
+
 export type DesignType = "solid" | "landscape" | "user" | "texture";
 const DESIGN_TYPES: DesignType[] = ["solid", "landscape", "user", "texture"];
 
@@ -44,10 +56,21 @@ export interface ImageParams {
   bgColor: string;
   textColor: string;
   label?: string;
+  noText?: boolean;
   design: DesignType;
+  landscapeSubType?: LandscapeSubType;
+  userSubType?: UserSubType;
+  textureSubType?: TextureSubType;
 }
 
-export function parseImageParams(params: string[], design: DesignType): ImageParams | { error: string } {
+export function parseImageParams(
+  params: string[],
+  design: DesignType,
+  landscapeSubType?: LandscapeSubType,
+  userSubType?: UserSubType,
+  textureSubType?: TextureSubType,
+  noText?: boolean,
+): ImageParams | { error: string } {
   if (params.length < 1) return { error: "Parámetros insuficientes" };
 
   const size = parseSize(params[0]);
@@ -64,72 +87,35 @@ export function parseImageParams(params: string[], design: DesignType): ImagePar
 
   const label = params[3] ? decodeURIComponent(params[3]) : `${size.width}x${size.height}`;
 
-  return { width: size.width, height: size.height, bgColor, textColor, label, design };
+  return { width: size.width, height: size.height, bgColor, textColor, label, noText, design, landscapeSubType, userSubType, textureSubType };
 }
 
 // ── Solid ────────────────────────────────────────────────────────────────────
 
-function solidSVG({ width, height, bgColor, textColor, label }: ImageParams): string {
+function solidSVG({ width, height, bgColor, textColor, label, noText }: ImageParams): string {
   const fontSize = Math.max(10, Math.min(Math.floor(Math.min(width, height) * 0.12), 48));
+  const textEl = noText ? "" : `\n  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"\n    font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}" fill="${textColor}"\n  >${escXml(label ?? "")}</text>`;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}">
-  <rect width="${width}" height="${height}" fill="${bgColor}"/>
-  <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle"
-    font-family="Arial, Helvetica, sans-serif" font-size="${fontSize}" fill="${textColor}"
-  >${escXml(label ?? "")}</text>
+  <rect width="${width}" height="${height}" fill="${bgColor}"/>${textEl}
 </svg>`;
 }
 
 // ── Landscape ────────────────────────────────────────────────────────────────
 
-function landscapeSVG({ width: W, height: H }: ImageParams): string {
-  const sunR = Math.max(8, Math.min(W, H) * 0.08);
-  const sunCx = W * 0.72;
-  const sunCy = H * 0.26;
-
-  // back mountain (darker, right)
-  const bm = `${W * 0.38},${H} ${W * 0.73},${H * 0.4} ${W},${H}`;
-  // front mountain (bright, center-left)
-  const fm = `0,${H} ${W * 0.44},${H * 0.27} ${W * 0.82},${H}`;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="#87ceeb"/>
-  <polygon points="${bm}" fill="#2e7d32"/>
-  <polygon points="${fm}" fill="#4caf50"/>
-  <circle cx="${sunCx}" cy="${sunCy}" r="${sunR}" fill="#ffa726"/>
-</svg>`;
+function landscapeSVG({ width: W, height: H, landscapeSubType }: ImageParams): string {
+  return buildLandscapeSVG(W, H, parseLandscapeSubType(landscapeSubType ?? null));
 }
 
 // ── User ─────────────────────────────────────────────────────────────────────
 
-function userSVG({ width: W, height: H, bgColor, textColor }: ImageParams): string {
-  const cx = W / 2;
-  const unit = Math.min(W, H) * 0.14;
-  const headR = unit;
-  const headCy = H * 0.37;
-  const bodyRx = unit * 1.3;
-  const bodyRy = unit * 1.1;
-  const bodyCy = headCy + headR + unit * 0.9;
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <rect width="${W}" height="${H}" fill="${bgColor}"/>
-  <circle cx="${cx}" cy="${headCy}" r="${headR}" fill="${textColor}" opacity="0.55"/>
-  <ellipse cx="${cx}" cy="${bodyCy}" rx="${bodyRx}" ry="${bodyRy}" fill="${textColor}" opacity="0.55"/>
-</svg>`;
+function userSVG({ width: W, height: H, userSubType }: ImageParams): string {
+  return buildUserSVG(W, H, parseUserSubType(userSubType ?? null));
 }
 
 // ── Texture ──────────────────────────────────────────────────────────────────
 
-function textureSVG({ width: W, height: H, bgColor, textColor }: ImageParams): string {
-  const spacing = Math.max(12, Math.min(W, H) * 0.055);
-  return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">
-  <defs>
-    <pattern id="diag" width="${spacing}" height="${spacing}" patternUnits="userSpaceOnUse" patternTransform="rotate(45 0 0)">
-      <line x1="0" y1="0" x2="0" y2="${spacing}" stroke="${textColor}" stroke-width="1.5" stroke-opacity="0.25"/>
-    </pattern>
-  </defs>
-  <rect width="${W}" height="${H}" fill="${bgColor}"/>
-  <rect width="${W}" height="${H}" fill="url(#diag)"/>
-</svg>`;
+function textureSVG({ width: W, height: H, textureSubType, label, noText }: ImageParams): string {
+  return buildTextureSVG(W, H, parseTextureSubType(textureSubType ?? null), undefined, noText ? "" : label);
 }
 
 // ── Dispatcher ───────────────────────────────────────────────────────────────

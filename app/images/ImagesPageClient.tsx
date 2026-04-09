@@ -16,14 +16,27 @@ const DEFAULT_FORM: FormValues = {
   bgColor: "cccccc",
   textColor: "333333",
   label: "",
+  showLabel: true,
   design: "solid",
+  landscapeSubType: "nature",
+  userSubType: "style-1",
+  textureSubType: "bullseye-gradient",
 };
 
 function buildImagePath(values: FormValues): string {
-  const { width, height, bgColor, textColor, label, design } = values;
+  const { width, height, bgColor, textColor, label, showLabel, design, landscapeSubType, userSubType, textureSubType } = values;
   let path = `/api/image/${width}x${height}/${bgColor}/${textColor}`;
-  if (design === "solid" && label.trim()) path += `/${encodeURIComponent(label.trim())}`;
-  if (design !== "solid") path += `?design=${design}`;
+  if ((design === "solid" || design === "texture") && showLabel && label.trim()) {
+    path += `/${encodeURIComponent(label.trim())}`;
+  }
+  const params = new URLSearchParams();
+  if (design !== "solid") params.set("design", design);
+  if (design === "landscape") params.set("landscape", landscapeSubType);
+  if (design === "user") params.set("user", userSubType);
+  if (design === "texture") params.set("texture", textureSubType);
+  if ((design === "solid" || design === "texture") && !showLabel) params.set("notext", "1");
+  const qs = params.toString();
+  if (qs) path += `?${qs}`;
   return path;
 }
 
