@@ -59,7 +59,9 @@ export default function Header() {
         <div className={`${styles.controls} ${styles.controlsDesktop}`}>
           <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles.coffeeBtn}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi1.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiLight} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiDark} />
           </a>
           <RippleButton type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
             {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
@@ -99,7 +101,9 @@ export default function Header() {
 
           <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles.mobileCoffeeBtn}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi1.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiLight} />
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiDark} />
           </a>
 
           <div className={styles.mobileDivider} />

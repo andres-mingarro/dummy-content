@@ -1,6 +1,7 @@
 "use client";
 
 import { useLang } from "@/providers/LangProvider";
+import { useTheme } from "@/providers/ThemeProvider";
 import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
 import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
@@ -9,6 +10,7 @@ const KOFI_URL = "https://ko-fi.com/J3J11XDZ6I";
 
 export default function SupportPage() {
   const { t } = useLang();
+  const { theme } = useTheme();
 
   return (
     <main className="flex-1 flex items-center justify-center py-16 px-4 SupportPage" style={{ background: "var(--background)" }}>
@@ -33,7 +35,7 @@ export default function SupportPage() {
             <div style={{ textAlign: "center" }}>
               <a href={KOFI_URL} target="_blank" rel="noopener noreferrer">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
+                <img height="36" style={{ border: 0, height: 36, display: "block", margin: "0 auto" }} src={theme === "dark" ? "https://storage.ko-fi.com/cdn/kofi3.png?v=6" : "https://storage.ko-fi.com/cdn/kofi1.png?v=6"} alt="Buy Me a Coffee at ko-fi.com" />
               </a>
             </div>
 

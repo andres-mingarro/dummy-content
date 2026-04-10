@@ -101,6 +101,22 @@
 
 // ── Coffee button ─────────────────────────────────────────────
 
+.kofiLight {
+  display: block;
+}
+
+.kofiDark {
+  display: none;
+}
+
+:global(.dark) .kofiLight {
+  display: none;
+}
+
+:global(.dark) .kofiDark {
+  display: block;
+}
+
 .coffeeBtn {
   display: inline-flex;
   align-items: center;
