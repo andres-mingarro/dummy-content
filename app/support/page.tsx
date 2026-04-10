@@ -5,7 +5,7 @@ import { lobster } from "@/components/shared/Logo/Logo";
 import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
 import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
 
-const KOFI_URL = "https://ko-fi.com/YOUR_USERNAME";
+const KOFI_URL = "https://ko-fi.com/J3J11XDZ6I";
 
 export default function SupportPage() {
   const { t } = useLang();
@@ -30,20 +30,12 @@ export default function SupportPage() {
               ))}
             </div>
 
-            <a
-              href={KOFI_URL}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block w-full py-3 rounded-xl text-sm font-semibold tracking-wide transition-all text-center"
-              style={{
-                border: "1.5px solid var(--accent)",
-                background: "transparent",
-                color: "var(--accent)",
-                textDecoration: "none",
-              }}
-            >
-              {t.support.cta}
-            </a>
+            <div style={{ textAlign: "center" }}>
+              <a href={KOFI_URL} target="_blank" rel="noopener noreferrer">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
+              </a>
+            </div>
 
             <p style={{ fontSize: "0.8125rem", color: "var(--muted)" }}>
               {t.support.disclaimer}

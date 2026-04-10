@@ -18,7 +18,7 @@ const csp = [
   scriptSrc,
   "style-src 'self' 'unsafe-inline'",
   "font-src 'self' https://fonts.gstatic.com",
-  "img-src 'self' data:",
+  "img-src 'self' data: https://storage.ko-fi.com",
   "connect-src 'self' https://www.google-analytics.com https://analytics.google.com https://www.googletagmanager.com",
   "frame-src 'self'",
   "object-src 'none'",

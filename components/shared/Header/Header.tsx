@@ -57,14 +57,9 @@ export default function Header() {
 
         {/* Controls desktop */}
         <div className={`${styles.controls} ${styles.controlsDesktop}`}>
-          <a
-            href="https://ko-fi.com/YOUR_USERNAME"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.coffeeBtn}
-            aria-label={t.support.buyMeCoffee}
-          >
-            ☕ {t.support.buyMeCoffee}
+          <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles.coffeeBtn}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
           </a>
           <RippleButton type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
             {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
@@ -102,13 +97,9 @@ export default function Header() {
 
           <div className={styles.mobileDivider} />
 
-          <a
-            href="https://ko-fi.com/YOUR_USERNAME"
-            target="_blank"
-            rel="noopener noreferrer"
-            className={styles.mobileCoffeeBtn}
-          >
-            ☕ {t.support.buyMeCoffee}
+          <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles.mobileCoffeeBtn}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" />
           </a>
 
           <div className={styles.mobileDivider} />

@@ -103,6 +103,7 @@ export const translations = {
     footer: {
       copyright: "All rights reserved.",
       terms: "Terms & Conditions",
+      support: "Support the project",
     },
     support: {
       buyMeCoffee: "Support on Ko-fi",
@@ -214,6 +215,7 @@ export const translations = {
     footer: {
       copyright: "Todos los derechos reservados.",
       terms: "Términos y Condiciones",
+      support: "Apoyar el proyecto",
     },
     support: {
       buyMeCoffee: "Apoyar en Ko-fi",

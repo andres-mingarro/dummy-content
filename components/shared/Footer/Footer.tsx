@@ -12,9 +12,14 @@ export default function Footer() {
       <span className={styles.copy} suppressHydrationWarning>
         © {new Date().getFullYear()} Dummy Content. {t.footer.copyright}
       </span>
-      <Link href="/terms" className={styles.link}>
-        {t.footer.terms}
-      </Link>
+      <div className={styles.links}>
+        <Link href="/support" className={styles.link}>
+          {t.footer.support}
+        </Link>
+        <Link href="/terms" className={styles.link}>
+          {t.footer.terms}
+        </Link>
+      </div>
     </footer>
   );
 }
