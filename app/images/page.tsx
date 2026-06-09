@@ -1,15 +1,28 @@
 import type { Metadata } from "next";
 import ImagesPageClient from "./ImagesPageClient";
 
+const URL = "https://dummycontent.app/images";
+
 export const metadata: Metadata = {
-  title: "Image Generator",
+  title: "Dummy Image Generator",
   description:
-    "Generate placeholder images instantly from a parametrized URL. Customize size, background color, text color, and design.",
+    "Generate dummy placeholder images instantly via URL. Customize width, height, background color, text, and design style — solid colors, landscapes, avatars, and textures.",
+  keywords: [
+    "dummy image generator",
+    "placeholder image generator",
+    "placeholder images",
+    "dummy images",
+    "fake image generator",
+    "image placeholder URL",
+  ],
+  alternates: {
+    canonical: URL,
+  },
   openGraph: {
-    title: "Image Generator — Dummy Content",
+    title: "Dummy Image Generator — Dummy Content",
     description:
-      "Generate placeholder images instantly from a parametrized URL. Customize size, background color, text color, and design.",
-    url: "https://dummycontent.app/images",
+      "Generate dummy placeholder images instantly via URL. Customize width, height, background color, text, and design style — solid colors, landscapes, avatars, and textures.",
+    url: URL,
   },
 };
 
