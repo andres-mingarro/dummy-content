@@ -5,3 +5,25 @@
 
   @include mobile { font-size: 45px; }
 }
+
+.about {
+  max-width: 640px;
+  width: 100%;
+  margin-top: 3rem;
+  text-align: center;
+  padding: 0 0.5rem;
+
+  h2 {
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--heading);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.02em;
+  }
+
+  p {
+    font-size: 0.875rem;
+    color: var(--muted);
+    line-height: 1.75;
+  }
+}
