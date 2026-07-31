@@ -1,0 +1,27 @@
+.brand-wordmark {
+  display: inline-block;
+  color: var(--foreground);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: -0.015em;
+  white-space: nowrap;
+}
+
+.brand-wordmark--header {
+  font-size: clamp(1.85rem, 3vw, 2.25rem);
+}
+
+.brand-wordmark--hero {
+  color: var(--home-ink);
+  font-size: clamp(4rem, 10.5vw, 9.5rem);
+}
+
+@media (max-width: 768px) {
+  .brand-wordmark--header {
+    font-size: 1.75rem;
+  }
+
+  .brand-wordmark--hero {
+    font-size: clamp(2.8rem, 13.5vw, 4.25rem);
+  }
+}

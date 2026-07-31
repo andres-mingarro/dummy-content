@@ -1,6 +1,5 @@
 import { Lobster } from "next/font/google";
-import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
-import styles from "./Logo.module.scss";
+import BrandWordmark from "@/components/shared/BrandWordmark/BrandWordmark";
 
 export const lobster = Lobster({ weight: "400", subsets: ["latin"] });
 
@@ -106,21 +105,14 @@ function LogoVariant2({ width, height, name }: { width: number; height: number; 
   );
 }
 
-function LogoVariant3({ lobsterClass, name }: { lobsterClass: string; name: boolean }) {
+function LogoVariant3({ name }: { name: boolean }) {
   return (
     <div
       className="LogoIcon"
       aria-hidden={name ? true : undefined}
       aria-label={name ? undefined : "Dummy Content logo"}
     >
-      <span className={lobsterClass} style={{ color: "var(--logo-text)", fontSize: "36px", letterSpacing: "-0.5px", lineHeight: 1 }}>
-        <span className={styles.full}>
-          &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={2}>Dummy</AuroraText>Content/&gt;
-        </span>
-        <span className={styles.short}>
-          &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={2}>Dc</AuroraText>/&gt;
-        </span>
-      </span>
+      <BrandWordmark size="header" />
     </div>
   );
 }
@@ -137,7 +129,7 @@ export default function Logo({
     <div className={`Logo flex items-center gap-2${className ? ` ${className}` : ""}`}>
       {logo && variant === 1 && <LogoVariant1 width={width} height={height} name={name} />}
       {logo && variant === 2 && <LogoVariant2 width={width} height={height} name={name} />}
-      {logo && variant === 3 && <LogoVariant3 lobsterClass={lobster.className} name={name} />}
+      {logo && variant === 3 && <LogoVariant3 name={name} />}
       {name && (
         <span className={`${lobster.className} leading-tight`} style={{ fontSize: "31px" }}>
           Dummy Content

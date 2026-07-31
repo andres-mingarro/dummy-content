@@ -1,5 +1,47 @@
 .home-page {
+  --home-canvas: #f7f5ef;
+  --home-surface: #efebe2;
+  --home-surface-alt: #ffffff;
+  --home-ink: #15161b;
+  --home-muted: #5d5c64;
+  --home-subtle: #74737a;
+  --home-border: #d2cec4;
+  --home-code: #202127;
+  --home-code-ink: #f5f3ee;
+  --home-grid: rgba(21, 22, 27, 0.1);
+  --home-orb-border: rgba(21, 22, 27, 0.18);
+  --home-orb-green: rgba(100, 170, 0, 0.18);
+  --home-orb-blue: rgba(0, 145, 180, 0.16);
+  --home-accent-green: #5c9700;
+  --home-accent-blue: #007d9b;
+  --home-card-image: #b8ff3d;
+  --home-card-text: #56e6ff;
+  --home-card-iframe: #b9a3ff;
+  --home-card-ink: #111217;
+  --home-card-shadow: rgba(40, 36, 28, 0.12);
+  --home-card-glass: rgba(255, 255, 255, 0.24);
   overflow: clip;
-  background: #0a0b10;
-  color: #f5f3ee;
+  background: var(--home-canvas);
+  color: var(--home-ink);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+:global(.dark) .home-page {
+  --home-canvas: #0a0b10;
+  --home-surface: #111218;
+  --home-surface-alt: #181920;
+  --home-ink: #f5f3ee;
+  --home-muted: #b7b7bf;
+  --home-subtle: #aaa9b2;
+  --home-border: #404149;
+  --home-code: #050609;
+  --home-code-ink: #e5e4df;
+  --home-grid: rgba(255, 255, 255, 0.11);
+  --home-orb-border: rgba(255, 255, 255, 0.2);
+  --home-orb-green: rgba(184, 255, 61, 0.18);
+  --home-orb-blue: rgba(86, 230, 255, 0.2);
+  --home-accent-green: #b8ff3d;
+  --home-accent-blue: #56e6ff;
+  --home-card-shadow: rgba(0, 0, 0, 0.28);
+  --home-card-glass: rgba(255, 255, 255, 0.18);
 }

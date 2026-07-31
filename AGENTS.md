@@ -83,6 +83,8 @@ components/home/
 - El H1 es el título SEO recibido desde `HOME_CONTENT`; la marca `<DummyContent/>` no debe convertirse en otro H1.
 - El FAQ visible y el schema `FAQPage` deben continuar saliendo de la misma fuente.
 - Al modificar una experiencia compartida, verificar ambas rutas: `/` y `/es`.
+- La home debe soportar light y dark mode con paridad completa. Sus colores se consumen mediante los tokens `--home-*` definidos en `app/(en)/page.module.scss`; no introducir colores de superficie o texto hardcodeados dentro de los componentes de la home.
+- La marca visual `<DummyContent/>` se renderiza exclusivamente con `components/shared/BrandWordmark`. Header y hero deben compartir la tipografía Lobster del logo original del header y el efecto Aurora de la home sobre la palabra `Dummy`; solo puede variar el modificador de tamaño (`header` o `hero`). No duplicar el markup ni crear otra paleta de marca dentro de una página.
 
 ## Movimiento y rendimiento
 

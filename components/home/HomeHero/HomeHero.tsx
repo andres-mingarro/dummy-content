@@ -1,13 +1,10 @@
 "use client";
 
-import { Bebas_Neue } from "next/font/google";
 import { motion, useReducedMotion, useScroll, useTransform } from "motion/react";
 import { useRef } from "react";
-import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
+import BrandWordmark from "@/components/shared/BrandWordmark/BrandWordmark";
 import type { Lang } from "@/lib/i18n/translations";
 import styles from "./HomeHero.module.scss";
-
-const display = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
 export default function HomeHero({ lang, title, lead }: { lang: Lang; title: string; lead: string }) {
   const heroRef = useRef<HTMLElement>(null);
@@ -25,9 +22,7 @@ export default function HomeHero({ lang, title, lead }: { lang: Lang; title: str
       <motion.div className={`${styles["home-hero__orb"]} ${styles["home-hero__orb--secondary"]}`} style={{ y: heroY, rotate: orbRotate }} aria-hidden="true" />
       <motion.div className={styles["home-hero__content"]} style={{ y: heroY, opacity: heroOpacity }}>
         <p className={styles["home-hero__eyebrow"]}><span aria-hidden="true" />{lang === "es" ? "Tu kit de prototipado" : "Your prototyping toolkit"}</p>
-        <div className={`${display.className} ${styles["home-hero__brand"]}`} aria-label="DummyContent">
-          &lt;<AuroraText colors={["#b8ff3d", "#56e6ff", "#a78bfa", "#b8ff3d"]} speed={2}>Dummy</AuroraText>Content/&gt;
-        </div>
+        <BrandWordmark size="hero" className={styles["home-hero__brand"]} />
         <h1 className={styles["home-hero__title"]}>{title}</h1>
         <p className={styles["home-hero__lead"]}>{lead}</p>
         <a href="#tools" className={styles["home-hero__scroll-link"]}>
