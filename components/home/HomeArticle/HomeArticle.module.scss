@@ -4,22 +4,23 @@
 .home-article__section { min-height:85dvh; padding:clamp(5rem,10vw,10rem) max(1.25rem,calc((100vw - 1080px)/2)); display:grid; grid-template-columns:1fr 3fr; gap:clamp(2rem,7vw,7rem); border-top:1px solid var(--home-border); position:relative; animation:sectionReveal linear both; animation-timeline:view(); animation-range:entry 5% cover 32%; }
 .home-article__section:nth-child(even) { background:var(--home-surface); }
 .home-article__index { position:sticky; top:6rem; align-self:start; width:54px; height:54px; display:grid; place-items:center; border:1px solid var(--home-border); border-radius:50%; color:var(--home-accent-green); font-size:.72rem; font-weight:800; letter-spacing:.08em; }
-.home-article__content h2 { max-width:800px; font-size:clamp(2.7rem,6.3vw,6.3rem); line-height:.93; letter-spacing:-.065em; margin-bottom:clamp(3rem,6vw,5rem); text-wrap:balance; }
+.home-article__content { min-width:0; }
+.home-article__content h2 { max-width:800px; font-size:clamp(2.7rem,6.3vw,6.3rem); line-height:.93; letter-spacing:-.065em; margin-bottom:clamp(3rem,6vw,5rem); overflow-wrap:anywhere; text-wrap:balance; }
 .home-article__body { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:1.5rem 3rem; }
 .home-article__section p { color:var(--home-muted); font-size:clamp(1rem,1.25vw,1.1rem); line-height:1.8; }
 .home-article__body p:first-child { color:var(--home-ink); font-size:clamp(1.15rem,1.65vw,1.4rem); line-height:1.65; }
 .home-article__subsection-grid { display:grid; grid-template-columns:repeat(3,1fr); margin-top:4rem; border-top:1px solid var(--home-border); }
 .home-article__subsection { padding:2rem 1.5rem 0 0; }.home-article__subsection+.home-article__subsection { border-left:1px solid var(--home-border); padding-left:1.5rem; }
 .home-article__subsection h3 { font-size:1.25rem; margin-bottom:1rem; color:var(--home-accent-blue); }
-.home-article__sample { margin-top:1.5rem; }.home-article__caption { font-size:.78rem!important; color:var(--home-subtle)!important; margin-bottom:.65rem; }
-.home-article__code { background:var(--home-code); border:1px solid var(--home-border); border-radius:.8rem; padding:1.15rem 1.25rem; overflow-x:auto; box-shadow:inset 3px 0 var(--home-accent-green); }
+.home-article__sample { min-width:0; max-width:100%; margin-top:1.5rem; }.home-article__caption { font-size:.78rem!important; color:var(--home-subtle)!important; margin-bottom:.65rem; }
+.home-article__code { width:100%; max-width:100%; background:var(--home-code); border:1px solid var(--home-border); border-radius:.8rem; padding:1.15rem 1.25rem; overflow-x:auto; overscroll-behavior-inline:contain; box-shadow:inset 3px 0 var(--home-accent-green); }
 .home-article__code code { font-family:var(--font-geist-mono),ui-monospace,monospace; font-size:.82rem; line-height:1.7; color:var(--home-code-ink); white-space:pre; }
 .home-article__section--faq { min-height:auto; padding-bottom:12rem; }.home-article__faq { border-top:1px solid var(--home-border); }.home-article__faq-item { display:grid; grid-template-columns:1fr 1.5fr; gap:3rem; padding:2rem 0; border-bottom:1px solid var(--home-border); }.home-article__faq-item dt { font-size:1.05rem; font-weight:700; }.home-article__faq-item dd { margin:0; color:var(--home-muted); line-height:1.75; }
 @keyframes sectionReveal { from { opacity:.15; transform:translateY(100px) scale(.98); } to { opacity:1; transform:none; } }
 
 @include mobile {
   .home-article__section { min-height:auto; grid-template-columns:1fr; gap:2rem; padding-top:6rem; }
-  .home-article__index { position:static; width:44px;height:44px; }.home-article__content h2 { margin-bottom:2.5rem; }
+  .home-article__index { position:static; width:44px;height:44px; }.home-article__content h2 { max-width:100%; margin-bottom:2.5rem; font-size:clamp(2.35rem,12vw,4rem); line-height:.98; letter-spacing:-.05em; }
   .home-article__body,.home-article__subsection-grid,.home-article__faq-item { grid-template-columns:1fr; }.home-article__subsection-grid { gap:0; }.home-article__subsection+.home-article__subsection { border-left:0; padding-left:0; }.home-article__subsection { padding:1.75rem 0; border-bottom:1px solid var(--home-border); }.home-article__faq-item { gap:1rem; }
 }
 @media (prefers-reduced-motion:reduce) { .home-article__section { animation:none; } }
