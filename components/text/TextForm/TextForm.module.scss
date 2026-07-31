@@ -1,7 +1,7 @@
 .form {
   display: flex;
   flex-direction: column;
-  gap: 1.25rem;
+  gap:1.5rem;
 }
 
 // ── Fila 1: botones de unidad ─────────────────────────────────────────────────
@@ -13,7 +13,8 @@
 
 .typeBtn {
   flex: 1;
-  padding: 0.5rem;
+  min-height:46px;
+  padding:0.65rem;
   border: 1.5px solid var(--input-border);
   border-radius: 0.5rem;
   background: var(--card);
@@ -95,7 +96,8 @@
 .numberInput {
   width: 5rem;
   flex-shrink: 0;
-  padding: 0.5rem 0.75rem;
+  min-height:46px;
+  padding:0.65rem 0.75rem;
   border: 1.5px solid var(--input-border);
   border-radius: 0.5rem;
   font-size: 0.9375rem;

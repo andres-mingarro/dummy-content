@@ -32,6 +32,7 @@ ComponentName/
 - Mantener el contenido editorial y el JSON-LD en Server Components. Los componentes cliente pueden recibir Server Components mediante `children`.
 - Props e interfaces deben estar tipadas. Los conjuntos cerrados de variantes usan uniones literales, no `string` genérico.
 - Los datos repetidos se modelan en arrays tipados y se renderizan con `map`; no duplicar bloques casi idénticos.
+- Las tres herramientas comparten `components/shared/ToolWorkspace`. Sus páginas deben componer `ToolWorkspace`, `ToolWorkspaceGrid`, `ToolPanel` y `ToolSnippet` en lugar de recrear encabezados, paneles o cajas de código con estilos locales. La lógica de generación permanece en sus formularios y librerías específicas.
 
 ## CSS Modules y BEM obligatorio
 
@@ -115,6 +116,8 @@ components/home/
 - Inglés vive en la raíz (`/`, `/images`, `/text`, `/iframe`). Español vive bajo `/es`.
 - `LangProvider` resuelve links internos con `href(path)`. No concatenar manualmente `/es`.
 - Las APIs de assets y embeds no se localizan por prefijo de ruta.
+- Las URLs públicas generadas y los snippets de embeds no incluyen el idioma de la interfaz: representan solamente el recurso (`/iframe/article`, `/iframe/images-list`, etc.). El preview interno sí lleva `?lang=en|es` para reflejar el idioma actual del navegador. El único query público generado es `?theme=dark` cuando el usuario elige esa variante visual.
+- Los parámetros de cantidad `cards`, `images` y `paragraphs` son siempre opcionales. Si el campo queda vacío, no incluirlos en la URL y conservar los defaults históricos (6, 12 y 4 respectivamente) para no romper embeds existentes.
 - Todo texto nuevo visible debe existir en ambos idiomas o derivarse del `lang` tipado.
 
 ## Checklist antes de entregar

@@ -1,3 +1,41 @@
 @use "@/scss/mixins/breakpoints" as *;
-.tools-showcase { background:var(--home-surface); color:var(--home-ink); padding:clamp(5rem,10vw,10rem) max(1.25rem,calc((100vw - 1240px)/2)); transition:background-color .2s,color .2s; }.tools-showcase__header { display:grid; grid-template-columns:1fr 2fr; align-items:end; margin-bottom:4rem; }.tools-showcase__eyebrow { font-size:.7rem; font-weight:800; letter-spacing:.18em; color:var(--home-subtle); }.tools-showcase__title { font-size:clamp(2.5rem,6vw,6rem); line-height:.95; max-width:820px; letter-spacing:-.06em; }.tools-showcase__list { display:grid; gap:1.25rem; }
-@include mobile { .tools-showcase__header { grid-template-columns:1fr; gap:1.5rem; } }
+
+.tools-showcase {
+  padding: clamp(5rem, 10vw, 10rem) max(1.25rem, calc((100vw - 1240px) / 2));
+  background: var(--home-surface);
+  color: var(--home-ink);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.tools-showcase__header {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  align-items: end;
+  margin-bottom: 4rem;
+}
+
+.tools-showcase__eyebrow {
+  color: var(--home-subtle);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.tools-showcase__title {
+  max-width: 820px;
+  font-size: clamp(2.5rem, 6vw, 6rem);
+  line-height: 0.95;
+  letter-spacing: -0.06em;
+}
+
+.tools-showcase__list {
+  display: grid;
+  gap: 1.25rem;
+}
+
+@include mobile {
+  .tools-showcase__header {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}

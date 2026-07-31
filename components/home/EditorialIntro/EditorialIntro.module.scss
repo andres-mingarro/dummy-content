@@ -1,3 +1,33 @@
 @use "@/scss/mixins/breakpoints" as *;
-.editorial-intro { background:var(--home-canvas); color:var(--home-ink); padding:clamp(6rem,12vw,11rem) max(1.25rem,calc((100vw - 1080px)/2)) 3rem; display:grid; grid-template-columns:1fr 2fr; gap:2rem; transition:background-color .2s,color .2s; }.editorial-intro__eyebrow { font-size:.7rem; font-weight:800; letter-spacing:.18em; color:var(--home-subtle); }.editorial-intro__statement { max-width:800px; font-size:clamp(2.4rem,5vw,5rem); letter-spacing:-.055em; line-height:1; }
-@include mobile { .editorial-intro { grid-template-columns:1fr; gap:1.5rem; padding-top:7rem; } }
+
+.editorial-intro {
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 2rem;
+  padding: clamp(6rem, 12vw, 11rem) max(1.25rem, calc((100vw - 1080px) / 2)) 3rem;
+  background: var(--home-canvas);
+  color: var(--home-ink);
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.editorial-intro__eyebrow {
+  color: var(--home-subtle);
+  font-size: 0.7rem;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+}
+
+.editorial-intro__statement {
+  max-width: 800px;
+  font-size: clamp(2.4rem, 5vw, 5rem);
+  line-height: 1;
+  letter-spacing: -0.055em;
+}
+
+@include mobile {
+  .editorial-intro {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    padding-top: 7rem;
+  }
+}

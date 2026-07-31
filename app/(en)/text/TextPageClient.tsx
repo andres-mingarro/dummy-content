@@ -3,13 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import { useLang } from "@/providers/LangProvider";
 import CopyButton from "@/components/images/CopyButton/CopyButton";
-import { lobster } from "@/components/shared/Logo/Logo";
-import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
-import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
+import { ToolPanel, ToolWorkspace, ToolWorkspaceGrid } from "@/components/shared/ToolWorkspace/ToolWorkspace";
 import TextForm, { TextFormValues } from "@/components/text/TextForm/TextForm";
 import TextOutput from "@/components/text/TextOutput/TextOutput";
 import { generateParagraphs } from "@/lib/text/textGenerator";
 import type { TextUnit } from "@/lib/text/textGenerator";
+import styles from "./TextPageClient.module.scss";
 
 const UNIT_OPTIONS: TextUnit[] = ["words", "characters"];
 
@@ -59,45 +58,14 @@ export default function TextPageClient() {
   const wordCount = plainText.trim().split(/\s+/).filter(Boolean).length;
   const charCount = plainText.length;
 
-  return (
-    <main className="flex-1 py-12 px-4 TextPage" style={{ background: "var(--background)" }}>
-      <div className="max-w-2xl mx-auto space-y-8">
-        <div className="text-center space-y-2">
-          <BlurFade delay={0} direction="up">
-            <h1 className={lobster.className} style={{ fontSize: "40px", color: "var(--heading)" }}>
-              &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={2}>Dummy</AuroraText> Text&gt;
-            </h1>
-          </BlurFade>
-          <BlurFade delay={0.05} direction="up">
-            <p className="text-sm" style={{ color: "var(--muted)" }}>
-              {t.text.subtitle}
-            </p>
-          </BlurFade>
-        </div>
-
-        <BlurFade delay={0.1} direction="up">
-          <div className="rounded-2xl shadow-sm p-6 space-y-6" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-            <TextForm values={formValues} onChange={setFormValues} />
-          </div>
-        </BlurFade>
-
-        {units.length > 0 && (
-          <BlurFade delay={0.15} direction="up">
-            <div className="rounded-2xl shadow-sm p-6 space-y-4" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-                  {t.text.result}
-                </span>
-                <span className="text-xs" style={{ color: "var(--muted)" }}>
-                  {wordCount} {t.text.wordCount} · {charCount} {t.text.charCount}
-                </span>
-              </div>
-              <TextOutput key={copyText} paragraphs={units} displayTags={formValues.displayTags} />
-              <CopyButton text={copyText} label={t.text.copy} copiedLabel={t.text.copied} fullWidth />
-            </div>
-          </BlurFade>
-        )}
-      </div>
-    </main>
-  );
+  return <ToolWorkspace tone="text" eyebrow="02 — DummyText" description={t.text.subtitle}>
+    <ToolWorkspaceGrid>
+      <ToolPanel label={lang === "es" ? "Configuración" : "Configuration"}><TextForm values={formValues} onChange={setFormValues}/></ToolPanel>
+      <ToolPanel label={t.text.result}>
+        <div className={styles["text-tool__meta"]}><span>{wordCount} {t.text.wordCount}</span><span>{charCount} {t.text.charCount}</span></div>
+        <div className={styles["text-tool__output"]}>{units.length > 0 && <TextOutput key={copyText} paragraphs={units} displayTags={formValues.displayTags}/>}</div>
+        <CopyButton text={copyText} label={t.text.copy} copiedLabel={t.text.copied} fullWidth/>
+      </ToolPanel>
+    </ToolWorkspaceGrid>
+  </ToolWorkspace>;
 }

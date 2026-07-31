@@ -3,8 +3,8 @@
 import { useState, useCallback } from "react";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
-import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
 import styles from "./IframeForm.module.scss";
+import { EMBED_LIMITS } from "@/lib/embed/limits";
 
 export type IframeType = "article" | "article-image" | "images-list" | "card-list";
 
@@ -16,6 +16,10 @@ export interface IframeFormValues {
   borderColor: string;
   borderWidth: string;
   borderRadius: string;
+  darkMode: boolean;
+  cardCount: string;
+  imageCount: string;
+  paragraphCount: string;
 }
 
 interface Props {
@@ -30,7 +34,16 @@ const DEFAULTS: IframeFormValues = {
   borderColor: "e5e7eb",
   borderWidth: "1",
   borderRadius: "8",
+  darkMode: false,
+  cardCount: "",
+  imageCount: "",
+  paragraphCount: "",
 };
+
+// Límites visibles del configurador; el route handler vuelve a validarlos por seguridad.
+const MAX_CARD_COUNT = EMBED_LIMITS.cards.max;
+const MAX_IMAGE_COUNT = EMBED_LIMITS.images.max;
+const MAX_PARAGRAPH_COUNT = EMBED_LIMITS.paragraphs.max;
 
 const TYPE_PREVIEWS: Record<IframeType, React.ReactNode> = {
   article: (
@@ -129,10 +142,25 @@ export default function IframeForm({ onChange }: Props) {
                 <span className={styles.typePreview}>{TYPE_PREVIEWS[tp.id]}</span>
                 <span className={styles.typeLabel}>{tp.label}</span>
               </RippleButton>
-              {values.type === tp.id && <ShineBorder borderWidth={1.5} />}
             </div>
           ))}
         </div>
+      </div>
+
+      {/* Cantidad contextual según el contenido elegido. */}
+      <div className={styles.field}>
+        {values.type === "card-list" && <>
+          <label htmlFor="card-count">{t.iframe.cardCount}</label>
+          <input id="card-count" type="number" min={EMBED_LIMITS.cards.min} max={MAX_CARD_COUNT} value={values.cardCount} placeholder={String(EMBED_LIMITS.cards.default)} onChange={(e) => update({ cardCount:e.target.value === "" ? "" : String(Math.min(MAX_CARD_COUNT,Math.max(EMBED_LIMITS.cards.min,Number(e.target.value)))) })}/>
+        </>}
+        {values.type === "images-list" && <>
+          <label htmlFor="image-count">{t.iframe.imageCount}</label>
+          <input id="image-count" type="number" min={EMBED_LIMITS.images.min} max={MAX_IMAGE_COUNT} value={values.imageCount} placeholder={String(EMBED_LIMITS.images.default)} onChange={(e) => update({ imageCount:e.target.value === "" ? "" : String(Math.min(MAX_IMAGE_COUNT,Math.max(EMBED_LIMITS.images.min,Number(e.target.value)))) })}/>
+        </>}
+        {(values.type === "article" || values.type === "article-image") && <>
+          <label htmlFor="paragraph-count">{t.iframe.paragraphCount}</label>
+          <input id="paragraph-count" type="number" min={EMBED_LIMITS.paragraphs.min} max={MAX_PARAGRAPH_COUNT} value={values.paragraphCount} placeholder={String(EMBED_LIMITS.paragraphs.default)} onChange={(e) => update({ paragraphCount:e.target.value === "" ? "" : String(Math.min(MAX_PARAGRAPH_COUNT,Math.max(EMBED_LIMITS.paragraphs.min,Number(e.target.value)))) })}/>
+        </>}
       </div>
 
       {/* Ancho × Alto */}
@@ -159,6 +187,19 @@ export default function IframeForm({ onChange }: Props) {
             onChange={(e) => update({ height: e.target.value })}
             placeholder="450"
           />
+        </div>
+      </div>
+
+      {/* Borde toggle */}
+      <div className={styles.field}>
+        <label>{t.iframe.theme}</label>
+        <div className={styles.borderToggle}>
+          <RippleButton type="button" className={`${styles.toggleBtn} ${!values.darkMode ? styles.toggleBtnActive : ""}`} onClick={() => update({ darkMode:false })}>
+            {t.iframe.lightMode}
+          </RippleButton>
+          <RippleButton type="button" className={`${styles.toggleBtn} ${values.darkMode ? styles.toggleBtnActive : ""}`} onClick={() => update({ darkMode:true })}>
+            {t.iframe.darkMode}
+          </RippleButton>
         </div>
       </div>
 

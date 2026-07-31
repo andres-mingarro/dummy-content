@@ -1,0 +1,29 @@
+.text-tool__meta {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  color: var(--muted);
+  font-size: 0.72rem;
+}
+
+.text-tool__meta span {
+  padding: 0.4rem 0.65rem;
+  background: var(--muted-bg);
+  border-radius: 999px;
+}
+
+.text-tool__output {
+  min-height: 360px;
+  max-height: 660px;
+  margin-bottom: 1.5rem;
+  padding: 1.25rem;
+  overflow: auto;
+  background: var(--muted-bg);
+  border-radius: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .text-tool__output {
+    min-height: 260px;
+  }
+}

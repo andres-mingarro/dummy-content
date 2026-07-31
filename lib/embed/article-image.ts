@@ -3,7 +3,7 @@ import { CATEGORIES, TEXTURE_HERO_PALETTES, BASE_CSS, getFaker, pick, esc, capit
 
 const USER_STYLES = ["style-1", "style-2", "style-3", "style-4", "style-5", "style-6"] as const;
 
-export function generateArticleImage(lang: Lang): string {
+export function generateArticleImage(lang: Lang, paragraphCount = 4): string {
   const f = getFaker(lang);
   const heroPalette = pick(TEXTURE_HERO_PALETTES);
   const heroSrc = imgUrl(800, 380, heroPalette);
@@ -17,10 +17,9 @@ export function generateArticleImage(lang: Lang): string {
   const readTime = Math.floor(Math.random() * 7) + 3;
   const readLabel = lang === "es" ? "min de lectura" : "min read";
   const lead = f.lorem.paragraph();
-  const body1 = f.lorem.paragraph();
   const quote = f.lorem.sentences(2);
-  const body2 = f.lorem.paragraph();
-  const closing = f.lorem.paragraph();
+  // `paragraphCount` incluye el párrafo destacado (`lead`) para que la URL represente el total visible.
+  const paragraphs = Array.from({ length: Math.max(0, paragraphCount - 1) }, () => f.lorem.paragraph());
 
   return `<!DOCTYPE html>
 <html lang="${lang}">
@@ -121,10 +120,9 @@ blockquote {
     <figcaption>${esc(caption)}</figcaption>
   </figure>
   <p class="lead">${esc(lead)}</p>
-  <p>${esc(body1)}</p>
+  ${paragraphs.slice(0, Math.ceil(paragraphs.length / 2)).map((paragraph) => `<p>${esc(paragraph)}</p>`).join("\n  ")}
   <blockquote>${esc(quote)}</blockquote>
-  <p>${esc(body2)}</p>
-  <p>${esc(closing)}</p>
+  ${paragraphs.slice(Math.ceil(paragraphs.length / 2)).map((paragraph) => `<p>${esc(paragraph)}</p>`).join("\n  ")}
 </div>
 </body>
 </html>`;

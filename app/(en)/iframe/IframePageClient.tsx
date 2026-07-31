@@ -2,9 +2,7 @@
 
 import { useState, useCallback, useMemo, useEffect } from "react";
 import { useLang } from "@/providers/LangProvider";
-import { lobster } from "@/components/shared/Logo/Logo";
-import { BlurFade } from "@/components/shared/BlurFade/BlurFade";
-import { AuroraText } from "@/components/shared/AuroraText/AuroraText";
+import { ToolPanel, ToolSnippet, ToolSnippets, ToolWorkspace, ToolWorkspaceGrid } from "@/components/shared/ToolWorkspace/ToolWorkspace";
 import styles from "./IframePageClient.module.scss";
 import IframeForm, { IframeFormValues } from "@/components/iframe/IframeForm/IframeForm";
 import CopyButton from "@/components/images/CopyButton/CopyButton";
@@ -17,10 +15,29 @@ const DEFAULT_FORM: IframeFormValues = {
   borderColor: "e5e7eb",
   borderWidth: "1",
   borderRadius: "8",
+  darkMode: false,
+  cardCount: "",
+  imageCount: "",
+  paragraphCount: "",
 };
 
-function buildEmbedPath(values: IframeFormValues, lang: string): string {
-  return `/iframe/${values.type}?lang=${lang}`;
+function buildEmbedPath(values: IframeFormValues): string {
+  const basePath = `/iframe/${values.type}`;
+  const params = new URLSearchParams();
+  if (values.type === "card-list" && values.cardCount) params.set("cards", values.cardCount);
+  if (values.type === "images-list" && values.imageCount) params.set("images", values.imageCount);
+  if ((values.type === "article" || values.type === "article-image") && values.paragraphCount) params.set("paragraphs", values.paragraphCount);
+  if (values.darkMode) params.set("theme", "dark");
+  const query = params.toString();
+  return query ? `${basePath}?${query}` : basePath;
+}
+
+function buildPreviewPath(values: IframeFormValues, lang: string): string {
+  const publicPath = buildEmbedPath(values);
+  const [pathname, query = ""] = publicPath.split("?");
+  const params = new URLSearchParams(query);
+  params.set("lang", lang);
+  return `${pathname}?${params.toString()}`;
 }
 
 function buildIframeStyle(values: IframeFormValues): React.CSSProperties {
@@ -54,84 +71,22 @@ export default function IframePageClient() {
 
   useEffect(() => { setOrigin(window.location.origin); }, []);
 
-  const embedPath = useMemo(() => buildEmbedPath(formValues, lang), [formValues, lang]);
+  const embedPath = useMemo(() => buildEmbedPath(formValues), [formValues]);
+  const previewPath = useMemo(() => buildPreviewPath(formValues, lang), [formValues, lang]);
   const fullUrl = origin ? `${origin}${embedPath}` : embedPath;
   const iframeStyle = useMemo(() => buildIframeStyle(formValues), [formValues]);
   const htmlSnippet = useMemo(() => buildHtmlSnippet(fullUrl, formValues), [fullUrl, formValues]);
 
   const handleChange = useCallback((values: IframeFormValues) => setFormValues(values), []);
 
-  return (
-    <main className="flex-1 py-12 px-4 IframePage" style={{ background: "var(--background)" }}>
-      <div className="max-w-2xl mx-auto space-y-8">
-
-        {/* Título */}
-        <div className="text-center space-y-2">
-          <BlurFade delay={0} direction="up">
-            <h1 className={lobster.className} style={{ fontSize: "40px", color: "var(--heading)" }}>
-              &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={2}>Dummy</AuroraText> Iframe&gt;
-            </h1>
-          </BlurFade>
-          <BlurFade delay={0.05} direction="up">
-            <p className="text-sm" style={{ color: "var(--muted)" }}>
-              {t.iframe.subtitle}
-            </p>
-          </BlurFade>
-        </div>
-
-        {/* Formulario + URLs */}
-        <div className="rounded-2xl shadow-sm p-6 space-y-6" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-          <BlurFade delay={0.1} direction="up">
-            <IframeForm onChange={handleChange} />
-          </BlurFade>
-
-          <BlurFade delay={0.2} direction="up">
-            <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-                {t.iframe.generatedUrl}
-              </span>
-              <div className={`flex items-center gap-2 rounded-xl px-4 py-3 ${styles.snippetBox}`} style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
-                <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--accent)" }}>
-                  {fullUrl}
-                </code>
-                <CopyButton text={fullUrl} label={t.copy.url} copiedLabel={t.copy.copied} />
-              </div>
-            </div>
-          </BlurFade>
-
-          <BlurFade delay={0.3} direction="up">
-            <div className="space-y-2">
-              <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-                {t.iframe.html}
-              </span>
-              <div className={`flex items-center gap-2 rounded-xl px-4 py-3 ${styles.snippetBox}`} style={{ background: "var(--muted-bg)", border: "1.5px solid var(--card-border)" }}>
-                <code className="flex-1 text-sm break-all font-mono" style={{ color: "var(--foreground)" }}>
-                  {htmlSnippet}
-                </code>
-                <CopyButton text={htmlSnippet} label={t.copy.html} copiedLabel={t.copy.copied} />
-              </div>
-            </div>
-          </BlurFade>
-        </div>
-
-        {/* Preview */}
-        <BlurFade delay={0.4} direction="up">
-          <div className="rounded-2xl shadow-sm p-6 space-y-4" style={{ background: "var(--card)", border: "1.5px solid var(--card-border)" }}>
-            <span className="text-xs font-semibold uppercase tracking-wider" style={{ color: "var(--muted)" }}>
-              {t.iframe.preview}
-            </span>
-            <div style={{ overflow: "auto" }}>
-              <iframe
-                key={embedPath}
-                src={embedPath}
-                style={iframeStyle}
-                loading="lazy"
-              />
-            </div>
-          </div>
-        </BlurFade>
-
-      </div>
-    </main>
-  );
+  return <ToolWorkspace tone="iframe" eyebrow="03 — DummyIframe" description={t.iframe.subtitle}>
+    <ToolWorkspaceGrid>
+      <ToolPanel label={lang === "es" ? "Configuración" : "Configuration"}><IframeForm onChange={handleChange}/></ToolPanel>
+      <ToolPanel label={t.iframe.preview}><div className={styles["iframe-tool__preview"]}><iframe key={previewPath} src={previewPath} style={iframeStyle} loading="lazy" title={lang === "es" ? "Vista previa del iframe" : "Iframe preview"}/></div></ToolPanel>
+      <ToolSnippets>
+        <ToolSnippet label={t.iframe.generatedUrl} action={<CopyButton text={fullUrl} label={t.copy.url} copiedLabel={t.copy.copied}/>}>{fullUrl}</ToolSnippet>
+        <ToolSnippet label={t.iframe.html} action={<CopyButton text={htmlSnippet} label={t.copy.html} copiedLabel={t.copy.copied}/>}>{htmlSnippet}</ToolSnippet>
+      </ToolSnippets>
+    </ToolWorkspaceGrid>
+  </ToolWorkspace>;
 }

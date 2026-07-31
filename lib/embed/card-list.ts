@@ -1,10 +1,11 @@
 import type { Lang } from "@/lib/i18n/translations";
 import { PALETTES, CATEGORIES, BASE_CSS, getFaker, pick, esc, capitalize, formatDate, imgUrl } from "./utils";
 
-export function generateCardList(lang: Lang): string {
+export function generateCardList(lang: Lang, count = 6): string {
   const f = getFaker(lang);
 
-  const cards = Array.from({ length: 6 }, (_, i) => {
+  // Repite las mismas URLs de paleta: el navegador descarga cada imagen única una vez y reutiliza su caché.
+  const cards = Array.from({ length: count }, (_, i) => {
     const p = PALETTES[i % PALETTES.length];
     return {
       src: imgUrl(280, 180, p),

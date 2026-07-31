@@ -8,7 +8,6 @@ import { type TextureSubType, TEXTURE_SUB_TYPES } from "@/lib/images/textures";
 import { TEXTURE_SVG_MAP } from "@/components/images/SvgPresetGenerator";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
-import { ShineBorder } from "@/components/shared/ShineBorder/ShineBorder";
 import styles from "./DummyForm.module.scss";
 
 export interface FormValues {
@@ -161,7 +160,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                 </span>
                 <span className={styles.designLabel}>{d.label}</span>
               </RippleButton>
-              {values.design === d.id && <ShineBorder borderWidth={1.5} />}
             </div>
           ))}
         </div>
@@ -182,7 +180,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                     {t.form.landscapes[sub]}
                   </span>
                 </RippleButton>
-                {values.landscapeSubType === sub && <ShineBorder borderWidth={1.5} />}
               </div>
             ))}
           </div>
@@ -204,7 +201,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                     {t.form.users[sub]}
                   </span>
                 </RippleButton>
-                {values.userSubType === sub && <ShineBorder borderWidth={1.5} />}
               </div>
             ))}
           </div>
@@ -226,7 +222,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                     {t.form.textures[sub]}
                   </span>
                 </RippleButton>
-                {values.textureSubType === sub && <ShineBorder borderWidth={1.5} />}
               </div>
             ))}
           </div>
