@@ -1,0 +1,3 @@
+@use "@/scss/mixins/breakpoints" as *;
+.tools-showcase { background:#f1efe9; color:#111217; padding:clamp(5rem,10vw,10rem) max(1.25rem,calc((100vw - 1240px)/2)); }.tools-showcase__header { display:grid; grid-template-columns:1fr 2fr; align-items:end; margin-bottom:4rem; }.tools-showcase__eyebrow { font-size:.7rem; font-weight:800; letter-spacing:.18em; color:#737278; }.tools-showcase__title { font-size:clamp(2.5rem,6vw,6rem); line-height:.95; max-width:820px; letter-spacing:-.06em; }.tools-showcase__list { display:grid; gap:1.25rem; }
+@include mobile { .tools-showcase__header { grid-template-columns:1fr; gap:1.5rem; } }
