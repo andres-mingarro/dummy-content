@@ -4,10 +4,21 @@
 
 Aplicación web Next.js con 3 sub-aplicaciones para generar contenido dummy dinámicamente.
 
+## Idiomas y rutas
+
+El idioma lo determina la **ruta**, no el estado de cliente: **inglés en la raíz** (`/`, `/images`, …) y **español bajo `/es`** (`/es`, `/es/images`, …). Así el `<html lang>` servido siempre coincide con el contenido y cada idioma tiene su URL indexable con `hreflang`.
+
+- Dos **root layouts**: `app/(en)/layout.tsx` (`lang="en"`) y `app/es/layout.tsx` (`lang="es"`). No existe `app/layout.tsx`. Ambos renderizan `components/shared/RootShell` con el `lang` como prop.
+- Los *PageClient viven en `app/(en)/…` y las páginas de `app/es/…` los importan con `@/app/(en)/…`.
+- **`/api/image/…` y `/iframe/[type]` nunca llevan prefijo de idioma** — el idioma no forma parte de un asset. Los embeds siguen recibiendo `?lang=`.
+- `LangProvider` recibe el `lang` del layout; `toggleLang()` navega a la ruta espejo (`swapLangPath`) y `href(path)` prefija links internos. Cambiar de idioma es una navegación real (full page load, por cruzar root layouts).
+- Toda página traducida tiene espejo en los dos idiomas — si se agrega una ruta nueva hay que crear ambas o `toggleLang` cae en un 404.
+
 ## Páginas
 
-- **Home** — `/` — hero con título `<DummyContent/>` (Bebas Neue, #07CFFE) + LightRays de fondo + lista de 3 herramientas como cards navegables
-- **Terms & Conditions** — `/terms`
+- **Home** — `/` · `/es` — logotipo `<DummyContent/>` (Bebas Neue, #07CFFE, es un `div`, **no** el H1) + LightRays de fondo + H1 con la keyword + oración definitoria + 3 cards de herramientas + cuerpo editorial (`HomeArticle`)
+- **Terms & Conditions** — `/terms` · `/es/terms`
+- **Support** — `/support` — botones de Ko-fi (kofi1 en light / kofi3 en dark)
 
 ## Sub-aplicaciones
 
@@ -54,24 +65,38 @@ Aplicación web Next.js con 3 sub-aplicaciones para generar contenido dummy din�
 ## Estructura
 
 ```
-app/                         # Páginas (App Router)
-  api/image/[...params]/     # Route handler imágenes
-  page.tsx                   # Home
-  layout.tsx                 # Layout global con Header, Footer, GA4, JSON-LD
-  icon.tsx                   # Favicon generado
-  sitemap.ts                 # Sitemap XML
+app/                         # Páginas (App Router) — NO hay app/layout.tsx
+  api/image/[...params]/     # Route handler imágenes (sin prefijo de idioma)
+  icon.tsx                   # Favicon generado (cascadea a todos los segmentos)
+  sitemap.ts                 # Sitemap XML: cada ruta × 2 idiomas, con alternates hreflang
   robots.ts                  # robots.txt
-  terms/page.tsx             # Términos y condiciones
-  images/
-    page.tsx                 # Server component
-    ImagesPageClient.tsx     # Client component
-  text/
-    page.tsx                 # Server component
-    TextPageClient.tsx       # Client component
-  iframe/
-    page.tsx                 # Server component
-    IframePageClient.tsx     # Client component
-    [type]/route.ts          # Route handler HTML completo (sin layout)
+  globals.css
+  (en)/                      # Route group en inglés (no aporta segmento de URL)
+    layout.tsx               # ROOT LAYOUT en — RootShell lang="en" + metadata EN
+    opengraph-image.tsx      # Imagen OG en (los metadatos de archivo no cruzan root layouts)
+    page.tsx                 # Home        → /
+    HomePageClient.tsx
+    terms/page.tsx           # Términos    → /terms
+    support/page.tsx         # Ko-fi       → /support
+    images/
+      page.tsx               # Server component
+      ImagesPageClient.tsx   # Client component
+    text/
+      page.tsx               # Server component
+      TextPageClient.tsx     # Client component
+    iframe/
+      page.tsx               # Server component
+      IframePageClient.tsx   # Client component
+      [type]/route.ts        # Route handler HTML completo (sin layout, sin prefijo de idioma)
+  es/                        # Espejo en español (SÍ aporta el segmento /es)
+    layout.tsx               # ROOT LAYOUT es — RootShell lang="es" + metadata ES
+    opengraph-image.tsx      # Imagen OG es
+    page.tsx                 # → /es          (reusa @/app/(en)/HomePageClient)
+    images/page.tsx          # → /es/images   (reusa @/app/(en)/images/ImagesPageClient)
+    text/page.tsx            # → /es/text
+    iframe/page.tsx          # → /es/iframe
+    terms/page.tsx           # → /es/terms
+    support/page.tsx         # → /es/support
 components/
   images/                    # DummyForm, ImagePreview, CopyButton, SvgPresetGenerator
     SvgPresetGenerator/
@@ -85,7 +110,12 @@ components/
       index.ts               # re-exporta NATURE_LANDSCAPE_SVG_INNER, USER_SVG_INNER, TEXTURE_SVG_MAP
   text/                      # TextForm, TextOutput
   iframe/                    # IframeForm
+  home/
+    HomeArticle/             # Cuerpo editorial de la home (server component) + JSON-LD FAQPage
+  legal/
+    TermsArticle/            # Términos renderizados desde lib/i18n/termsContent
   shared/
+    RootShell/               # <html>/<body> compartido por los dos root layouts (prop lang)
     Header/                  # Header con Logo, LangToggle, AnimatedThemeToggler
     Footer/                  # Footer
     Logo/                    # Logo SVG con Bebas Neue (<DummyContent/>)
@@ -109,7 +139,11 @@ lib/
     images-list.ts           # markup HTML de la grilla de imágenes
     card-list.ts             # markup HTML del listado de cards
     content.ts               # orquestador → generateEmbed(type, lang)
-  i18n/translations.ts
+  i18n/translations.ts       # strings de UI
+  i18n/homeContent.ts        # copy editorial de la home (EN/ES) — fuente única del FAQ visible y del JSON-LD
+  i18n/termsContent.ts       # copy de términos y condiciones (EN/ES)
+  seo/urls.ts                # BASE_URL, localizedPath, absoluteUrl, buildAlternates, INDEXABLE_PATHS
+  seo/ogImage.tsx            # render compartido de la imagen Open Graph por idioma
 providers/
   LangProvider.tsx           # i18n global ES/EN
   ThemeProvider.tsx          # theming global
@@ -120,11 +154,27 @@ scss/
 
 ## Stack
 
-- Next.js 16+ App Router · TypeScript · Tailwind CSS + SCSS Modules
+- Next.js 16+ App Router · TypeScript · Tailwind CSS 4 + SCSS Modules
 - `@faker-js/faker` para texto (lorem ipsum latino, ES/EN)
 - Deploy en Vercel · dominio `dummycontent.app`
 - Google Analytics GA4 (`G-2R2WD8EBLQ`) via `next/script` con `strategy="afterInteractive"`
 - JSON-LD WebApplication schema en `layout.tsx`
+
+### Gestor de paquetes: bun
+
+- **bun** es el gestor del proyecto (`bun install`, `bun run dev|build|start`) — declarado en `packageManager` de `package.json`
+- El lockfile es `bun.lock`; **no** existe `package-lock.json` — no correr `npm install`, genera un lock en conflicto que Vercel puede llegar a preferir
+- bun se usa solo como gestor y lanzador de scripts: **Next se sigue ejecutando bajo Node**. No usar `bun --bun` (el runtime de bun no está soportado por Next)
+
+### TypeScript: 6.x, no 7.x
+
+`next build` corre su typecheck a través de la API del compilador de TypeScript, que el port nativo (TS 7) no expone — el build falla con *"TypeScript 7.x does not provide the compiler API required by Next.js"*. TS 6 es la última implementación en JS y la que soporta el checker por defecto.
+
+Para saltar a TS 7 haría falta `experimental.useTypeScriptCli: true` en `next.config`, a cambio de perder los code frames de Next en errores de rutas/layouts.
+
+### `@types/node` sigue la versión del runtime
+
+Fijado en `^22` para coincidir con Node 22, no en el `latest` del registry — un major mayor declara APIs que el runtime no tiene.
 
 ## Seguridad
 - CSP headers configurados en next.config
@@ -132,9 +182,12 @@ scss/
 - Allowlist de dominios para iframes embebidos
 
 ## SEO
-- Metadata por página (title template, OG, Twitter card)
-- `sitemap.ts` y `robots.ts` generados dinámicamente
-- JSON-LD en layout global
+- Keyword objetivo: **"dummy content"** (compite contra lipsum.com). La frase tiene que aparecer en prosa que *explica*, no solo como marca o etiqueta de navegación.
+- Metadata por página (title template, OG, Twitter card). El canonical y los `hreflang` se arman siempre con `buildAlternates(path, lang)` de `lib/seo/urls.ts` — no hardcodear URLs.
+- Host canónico: **apex** `https://dummycontent.app`. `www` redirige 308 al apex (config de Vercel, no del repo).
+- `sitemap.ts` y `robots.ts` generados dinámicamente; el sitemap lista cada ruta en EN y ES con sus `alternates`.
+- JSON-LD: `WebApplication` en `RootShell` (global), `FAQPage` en `HomeArticle`. **El FAQ del JSON-LD sale del mismo `HOME_CONTENT` que el DOM visible** — Google descarta el structured data de FAQ que no se corresponde con contenido visible, así que no agregar preguntas en uno sin el otro.
+- El H1 de la home lleva la keyword; el logotipo `<DummyContent/>` es un `div`, no un encabezado.
 
 ## Convenciones
 - Todos los componentes tienen un className con su nombre (ej. `Header`, `DummyForm`, `TextOutput`) en el elemento raíz
@@ -152,7 +205,8 @@ scss/
 --foreground: #111827 / #f1f5f9
 --card: #ffffff / #1e293b
 --card-border: #e5e7eb / #334155
---muted: #6b7280 / #94a3b8
+--muted: #6b7280 / #94a3b8      ← labels y texto secundario sobre superficies opacas
+--prose: #374151 / #cbd5e1      ← cuerpo de texto largo (HomeArticle, TermsArticle, lead del hero)
 --muted-bg: #f3f4f6 / #0f172a
 --accent: #6366f1 / #818cf8
 --accent-bg: #eef2ff / #1e1b4b
@@ -160,4 +214,9 @@ scss/
 --input-border-focus: #6366f1 / #818cf8
 --heading: #4c76bc (light) / #07CFFE (dark)
 --logo-text: #6366f1 (light) / #07CFFE (dark)   ← color del logo y h1 home
+--light-rays-tint: rgb(255 255 255) (light) / rgba(3,107,131,0.55) (dark)   ← luz del LightRays de la home
 ```
+
+`--muted` da 4.13:1 sobre `--background`, por debajo de AA para texto normal — usar `--prose` para prosa larga.
+
+El `LightRays` de la home va con `anchor="fixed"`: queda en `z-index: -1` como capa de fondo real, así que el contenedor **no puede tener background opaco** o lo tapa. Con `anchor="absolute"` (el default, para héroes cortos) se compone por encima del contenido y en páginas largas se deforma.

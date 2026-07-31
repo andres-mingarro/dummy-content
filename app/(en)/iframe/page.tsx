@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import IframePageClient from "./IframePageClient";
+import { absoluteUrl, buildAlternates } from "@/lib/seo/urls";
 
-const URL = "https://dummycontent.app/iframe";
+const URL = absoluteUrl("/iframe", "en");
 
 export const metadata: Metadata = {
   title: "Dummy iFrame Generator",
@@ -15,9 +16,7 @@ export const metadata: Metadata = {
     "iframe generator",
     "dummy content embed",
   ],
-  alternates: {
-    canonical: URL,
-  },
+  alternates: buildAlternates("/iframe", "en"),
   openGraph: {
     title: "Dummy iFrame Generator — Dummy Content",
     description:

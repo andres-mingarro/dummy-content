@@ -1,4 +1,5 @@
 import type { MetadataRoute } from "next";
+import { BASE_URL } from "@/lib/seo/urls";
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -13,6 +14,6 @@ export default function robots(): MetadataRoute.Robots {
         "/iframe/card-list",
       ],
     },
-    sitemap: "https://dummycontent.app/sitemap.xml",
+    sitemap: `${BASE_URL}/sitemap.xml`,
   };
 }

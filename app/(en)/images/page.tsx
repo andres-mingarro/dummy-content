@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import ImagesPageClient from "./ImagesPageClient";
+import { absoluteUrl, buildAlternates } from "@/lib/seo/urls";
 
-const URL = "https://dummycontent.app/images";
+const URL = absoluteUrl("/images", "en");
 
 export const metadata: Metadata = {
   title: "Dummy Image Generator",
@@ -15,9 +16,7 @@ export const metadata: Metadata = {
     "fake image generator",
     "image placeholder URL",
   ],
-  alternates: {
-    canonical: URL,
-  },
+  alternates: buildAlternates("/images", "en"),
   openGraph: {
     title: "Dummy Image Generator — Dummy Content",
     description:

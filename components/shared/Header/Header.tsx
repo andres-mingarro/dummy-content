@@ -11,7 +11,7 @@ import styles from "./Header.module.scss";
 
 export default function Header() {
   const pathname = usePathname();
-  const { lang, t, toggleLang } = useLang();
+  const { lang, t, toggleLang, href } = useLang();
   const [menuOpen, setMenuOpen] = useState(false);
   const [isClosing, setIsClosing] = useState(false);
 
@@ -30,15 +30,15 @@ export default function Header() {
   }, [menuOpen]);
 
   const navItems = [
-    { href: "/images", label: t.header.image },
-    { href: "/text",   label: t.header.text  },
-    { href: "/iframe", label: t.header.iframe },
+    { href: href("/images"), label: t.header.image },
+    { href: href("/text"),   label: t.header.text  },
+    { href: href("/iframe"), label: t.header.iframe },
   ];
 
   return (
     <>
       <header className={`${styles.header} Header`}>
-        <Link href="/" className={styles.logo} onClick={() => setMenuOpen(false)}>
+        <Link href={href("/")} className={styles.logo} onClick={() => setMenuOpen(false)}>
           <Logo variant={3} name={false} />
         </Link>
 

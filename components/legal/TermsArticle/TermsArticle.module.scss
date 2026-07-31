@@ -1,0 +1,45 @@
+.page {
+  flex: 1;
+  padding: 3rem 1rem;
+  background: var(--background);
+}
+
+.inner {
+  max-width: 42rem;
+  margin: 0 auto;
+}
+
+.title {
+  font-size: 40px;
+  color: var(--foreground);
+  margin-bottom: 2rem;
+}
+
+.section {
+  & + & {
+    margin-top: 2rem;
+  }
+
+  h2 {
+    font-size: 1.125rem;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 0.75rem;
+  }
+
+  p {
+    font-size: 0.9rem;
+    color: var(--prose);
+    line-height: 1.7;
+  }
+}
+
+.link {
+  color: var(--accent);
+}
+
+.updated {
+  margin-top: 2rem;
+  font-size: 0.75rem;
+  color: var(--muted);
+}

@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import TextPageClient from "./TextPageClient";
+import { absoluteUrl, buildAlternates } from "@/lib/seo/urls";
 
-const URL = "https://dummycontent.app/text";
+const URL = absoluteUrl("/text", "en");
 
 export const metadata: Metadata = {
   title: "Dummy Text Generator",
@@ -15,9 +16,7 @@ export const metadata: Metadata = {
     "lorem ipsum",
     "dummy text",
   ],
-  alternates: {
-    canonical: URL,
-  },
+  alternates: buildAlternates("/text", "en"),
   openGraph: {
     title: "Dummy Text Generator — Dummy Content",
     description:

@@ -6,6 +6,9 @@
   --card: #ffffff;
   --card-border: #e5e7eb;
   --muted: #6b7280;
+  /* Cuerpo de texto largo. --muted queda en 4.1:1 sobre --background, por debajo de AA para
+     tamaño normal; --prose da 8.8:1 y aguanta el wash del LightRays por detrás. */
+  --prose: #374151;
   --muted-bg: #f3f4f6;
   --accent: #6366f1;
   --accent-bg: #eef2ff;
@@ -13,6 +16,9 @@
   --input-border-focus: #6366f1;
   --heading: #4c76bc;
   --logo-text: #6366f1;
+  /* Color de la luz del LightRays de la home. En claro va blanca: cualquier tinte de color
+     oscurecía el papel y le comía contraste al texto y al logo. */
+  --light-rays-tint: rgb(255 255 255);
 }
 
 .dark {
@@ -21,6 +27,7 @@
   --card: #1e293b;
   --card-border: #334155;
   --muted: #94a3b8;
+  --prose: #cbd5e1;
   --muted-bg: #0f172a;
   --accent: #818cf8;
   --accent-bg: #1e1b4b;
@@ -28,6 +35,8 @@
   --heading: #07CFFE;
   --input-border-focus: #818cf8;
   --logo-text: #07CFFE;
+  /* En oscuro el teal funciona: el navy de fondo ya da el contraste que necesita el cyan. */
+  --light-rays-tint: rgba(3, 107, 131, 0.55);
 }
 
 @theme inline {

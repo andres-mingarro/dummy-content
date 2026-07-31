@@ -21,8 +21,8 @@ const tools = [
       </svg>
     ),
     description: {
-      en: "Generate placeholder images instantly from a parametrized URL.",
-      es: "Generá imágenes placeholder al instante desde una URL parametrizada.",
+      en: "Generate dummy placeholder images instantly from a parametrized URL.",
+      es: "Generá imágenes dummy al instante desde una URL parametrizada.",
     },
   },
   {
@@ -36,8 +36,8 @@ const tools = [
       </svg>
     ),
     description: {
-      en: "Generate realistic placeholder text: paragraphs, sentences or words.",
-      es: "Generá texto placeholder realista: párrafos, oraciones o palabras.",
+      en: "Generate realistic dummy text: lorem ipsum by word or character count.",
+      es: "Generá texto dummy realista: lorem ipsum por palabras o caracteres.",
     },
   },
   {
@@ -52,7 +52,7 @@ const tools = [
     ),
     description: {
       en: "Generate embeddable iframes with dummy articles, images and cards.",
-      es: "Generá iframes embebibles con artículos, imágenes y cards.",
+      es: "Generá iframes embebibles con artículos, imágenes y cards dummy.",
     },
   },
 ];
@@ -62,33 +62,46 @@ const labels = {
   es: { image: "DUMMY IMAGE", text: "DUMMY TEXT", iframe: "DUMMY IFRAME" },
 };
 
-export default function HomePageClient() {
-  const { lang } = useLang();
+interface HomePageClientProps {
+  /** H1 de la página — lleva la keyword objetivo. */
+  title: string;
+  /** Primer párrafo visible: la oración que define qué es el contenido dummy. */
+  lead: string;
+  toolsHeading: string;
+  /** Cuerpo editorial, renderizado en el servidor (ver HomeArticle). */
+  children: React.ReactNode;
+}
+
+export default function HomePageClient({ title, lead, toolsHeading, children }: HomePageClientProps) {
+  const { lang, href } = useLang();
 
   return (
-    <main
-      className="flex-1 flex flex-col items-center justify-center px-4 py-16 HomePage"
-      style={{ background: "var(--background)", position: "relative" }}
-    >
-      <LightRays color="#036b83" blur={48} count={8} speed={12} length="80vh" />
+    <main className={`flex-1 flex flex-col items-center px-4 py-16 HomePage ${styles.main}`}>
+      {/*
+        `anchor="fixed"`: la home es muy alta, y anclado al contenedor el efecto se estiraba.
+        El tono sale del tema (`--light-rays-tint`): ámbar en claro, teal en oscuro. Los dos van
+        con alpha porque, al quedar de fondo del cuerpo editorial, una luz a máxima intensidad
+        teñía el papel lo suficiente como para tirar abajo el contraste del texto.
+      */}
+      <LightRays anchor="fixed" color="var(--light-rays-tint)" blur={48} count={8} speed={12} length="80vh" />
+
       {/* Hero */}
-      <div className={`text-center space-y-4 mb-16 ${styles.hero}`}>
-        <h1 className={bebasNeue.className} style={{ color: "var(--logo-text)", lineHeight: 1 }}>
+      <div className={`text-center space-y-4 mb-12 ${styles.hero}`}>
+        {/* Marca: es un logotipo, no un encabezado — el H1 es el título de abajo. */}
+        <div className={`${bebasNeue.className} ${styles.logoMark}`}>
           &lt;<AuroraText colors={["#07CFFE", "#a78bfa", "#38bdf8", "#07CFFE"]} speed={2}>Dummy</AuroraText>Content/&gt;
-        </h1>
-        <p style={{ fontSize: "1.125rem", color: "var(--muted)", maxWidth: "480px", margin: "0 auto" }}>
-          {lang === "en"
-            ? "Free tools to generate placeholder content for your projects."
-            : "Herramientas gratuitas para generar contenido placeholder para tus proyectos."}
-        </p>
+        </div>
+        <h1 className={styles.title}>{title}</h1>
+        <p className={styles.lead}>{lead}</p>
       </div>
 
       {/* Tools */}
+      <h2 className={styles.toolsHeading}>{toolsHeading}</h2>
       <div className="grid grid-cols-1 gap-4 w-full" style={{ maxWidth: "640px" }}>
-        {tools.map(({ href, key, icon, description }) => (
+        {tools.map(({ href: path, key, icon, description }) => (
           <Link
-            key={href}
-            href={href}
+            key={path}
+            href={href(path)}
             className="group flex items-center gap-5 rounded-2xl p-6 transition-all"
             style={{
               background: "var(--card)",
@@ -137,17 +150,7 @@ export default function HomePageClient() {
         ))}
       </div>
 
-      {/* SEO content section */}
-      <section className={styles.about} aria-label="About Dummy Content">
-        <h2>
-          {lang === "en" ? "What is Dummy Content?" : "¿Qué es Dummy Content?"}
-        </h2>
-        <p>
-          {lang === "en"
-            ? "DummyContent.app is a free toolkit for developers and designers that need placeholder content during prototyping. Generate dummy images via URL parameters, lorem ipsum text in English and Spanish, and embeddable iframes with realistic articles, image grids, and card layouts — instantly, no sign-up required."
-            : "DummyContent.app es un toolkit gratuito para desarrolladores y diseñadores que necesitan contenido placeholder durante el prototipado. Generá imágenes dummy via URL, texto lorem ipsum en inglés y español, e iframes embebibles con artículos, grillas de imágenes y listas de cards — al instante, sin registro."}
-        </p>
-      </section>
+      {children}
     </main>
   );
 }

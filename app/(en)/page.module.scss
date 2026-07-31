@@ -1,0 +1,48 @@
+@use "@/scss/mixins/breakpoints" as *;
+
+// Sin background propio: el de `body` hace de canvas y deja ver el LightRays fijo,
+// que vive en z-index -1. Un background opaco acá lo taparía por completo.
+.main {
+  position: relative;
+}
+
+.hero {
+  max-width: 720px;
+}
+
+.logoMark {
+  font-size: 72px;
+  line-height: 1;
+  color: var(--logo-text);
+
+  @include mobile { font-size: 45px; }
+}
+
+.title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--foreground);
+  letter-spacing: -0.01em;
+  line-height: 1.25;
+
+  @include mobile { font-size: 1.25rem; }
+}
+
+.lead {
+  font-size: 1rem;
+  color: var(--prose);
+  line-height: 1.75;
+  max-width: 640px;
+  margin: 0 auto;
+
+  @include mobile { font-size: 0.9375rem; }
+}
+
+.toolsHeading {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1rem;
+}

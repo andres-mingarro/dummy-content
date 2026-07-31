@@ -5,7 +5,7 @@ import { useLang } from "@/providers/LangProvider";
 import styles from "./Footer.module.scss";
 
 export default function Footer() {
-  const { t } = useLang();
+  const { t, href } = useLang();
 
   return (
     <footer className={`${styles.footer} Footer`}>
@@ -13,10 +13,10 @@ export default function Footer() {
         © {new Date().getFullYear()} Dummy Content. {t.footer.copyright}
       </span>
       <div className={styles.links}>
-        <Link href="/support" className={styles.link}>
+        <Link href={href("/support")} className={styles.link}>
           {t.footer.support}
         </Link>
-        <Link href="/terms" className={styles.link}>
+        <Link href={href("/terms")} className={styles.link}>
           {t.footer.terms}
         </Link>
       </div>

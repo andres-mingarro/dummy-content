@@ -10,6 +10,14 @@ interface LightRaysProps extends React.HTMLAttributes<HTMLDivElement> {
   blur?: number;
   speed?: number;
   length?: string;
+  /**
+   * `absolute` (default) estira el efecto sobre el contenedor y lo compone por encima del
+   * contenido — sirve para héroes cortos. `fixed` lo ancla al viewport y lo manda a `z-index: -1`,
+   * o sea que funciona como capa de fondo real: mantiene su escala en páginas largas y no lava
+   * el contraste del texto. Requiere que el contenedor no tenga un background opaco propio,
+   * porque los fondos de bloque se pintan por encima de un z-index negativo.
+   */
+  anchor?: "absolute" | "fixed";
 }
 
 type LightRay = {
@@ -76,6 +84,7 @@ export function LightRays({
   blur = 36,
   speed = 14,
   length = "70vh",
+  anchor = "absolute",
   ref,
   ...props
 }: LightRaysProps) {
@@ -93,8 +102,9 @@ export function LightRays({
       style={
         {
           pointerEvents: "none",
-          position: "absolute",
+          position: anchor,
           inset: 0,
+          zIndex: anchor === "fixed" ? -1 : undefined,
           isolation: "isolate",
           overflow: "hidden",
           "--light-rays-color": color,

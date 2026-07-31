@@ -1,11 +1,32 @@
 import { ImageResponse } from "next/og";
+import type { Lang } from "@/lib/i18n/translations";
 
-export const runtime = "edge";
-export const alt = "Dummy Content — Free Placeholder Images, Text & iFrames";
-export const size = { width: 1200, height: 630 };
-export const contentType = "image/png";
+export const OG_SIZE = { width: 1200, height: 630 };
+export const OG_CONTENT_TYPE = "image/png";
 
-export default async function Image() {
+const COPY: Record<Lang, { alt: string; subtitle: string; pills: string[] }> = {
+  en: {
+    alt: "Dummy Content — Free Dummy Content Generator for Images, Text & iFrames",
+    subtitle: "Free dummy content for developers and designers",
+    pills: ["Placeholder Images", "Lorem Ipsum Text", "Embeddable iFrames"],
+  },
+  es: {
+    alt: "Dummy Content — Generador gratuito de contenido dummy: imágenes, texto e iFrames",
+    subtitle: "Contenido dummy gratis para desarrolladores y diseñadores",
+    pills: ["Imágenes placeholder", "Texto lorem ipsum", "iFrames embebibles"],
+  },
+};
+
+export const ogAlt = (lang: Lang) => COPY[lang].alt;
+
+/**
+ * Imagen Open Graph compartida por los dos root layouts. Cada idioma expone su propia ruta
+ * `opengraph-image` porque los metadatos de archivo solo cascadean dentro del segmento que los
+ * contiene, y cada root layout es un segmento distinto.
+ */
+export function renderOgImage(lang: Lang) {
+  const { subtitle, pills } = COPY[lang];
+
   return new ImageResponse(
     (
       <div
@@ -59,29 +80,27 @@ export default async function Image() {
             lineHeight: 1.4,
           }}
         >
-          Free Placeholder Images, Text &amp; iFrames for Developers
+          {subtitle}
         </div>
 
         {/* Tool pills */}
         <div style={{ display: "flex", gap: "20px" }}>
-          {["Placeholder Images", "Lorem Ipsum Text", "Embeddable iFrames"].map(
-            (tool) => (
-              <div
-                key={tool}
-                style={{
-                  background: "#1e293b",
-                  border: "1.5px solid #334155",
-                  borderRadius: "10px",
-                  padding: "14px 24px",
-                  fontSize: 22,
-                  color: "#f1f5f9",
-                  fontWeight: 500,
-                }}
-              >
-                {tool}
-              </div>
-            )
-          )}
+          {pills.map((tool) => (
+            <div
+              key={tool}
+              style={{
+                background: "#1e293b",
+                border: "1.5px solid #334155",
+                borderRadius: "10px",
+                padding: "14px 24px",
+                fontSize: 22,
+                color: "#f1f5f9",
+                fontWeight: 500,
+              }}
+            >
+              {tool}
+            </div>
+          ))}
         </div>
 
         {/* Domain */}
@@ -98,6 +117,6 @@ export default async function Image() {
         </div>
       </div>
     ),
-    { ...size }
+    { ...OG_SIZE },
   );
 }
