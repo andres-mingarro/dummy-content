@@ -9,6 +9,8 @@ import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import { AnimatedThemeToggler } from "@/components/shared/AnimatedThemeToggler/AnimatedThemeToggler";
 import styles from "./Header.module.scss";
 
+type ToolVariant = "image" | "text" | "iframe";
+
 export default function Header() {
   const pathname = usePathname();
   const { lang, t, toggleLang, href } = useLang();
@@ -29,90 +31,104 @@ export default function Header() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const navItems = [
-    { href: href("/images"), label: t.header.image },
-    { href: href("/text"),   label: t.header.text  },
-    { href: href("/iframe"), label: t.header.iframe },
+  const navItems: { href: string; label: string; variant: ToolVariant }[] = [
+    { href: href("/images"), label: t.header.image,  variant: "image"  },
+    { href: href("/text"),   label: t.header.text,    variant: "text"   },
+    { href: href("/iframe"), label: t.header.iframe,  variant: "iframe" },
   ];
 
   return (
     <>
-      <header className={`${styles.header} Header`}>
-        <Link href={href("/")} className={styles.logo} onClick={() => setMenuOpen(false)}>
+      <header className={`${styles["header"]} Header`}>
+        <Link href={href("/")} className={styles["header__logo"]} onClick={() => setMenuOpen(false)}>
           <Logo variant={3} name={false} />
         </Link>
 
         {/* Nav desktop */}
-        <nav className={`${styles.nav} ${styles.navDesktop}`}>
-          {navItems.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className={`${styles.link} ${pathname.startsWith(href) ? styles.linkActive : ""}`}
-            >
-              {label}
-            </Link>
-          ))}
+        <nav className={`${styles["header__nav"]} ${styles["header__nav--desktop"]}`}>
+          {navItems.map(({ href, label, variant }) => {
+            const isActive = pathname.startsWith(href);
+            return (
+              <Link
+                key={href}
+                href={href}
+                className={[
+                  styles["header__link"],
+                  styles[`header__link--${variant}`],
+                  isActive ? styles["header__link--active"] : "",
+                ].join(" ").trim()}
+              >
+                {label}
+              </Link>
+            );
+          })}
         </nav>
 
         {/* Controls desktop */}
-        <div className={`${styles.controls} ${styles.controlsDesktop}`}>
-          <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles.coffeeBtn}>
+        <div className={`${styles["header__controls"]} ${styles["header__controls--desktop"]}`}>
+          <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles["header__coffee-btn"]}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi1.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiLight} />
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi1.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles["header__coffee-icon--light"]} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiDark} />
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles["header__coffee-icon--dark"]} />
           </a>
-          <RippleButton type="button" className={styles.controlBtn} onClick={toggleLang} aria-label="Toggle language">
+          <RippleButton type="button" className={styles["header__control-btn"]} onClick={toggleLang} aria-label="Toggle language">
             {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
           </RippleButton>
-          <AnimatedThemeToggler className={styles.controlBtn} />
+          <AnimatedThemeToggler className={styles["header__control-btn"]} />
         </div>
 
         {/* Hamburger mobile */}
         <button
-          className={`${styles.hamburger} ${menuOpen ? styles.hamburgerOpen : ""}`}
+          className={`${styles["header__hamburger"]} ${menuOpen ? styles["header__hamburger--open"] : ""}`}
           onClick={() => menuOpen ? closeMenu() : setMenuOpen(true)}
           aria-label={menuOpen ? "Cerrar menú" : "Abrir menú"}
           aria-expanded={menuOpen}
         >
-          <span className={styles.hamburgerBar} />
-          <span className={styles.hamburgerBar} />
-          <span className={styles.hamburgerBar} />
+          <span className={styles["header__hamburger-bar"]} />
+          <span className={styles["header__hamburger-bar"]} />
+          <span className={styles["header__hamburger-bar"]} />
         </button>
       </header>
 
       {/* Mobile menu */}
       {(menuOpen || isClosing) && (
-        <div className={`${styles.mobileMenu} ${isClosing ? styles.closing : ""} MobileMenu`}>
-          <nav className={styles.mobileNav}>
-            {navItems.map(({ href, label }) => (
-              <Link
-                key={href}
-                href={href}
-                className={`${styles.mobileLink} ${pathname.startsWith(href) ? styles.mobileLinkActive : ""}`}
-              >
-                {label}
-              </Link>
-            ))}
+        <div className={`${styles["mobile-menu"]} ${isClosing ? styles["mobile-menu--closing"] : ""} MobileMenu`}>
+          <nav className={styles["mobile-menu__nav"]}>
+            {navItems.map(({ href, label, variant }) => {
+              const isActive = pathname.startsWith(href);
+              return (
+                <Link
+                  key={href}
+                  href={href}
+                  className={[
+                    styles["mobile-menu__link"],
+                    styles[`mobile-menu__link--${variant}`],
+                    isActive ? styles["mobile-menu__link--active"] : "",
+                  ].join(" ").trim()}
+                >
+                  {label}
+                </Link>
+              );
+            })}
           </nav>
 
-          <div className={styles.mobileDivider} />
+          <div className={styles["mobile-menu__divider"]} />
 
-          <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles.mobileCoffeeBtn}>
+          <a href="https://ko-fi.com/J3J11XDZ6I" target="_blank" rel="noopener noreferrer" className={styles["mobile-menu__coffee-btn"]}>
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi1.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiLight} />
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi1.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles["mobile-menu__coffee-icon--light"]} />
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles.kofiDark} />
+            <img height="30" style={{ border: 0, height: 30 }} src="https://storage.ko-fi.com/cdn/kofi3.png?v=6" alt="Buy Me a Coffee at ko-fi.com" className={styles["mobile-menu__coffee-icon--dark"]} />
           </a>
 
-          <div className={styles.mobileDivider} />
+          <div className={styles["mobile-menu__divider"]} />
 
-          <div className={styles.mobileControls}>
-            <RippleButton type="button" className={styles.mobileControlBtn} onClick={toggleLang} aria-label="Toggle language">
+          <div className={styles["mobile-menu__controls"]}>
+            <RippleButton type="button" className={styles["mobile-menu__control-btn"]} onClick={toggleLang} aria-label="Toggle language">
               {lang === "es" ? <><FlagUS />&nbsp;English</> : <><FlagAR />&nbsp;Español</>}
             </RippleButton>
-            <AnimatedThemeToggler className={styles.mobileControlBtn} />
+            <AnimatedThemeToggler className={styles["mobile-menu__control-btn"]} />
           </div>
         </div>
       )}

@@ -215,7 +215,13 @@ Fijado en `^22` para coincidir con Node 22, no en el `latest` del registry — u
 --heading: #4c76bc (light) / #07CFFE (dark)
 --logo-text: #6366f1 (light) / #07CFFE (dark)   ← color del logo y h1 home
 --light-rays-tint: rgb(255 255 255) (light) / rgba(3,107,131,0.55) (dark)   ← luz del LightRays de la home
+--tool-image: #b8ff3d   ← color de identidad de Dummy Image (igual en light/dark)
+--tool-text: #56e6ff    ← color de identidad de Dummy Text (igual en light/dark)
+--tool-iframe: #b9a3ff  ← color de identidad de Dummy Iframe (igual en light/dark)
+--tool-ink: #111217     ← texto sobre los --tool-* (igual en light/dark)
 ```
+
+`--tool-*` duplica los valores de `--home-card-image/text/iframe/ink` (`app/(en)/page.module.scss`) porque esos quedan scopeados a `.home-page` y el Header los necesita en todas las páginas. Si se retocan los colores de las tool cards de la home, actualizar también estos.
 
 `--muted` da 4.13:1 sobre `--background`, por debajo de AA para texto normal — usar `--prose` para prosa larga.
 

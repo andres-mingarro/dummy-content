@@ -14,7 +14,7 @@
   transition: background 0.2s, border-color 0.2s;
 }
 
-.logo {
+.header__logo {
   font-size: 1rem;
   font-weight: 700;
   color: var(--foreground);
@@ -28,17 +28,18 @@
 
 // ── Desktop nav ────────────────────────────────────────────────
 
-.nav {
+.header__nav {
   display: flex;
   align-items: center;
   gap: 0.25rem;
 }
 
-.navDesktop {
+.header__nav--desktop {
   @include mobile { display: none; }
 }
 
-.link {
+.header__link {
+  position: relative;
   padding: 0.375rem 0.875rem;
   border-radius: 0.5rem;
   font-size: 0.875rem;
@@ -54,29 +55,63 @@
   }
 }
 
-.linkActive {
-  background: var(--accent-bg);
-  color: var(--accent);
+// Modificadores de color/rotación por herramienta: fijan las custom properties que
+// consume .header__link--active. Sin --active no tienen efecto visual propio.
+.header__link--image {
+  --link-tool-color: var(--tool-image);
+  --link-tool-rotate: -2deg;
+}
+
+.header__link--text {
+  --link-tool-color: var(--tool-text);
+  --link-tool-rotate: 0deg;
+}
+
+.header__link--iframe {
+  --link-tool-color: var(--tool-iframe);
+  --link-tool-rotate: 2deg;
+}
+
+@keyframes header-link-pop-in {
+  0% {
+    transform: scale(0.82) rotate(0deg);
+    opacity: 0;
+  }
+  60% {
+    transform: scale(1.06) rotate(calc(var(--link-tool-rotate, -2deg) * 1.5));
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(var(--link-tool-rotate, -2deg));
+    opacity: 1;
+  }
+}
+
+.header__link--active {
+  background: var(--link-tool-color, var(--accent-bg));
+  color: var(--tool-ink, var(--accent));
+  box-shadow: 2px 2px 0 var(--tool-ink, transparent);
+  animation: header-link-pop-in 0.32s cubic-bezier(0.34, 1.56, 0.64, 1) both;
 
   &:hover {
-    background: var(--accent-bg);
-    color: var(--accent);
+    background: var(--link-tool-color, var(--accent-bg));
+    color: var(--tool-ink, var(--accent));
   }
 }
 
 // ── Desktop controls ───────────────────────────────────────────
 
-.controls {
+.header__controls {
   display: flex;
   align-items: center;
   gap: 0.375rem;
 }
 
-.controlsDesktop {
+.header__controls--desktop {
   @include mobile { display: none; }
 }
 
-.controlBtn {
+.header__control-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -101,23 +136,23 @@
 
 // ── Coffee button ─────────────────────────────────────────────
 
-.kofiLight {
+.header__coffee-icon--light {
   display: block;
 }
 
-.kofiDark {
+.header__coffee-icon--dark {
   display: none;
 }
 
-:global(.dark) .kofiLight {
+:global(.dark) .header__coffee-icon--light {
   display: none;
 }
 
-:global(.dark) .kofiDark {
+:global(.dark) .header__coffee-icon--dark {
   display: block;
 }
 
-.coffeeBtn {
+.header__coffee-btn {
   display: inline-flex;
   align-items: center;
   text-decoration: none;
@@ -134,7 +169,23 @@
   }
 }
 
-.mobileCoffeeBtn {
+.mobile-menu__coffee-icon--light {
+  display: block;
+}
+
+.mobile-menu__coffee-icon--dark {
+  display: none;
+}
+
+:global(.dark) .mobile-menu__coffee-icon--light {
+  display: none;
+}
+
+:global(.dark) .mobile-menu__coffee-icon--dark {
+  display: block;
+}
+
+.mobile-menu__coffee-btn {
   display: flex;
   align-items: center;
   padding: 0;
@@ -154,7 +205,7 @@
 
 // ── Hamburger ──────────────────────────────────────────────────
 
-.hamburger {
+.header__hamburger {
   display: none;
   flex-direction: column;
   justify-content: center;
@@ -169,7 +220,7 @@
   @include mobile { display: flex; }
 }
 
-.hamburgerBar {
+.header__hamburger-bar {
   display: block;
   width: 100%;
   height: 2px;
@@ -178,10 +229,10 @@
   transition: transform 0.2s, opacity 0.2s;
 }
 
-.hamburgerOpen {
-  .hamburgerBar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-  .hamburgerBar:nth-child(2) { opacity: 0; }
-  .hamburgerBar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.header__hamburger--open {
+  .header__hamburger-bar:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+  .header__hamburger-bar:nth-child(2) { opacity: 0; }
+  .header__hamburger-bar:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 }
 
 // ── Mobile menu panel ──────────────────────────────────────────
@@ -208,7 +259,7 @@
   }
 }
 
-.mobileMenu {
+.mobile-menu {
   display: none;
   position: fixed;
   top: 3.5rem;
@@ -224,20 +275,20 @@
   flex-direction: column;
   animation: slideInRight 0.25s cubic-bezier(0.16, 1, 0.3, 1) both;
 
-  &.closing {
+  &.mobile-menu--closing {
     animation: slideOutRight 0.2s cubic-bezier(0.4, 0, 1, 1) both;
   }
 
   @include mobile { display: flex; }
 }
 
-.mobileNav {
+.mobile-menu__nav {
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
 }
 
-.mobileLink {
+.mobile-menu__link {
   padding: 0.875rem 1rem;
   border-radius: 0.75rem;
   font-size: 1rem;
@@ -253,29 +304,54 @@
   }
 }
 
-.mobileLinkActive {
-  background: var(--accent-bg);
-  color: var(--accent);
+.mobile-menu__link--image {
+  --link-tool-color: var(--tool-image);
+}
 
-  &:hover {
-    background: var(--accent-bg);
-    color: var(--accent);
+.mobile-menu__link--text {
+  --link-tool-color: var(--tool-text);
+}
+
+.mobile-menu__link--iframe {
+  --link-tool-color: var(--tool-iframe);
+}
+
+@keyframes mobile-menu-link-pop-in {
+  from {
+    transform: translateX(8px);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
   }
 }
 
-.mobileDivider {
+.mobile-menu__link--active {
+  background: var(--link-tool-color, var(--accent-bg));
+  color: var(--tool-ink, var(--accent));
+  box-shadow: 2px 2px 0 var(--tool-ink, transparent);
+  animation: mobile-menu-link-pop-in 0.28s cubic-bezier(0.16, 1, 0.3, 1) both;
+
+  &:hover {
+    background: var(--link-tool-color, var(--accent-bg));
+    color: var(--tool-ink, var(--accent));
+  }
+}
+
+.mobile-menu__divider {
   height: 1.5px;
   background: var(--card-border);
   margin: 0.7rem 0;
 }
 
-.mobileControls {
+.mobile-menu__controls {
   display: flex;
   align-items: center;
   gap: 0.75rem;
 }
 
-.mobileControlBtn {
+.mobile-menu__control-btn {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -295,5 +371,21 @@
     background: var(--muted-bg);
     color: var(--foreground);
     border-color: var(--muted);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .header__link--active {
+    animation: none;
+    transform: rotate(var(--link-tool-rotate, -2deg));
+  }
+
+  .mobile-menu__link--active {
+    animation: none;
+    transform: none;
+  }
+
+  .mobile-menu {
+    animation: none;
   }
 }

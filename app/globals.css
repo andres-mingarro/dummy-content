@@ -19,6 +19,13 @@
   /* Color de la luz del LightRays de la home. En claro va blanca: cualquier tinte de color
      oscurecía el papel y le comía contraste al texto y al logo. */
   --light-rays-tint: rgb(255 255 255);
+  /* Colores de identidad por herramienta (mismos valores que --home-card-* en
+     app/(en)/page.module.scss, duplicados acá porque esos quedan scopeados a .home-page
+     y estos los consume el Header en todas las páginas). No cambian entre claro/oscuro. */
+  --tool-image: #b8ff3d;
+  --tool-text: #56e6ff;
+  --tool-iframe: #b9a3ff;
+  --tool-ink: #111217;
 }
 
 .dark {
