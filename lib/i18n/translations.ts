@@ -65,10 +65,6 @@ export const translations = {
       height: "Height (px)",
       bgColor: "Background color",
       textColor: "Text color",
-      skyColor: "Sky color",
-      iconColor: "Icon color",
-      lineColor: "Line color",
-      background: "Background",
       customLabel: "Custom text (optional)",
       designs: {
         solid: "Solid",
@@ -183,10 +179,6 @@ export const translations = {
       height: "Alto (px)",
       bgColor: "Color de fondo",
       textColor: "Color de texto",
-      skyColor: "Color del cielo",
-      iconColor: "Color del ícono",
-      lineColor: "Color de líneas",
-      background: "Fondo",
       customLabel: "Texto personalizado (opcional)",
       designs: {
         solid: "Sólido",

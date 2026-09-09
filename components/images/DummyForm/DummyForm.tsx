@@ -133,10 +133,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
     { id: "texture",   label: t.form.designs.texture },
   ];
 
-  const bgColorLabel =
-    values.design === "landscape" ? t.form.skyColor :
-    t.form.bgColor;
-
   return (
     <form className={`${styles.form} DummyForm`} onSubmit={(e) => e.preventDefault()}>
       <div className={styles.field}>
@@ -242,10 +238,10 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         </div>
       </div>
 
-      {values.design !== "texture" && (
+      {values.design === "solid" && (
         <div className={styles.row}>
           <div className={styles.field}>
-            <label htmlFor="bgColor">{bgColorLabel}</label>
+            <label htmlFor="bgColor">{t.form.bgColor}</label>
             <div className={styles.colorInput}>
               <span className={styles.colorSwatch} style={{ background: `#${values.bgColor.replace(/^#/, "")}` }}>
                 <input type="color"
@@ -262,25 +258,23 @@ export default function DummyForm({ onChange }: DummyFormProps) {
             </div>
           </div>
 
-          {values.design !== "landscape" && values.design !== "user" && (
-            <div className={styles.field}>
-              <label htmlFor="textColor">{t.form.textColor}</label>
-              <div className={styles.colorInput}>
-                <span className={styles.colorSwatch} style={{ background: `#${values.textColor.replace(/^#/, "")}` }}>
-                  <input type="color"
-                    value={`#${values.textColor.replace(/^#/, "")}`}
-                    onChange={(e) => handleChange({
-                      target: { name: "textColor", value: e.target.value.replace("#", "") },
-                    } as React.ChangeEvent<HTMLInputElement>)}
-                    className={styles.colorPicker}
-                  />
-                </span>
-                <span className={styles.colorHash}>#</span>
-                <input id="textColor" name="textColor" type="text" maxLength={6}
-                  value={values.textColor} onChange={handleChange} placeholder="333333" />
-              </div>
+          <div className={styles.field}>
+            <label htmlFor="textColor">{t.form.textColor}</label>
+            <div className={styles.colorInput}>
+              <span className={styles.colorSwatch} style={{ background: `#${values.textColor.replace(/^#/, "")}` }}>
+                <input type="color"
+                  value={`#${values.textColor.replace(/^#/, "")}`}
+                  onChange={(e) => handleChange({
+                    target: { name: "textColor", value: e.target.value.replace("#", "") },
+                  } as React.ChangeEvent<HTMLInputElement>)}
+                  className={styles.colorPicker}
+                />
+              </span>
+              <span className={styles.colorHash}>#</span>
+              <input id="textColor" name="textColor" type="text" maxLength={6}
+                value={values.textColor} onChange={handleChange} placeholder="333333" />
             </div>
-          )}
+          </div>
         </div>
       )}
 
