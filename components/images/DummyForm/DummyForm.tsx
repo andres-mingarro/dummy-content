@@ -7,6 +7,7 @@ import { type UserSubType, USER_SUB_TYPES, USER_SVG_INNER_MAP } from "@/lib/imag
 import { type TextureSubType, TEXTURE_SUB_TYPES } from "@/lib/images/textures";
 import { TEXTURE_SVG_MAP } from "@/components/images/SvgPresetGenerator";
 import { useLang } from "@/providers/LangProvider";
+import type { Translations } from "@/lib/i18n/translations";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import DevicePresets from "@/components/images/DevicePresets/DevicePresets";
 import ResetLink from "@/components/shared/ResetLink/ResetLink";
@@ -48,6 +49,56 @@ function LandscapePreview({ subType }: { subType: LandscapeSubType }) {
   return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
 }
 
+interface LandscapeSubGridProps {
+  selected: LandscapeSubType;
+  onSelect: (sub: LandscapeSubType) => void;
+  t: Translations;
+}
+
+function LandscapeSubGrid({ selected, onSelect, t }: LandscapeSubGridProps) {
+  const [expanded, setExpanded] = useState(false);
+
+  return (
+    <>
+      <div className={`${styles.landscapeSubGrid} ${expanded ? styles.landscapeSubGridExpanded : ""}`}>
+        {LANDSCAPE_SUB_TYPES.map((sub, i) => (
+          <div key={sub} className={styles.subCardAnimated} style={{ position: "relative", borderRadius: "0.5rem", "--i": i } as React.CSSProperties}>
+            <RippleButton
+              type="button"
+              className={`${styles.landscapeSubCard} ${selected === sub ? styles.landscapeSubCardActive : ""}`}
+              onClick={() => onSelect(sub)}
+            >
+              <span className={styles.landscapeSubPreview}>
+                <LandscapePreview subType={sub} />
+              </span>
+              <span className={styles.landscapeSubLabel}>
+                {t.form.landscapes[sub]}
+              </span>
+            </RippleButton>
+          </div>
+        ))}
+      </div>
+      {LANDSCAPE_SUB_TYPES.length > 6 && (
+        <button
+          type="button"
+          className={styles.subGridToggle}
+          aria-expanded={expanded}
+          onClick={() => setExpanded((v) => !v)}
+        >
+          {expanded ? t.form.showLess : t.form.showMore}
+          <svg
+            className={`${styles.subGridToggleIcon} ${expanded ? styles.subGridToggleIconOpen : ""}`}
+            viewBox="0 0 16 16"
+            aria-hidden="true"
+          >
+            <polyline points="4,6 8,10 12,6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+          </svg>
+        </button>
+      )}
+    </>
+  );
+}
+
 function UserPreview({ subType }: { subType: UserSubType }) {
   const svgString = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 400" overflow="hidden">${USER_SVG_INNER_MAP[subType]}</svg>`;
   return <div dangerouslySetInnerHTML={{ __html: svgString }} />;
@@ -83,7 +134,6 @@ const DESIGN_PREVIEWS: Record<DesignType, React.ReactNode> = {
 export default function DummyForm({ onChange }: DummyFormProps) {
   const { t } = useLang();
   const [values, setValues] = useState<FormValues>(DEFAULT_VALUES);
-  const [landscapeExpanded, setLandscapeExpanded] = useState(false);
   const bgColorPickerRef = useRef<HTMLInputElement>(null);
   const textColorPickerRef = useRef<HTMLInputElement>(null);
 
@@ -194,43 +244,7 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         </div>
 
         {values.design === "landscape" && (
-          <>
-            <div className={`${styles.landscapeSubGrid} ${!landscapeExpanded ? styles.landscapeSubGridCollapsed : ""}`}>
-              {LANDSCAPE_SUB_TYPES.map((sub, i) => (
-                <div key={sub} className={styles.subCardAnimated} style={{ position: "relative", borderRadius: "0.5rem", "--i": i } as React.CSSProperties}>
-                  <RippleButton
-                    type="button"
-                    className={`${styles.landscapeSubCard} ${values.landscapeSubType === sub ? styles.landscapeSubCardActive : ""}`}
-                    onClick={() => handleLandscapeSubType(sub)}
-                  >
-                    <span className={styles.landscapeSubPreview}>
-                      <LandscapePreview subType={sub} />
-                    </span>
-                    <span className={styles.landscapeSubLabel}>
-                      {t.form.landscapes[sub]}
-                    </span>
-                  </RippleButton>
-                </div>
-              ))}
-            </div>
-            {LANDSCAPE_SUB_TYPES.length > 6 && (
-              <button
-                type="button"
-                className={styles.subGridToggle}
-                aria-expanded={landscapeExpanded}
-                onClick={() => setLandscapeExpanded((v) => !v)}
-              >
-                {landscapeExpanded ? t.form.showLess : t.form.showMore}
-                <svg
-                  className={`${styles.subGridToggleIcon} ${landscapeExpanded ? styles.subGridToggleIconOpen : ""}`}
-                  viewBox="0 0 16 16"
-                  aria-hidden="true"
-                >
-                  <polyline points="4,6 8,10 12,6" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </button>
-            )}
-          </>
+          <LandscapeSubGrid selected={values.landscapeSubType} onSelect={handleLandscapeSubType} t={t} />
         )}
 
         {values.design === "user" && (
