@@ -11,3 +11,12 @@ export function clampEmbedCount(value: string | null, kind: keyof typeof EMBED_L
   if (!Number.isFinite(parsed)) return limit.default;
   return Math.min(limit.max, Math.max(limit.min, parsed));
 }
+
+const MAX_SEED_LENGTH = 64;
+
+/** No se renderiza nunca en el HTML de salida: solo sirve como entrada de un hash, así que no hace falta restringir el charset, solo el largo. */
+export function sanitizeSeed(value: string | null): string | null {
+  if (!value) return null;
+  const trimmed = value.trim().slice(0, MAX_SEED_LENGTH);
+  return trimmed || null;
+}

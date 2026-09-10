@@ -1,3 +1,5 @@
+@use "@/scss/mixins/tool-accent" as *;
+
 .form {
   display: flex;
   flex-direction: column;
@@ -28,16 +30,12 @@
   transition: border-color 0.15s, background 0.15s, color 0.15s;
 
   &:hover {
-    border-color: var(--accent);
-    background: var(--accent-bg);
-    color: var(--accent);
+    @include tool-active-pill;
   }
 }
 
 .typeBtnActive {
-  border-color: var(--accent);
-  background: var(--accent-bg);
-  color: var(--accent);
+  @include tool-active-pill;
 }
 
 // ── Filas con slider ──────────────────────────────────────────────────────────
@@ -109,7 +107,7 @@
   transition: border-color 0.15s;
 
   &:focus {
-    border-color: var(--input-border-focus);
+    border-color: var(--tool-accent);
   }
 }
 

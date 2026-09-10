@@ -1,20 +1,22 @@
 import type { Lang } from "@/lib/i18n/translations";
 import { CATEGORIES, TEXTURE_HERO_PALETTES, BASE_CSS, getFaker, pick, esc, capitalize, formatDate, imgUrl } from "./utils";
+import { createRng } from "./rng";
 
 const USER_STYLES = ["style-1", "style-2", "style-3", "style-4", "style-5", "style-6"] as const;
 
-export function generateArticleImage(lang: Lang, paragraphCount = 4): string {
+export function generateArticleImage(lang: Lang, paragraphCount = 4, seed: string | null = null): string {
   const f = getFaker(lang);
-  const heroPalette = pick(TEXTURE_HERO_PALETTES);
+  const rng = createRng(seed, f);
+  const heroPalette = pick(TEXTURE_HERO_PALETTES, rng);
   const heroSrc = imgUrl(800, 380, heroPalette);
   const caption = f.lorem.sentence();
-  const category = pick(CATEGORIES[lang]);
+  const category = pick(CATEGORIES[lang], rng);
   const title = capitalize(f.lorem.words({ min: 7, max: 14 }));
   const author = `${f.person.firstName()} ${f.person.lastName()}`;
-  const avatarStyle = pick([...USER_STYLES]);
+  const avatarStyle = pick([...USER_STYLES], rng);
   const avatarSrc = `/api/image/64x64/e0e0e0/555555?design=user&user=${avatarStyle}`;
   const date = formatDate(new Date(f.date.recent({ days: 30 })), lang);
-  const readTime = Math.floor(Math.random() * 7) + 3;
+  const readTime = Math.floor(rng() * 7) + 3;
   const readLabel = lang === "es" ? "min de lectura" : "min read";
   const lead = f.lorem.paragraph();
   const quote = f.lorem.sentences(2);

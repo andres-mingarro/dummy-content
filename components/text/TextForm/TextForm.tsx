@@ -113,7 +113,7 @@ export default function TextForm({ values, onChange }: TextFormProps) {
           aria-checked={values.displayTags}
           type="button"
           onClick={() => onChange({ ...values, displayTags: !values.displayTags })}
-          className={`relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full transition-colors ${values.displayTags ? "bg-[var(--accent)]" : "bg-[var(--input-border)]"}`}
+          className={`relative inline-flex h-5 w-9 flex-shrink-0 items-center rounded-full transition-colors ${values.displayTags ? "bg-[var(--tool-accent)]" : "bg-[var(--input-border)]"}`}
         >
           <span
             className={`inline-block h-3.5 w-3.5 transform rounded-full bg-white transition-transform ${values.displayTags ? "translate-x-4" : "translate-x-0.5"}`}

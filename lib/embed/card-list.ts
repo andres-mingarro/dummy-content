@@ -1,15 +1,17 @@
 import type { Lang } from "@/lib/i18n/translations";
 import { PALETTES, CATEGORIES, BASE_CSS, getFaker, pick, esc, capitalize, formatDate, imgUrl } from "./utils";
+import { createRng } from "./rng";
 
-export function generateCardList(lang: Lang, count = 6): string {
+export function generateCardList(lang: Lang, count = 6, seed: string | null = null): string {
   const f = getFaker(lang);
+  const rng = createRng(seed, f);
 
   // Repite las mismas URLs de paleta: el navegador descarga cada imagen única una vez y reutiliza su caché.
   const cards = Array.from({ length: count }, (_, i) => {
     const p = PALETTES[i % PALETTES.length];
     return {
       src: imgUrl(280, 180, p),
-      category: pick(CATEGORIES[lang]),
+      category: pick(CATEGORIES[lang], rng),
       title: capitalize(f.lorem.words({ min: 4, max: 7 })),
       excerpt: f.lorem.sentence(),
       author: `${f.person.firstName()} ${f.person.lastName()}`,

@@ -8,6 +8,7 @@ import { type TextureSubType, TEXTURE_SUB_TYPES } from "@/lib/images/textures";
 import { TEXTURE_SVG_MAP } from "@/components/images/SvgPresetGenerator";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
+import DevicePresets from "@/components/images/DevicePresets/DevicePresets";
 import styles from "./DummyForm.module.scss";
 
 export interface FormValues {
@@ -126,6 +127,21 @@ export default function DummyForm({ onChange }: DummyFormProps) {
     [values, onChange]
   );
 
+  const handleDevicePreset = useCallback(
+    (width: string, height: string) => {
+      const updated = { ...values, width, height };
+      setValues(updated);
+      onChange(updated);
+    },
+    [values, onChange]
+  );
+
+  const handleDevicePresetReset = useCallback(() => {
+    const updated = { ...values, width: DEFAULT_VALUES.width, height: DEFAULT_VALUES.height };
+    setValues(updated);
+    onChange(updated);
+  }, [values, onChange]);
+
   const DESIGNS: { id: DesignType; label: string }[] = [
     { id: "solid",     label: t.form.designs.solid },
     { id: "landscape", label: t.form.designs.landscape },
@@ -223,6 +239,8 @@ export default function DummyForm({ onChange }: DummyFormProps) {
           </div>
         )}
       </div>
+
+      <DevicePresets onSelect={handleDevicePreset} onReset={handleDevicePresetReset} />
 
       <div className={styles.row}>
         <div className={styles.field}>

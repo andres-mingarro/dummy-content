@@ -19,6 +19,7 @@ const DEFAULT_FORM: IframeFormValues = {
   cardCount: "",
   imageCount: "",
   paragraphCount: "",
+  seed: "",
 };
 
 function buildEmbedPath(values: IframeFormValues): string {
@@ -27,6 +28,7 @@ function buildEmbedPath(values: IframeFormValues): string {
   if (values.type === "card-list" && values.cardCount) params.set("cards", values.cardCount);
   if (values.type === "images-list" && values.imageCount) params.set("images", values.imageCount);
   if ((values.type === "article" || values.type === "article-image") && values.paragraphCount) params.set("paragraphs", values.paragraphCount);
+  if (values.seed.trim()) params.set("seed", values.seed.trim());
   if (values.darkMode) params.set("theme", "dark");
   const query = params.toString();
   return query ? `${basePath}?${query}` : basePath;

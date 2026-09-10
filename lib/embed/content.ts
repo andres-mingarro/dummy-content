@@ -5,7 +5,7 @@ import { generateImagesList } from "./images-list";
 import { generateCardList } from "./card-list";
 
 export type EmbedType = "article" | "article-image" | "images-list" | "card-list";
-export interface EmbedOptions { cards?:number; images?:number; paragraphs?:number; }
+export interface EmbedOptions { cards?:number; images?:number; paragraphs?:number; seed?:string | null; }
 
 const DARK_THEME = `<style>
 :root { color-scheme: dark; }
@@ -20,12 +20,13 @@ blockquote { color: #b9bdc7 !important; }
 </style>`;
 
 export function generateEmbed(type: string, lang: Lang, darkMode = false, options:EmbedOptions = {}): string | null {
+  const seed = options.seed ?? null;
   let html: string | null;
   switch (type) {
-    case "article":       html = generateArticle(lang, options.paragraphs); break;
-    case "article-image": html = generateArticleImage(lang, options.paragraphs); break;
-    case "images-list":   html = generateImagesList(lang, options.images); break;
-    case "card-list":     html = generateCardList(lang, options.cards); break;
+    case "article":       html = generateArticle(lang, options.paragraphs, seed); break;
+    case "article-image": html = generateArticleImage(lang, options.paragraphs, seed); break;
+    case "images-list":   html = generateImagesList(lang, options.images, seed); break;
+    case "card-list":     html = generateCardList(lang, options.cards, seed); break;
     default:               return null;
   }
   return darkMode ? html.replace("</head>", `${DARK_THEME}</head>`) : html;

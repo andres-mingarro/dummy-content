@@ -9,28 +9,18 @@
   color: var(--foreground);
 }
 
+// Los valores en sí viven en app/globals.css (--dummyImage/Text/Iframe-accent-color,
+// con su variante clara y oscura) — acá solo se elige cuál le toca a este tono de página.
 .tool-workspace--image {
-  --tool-accent: #69a900;
+  --tool-accent: var(--dummyImage-accent-color);
 }
 
 .tool-workspace--text {
-  --tool-accent: #008aa8;
+  --tool-accent: var(--dummyText-accent-color);
 }
 
 .tool-workspace--iframe {
-  --tool-accent: #7658cc;
-}
-
-:global(.dark) .tool-workspace--image {
-  --tool-accent: #b8ff3d;
-}
-
-:global(.dark) .tool-workspace--text {
-  --tool-accent: #56e6ff;
-}
-
-:global(.dark) .tool-workspace--iframe {
-  --tool-accent: #b9a3ff;
+  --tool-accent: var(--dummyIframe-accent-color);
 }
 
 .tool-workspace__header {
@@ -61,7 +51,7 @@
 
 .tool-workspace__grid {
   display: grid;
-  grid-template-columns: minmax(320px, 0.8fr) minmax(0, 1.2fr);
+  grid-template-columns: minmax(320px, 1fr) minmax(0, 1.2fr);
   gap: 1.25rem;
   align-items: start;
   padding-top: 1.25rem;

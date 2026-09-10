@@ -26,6 +26,14 @@
   --tool-text: #56e6ff;
   --tool-iframe: #b9a3ff;
   --tool-ink: #111217;
+  /* Color de acento por herramienta para hovers/actives/eyebrows dentro de ToolWorkspace.
+     A diferencia de --tool-image/text/iframe (idénticos en los dos temas, identidad de marca),
+     estos SÍ cambian entre claro/oscuro: en claro son una versión oscurecida para dar AA sobre
+     fondo claro; en oscuro son el mismo fluo que --tool-image/text/iframe. Única fuente de
+     verdad — ToolWorkspace solo los reasigna a --tool-accent según el tono de la página. */
+  --dummyImage-accent-color: #69a900;
+  --dummyText-accent-color: #008aa8;
+  --dummyIframe-accent-color: #7658cc;
 }
 
 .dark {
@@ -44,6 +52,9 @@
   --logo-text: #07CFFE;
   /* En oscuro el teal funciona: el navy de fondo ya da el contraste que necesita el cyan. */
   --light-rays-tint: rgba(3, 107, 131, 0.55);
+  --dummyImage-accent-color: #b8ff3d;
+  --dummyText-accent-color: #56e6ff;
+  --dummyIframe-accent-color: #b9a3ff;
 }
 
 @theme inline {

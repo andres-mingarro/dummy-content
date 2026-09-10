@@ -20,6 +20,7 @@ export interface IframeFormValues {
   cardCount: string;
   imageCount: string;
   paragraphCount: string;
+  seed: string;
 }
 
 interface Props {
@@ -38,7 +39,14 @@ const DEFAULTS: IframeFormValues = {
   cardCount: "",
   imageCount: "",
   paragraphCount: "",
+  seed: "",
 };
+
+const MAX_SEED_LENGTH = 64;
+
+function randomSeed(): string {
+  return Math.random().toString(36).slice(2, 10);
+}
 
 // Límites visibles del configurador; el route handler vuelve a validarlos por seguridad.
 const MAX_CARD_COUNT = EMBED_LIMITS.cards.max;
@@ -163,6 +171,29 @@ export default function IframeForm({ onChange }: Props) {
         </>}
       </div>
 
+      {/* Seed reproducible: misma seed = mismo contenido generado, cacheable de forma estable */}
+      <div className={styles.field}>
+        <label htmlFor="seed">{t.iframe.seed}</label>
+        <div className={styles.seedInput}>
+          <input
+            id="seed"
+            type="text"
+            maxLength={MAX_SEED_LENGTH}
+            value={values.seed}
+            onChange={(e) => update({ seed: e.target.value })}
+            placeholder={t.iframe.seedPlaceholder}
+          />
+          <RippleButton
+            type="button"
+            className={styles.shuffleBtn}
+            onClick={() => update({ seed: randomSeed() })}
+            aria-label={t.iframe.shuffleSeed}
+          >
+            <ShuffleIcon />
+          </RippleButton>
+        </div>
+      </div>
+
       {/* Ancho × Alto */}
       <div className={styles.row}>
         <div className={styles.field}>
@@ -276,5 +307,17 @@ export default function IframeForm({ onChange }: Props) {
         </div>
       )}
     </form>
+  );
+}
+
+function ShuffleIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M16 3h5v5" />
+      <path d="M4 20 21 3" />
+      <path d="M21 16v5h-5" />
+      <path d="M15 15l6 6" />
+      <path d="M4 4l5 5" />
+    </svg>
   );
 }

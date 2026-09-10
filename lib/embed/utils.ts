@@ -65,8 +65,8 @@ export function getFaker(lang: Lang) {
   return lang === "es" ? fakerES : fakerEN;
 }
 
-export function pick<T>(arr: T[]): T {
-  return arr[Math.floor(Math.random() * arr.length)];
+export function pick<T>(arr: T[], rng: () => number = Math.random): T {
+  return arr[Math.floor(rng() * arr.length)];
 }
 
 export function esc(s: string): string {
