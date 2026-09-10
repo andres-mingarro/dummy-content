@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
 import type { DesignType } from "@/lib/images/imageGenerator";
 import { type LandscapeSubType, LANDSCAPE_SUB_TYPES, LANDSCAPE_SVG_INNER } from "@/lib/images/landscapes";
 import { type UserSubType, USER_SUB_TYPES, USER_SVG_INNER_MAP } from "@/lib/images/users";
@@ -9,6 +9,7 @@ import { TEXTURE_SVG_MAP } from "@/components/images/SvgPresetGenerator";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
 import DevicePresets from "@/components/images/DevicePresets/DevicePresets";
+import ResetLink from "@/components/shared/ResetLink/ResetLink";
 import styles from "./DummyForm.module.scss";
 
 export interface FormValues {
@@ -81,6 +82,14 @@ const DESIGN_PREVIEWS: Record<DesignType, React.ReactNode> = {
 export default function DummyForm({ onChange }: DummyFormProps) {
   const { t } = useLang();
   const [values, setValues] = useState<FormValues>(DEFAULT_VALUES);
+  const bgColorPickerRef = useRef<HTMLInputElement>(null);
+  const textColorPickerRef = useRef<HTMLInputElement>(null);
+
+  const openColorPicker = useCallback((ref: React.RefObject<HTMLInputElement | null>) => (e: React.MouseEvent<HTMLDivElement>) => {
+    const target = e.target;
+    if (target instanceof HTMLInputElement) return;
+    ref.current?.click();
+  }, []);
 
   const handleChange = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -138,6 +147,12 @@ export default function DummyForm({ onChange }: DummyFormProps) {
 
   const handleDevicePresetReset = useCallback(() => {
     const updated = { ...values, width: DEFAULT_VALUES.width, height: DEFAULT_VALUES.height };
+    setValues(updated);
+    onChange(updated);
+  }, [values, onChange]);
+
+  const handleLabelReset = useCallback(() => {
+    const updated = { ...values, label: DEFAULT_VALUES.label, showLabel: DEFAULT_VALUES.showLabel };
     setValues(updated);
     onChange(updated);
   }, [values, onChange]);
@@ -240,7 +255,33 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         )}
       </div>
 
-      <DevicePresets onSelect={handleDevicePreset} onReset={handleDevicePresetReset} />
+      {(values.design === "solid" || values.design === "texture") && (
+        <div className={styles.field}>
+          <div className={styles.labelRow}>
+            <div className={styles.labelWithReset}>
+              <label htmlFor="label">{t.form.customLabel}</label>
+              <ResetLink onClick={handleLabelReset}>{t.form.reset}</ResetLink>
+            </div>
+            <button
+              type="button"
+              role="switch"
+              aria-checked={values.showLabel}
+              className={`${styles.switch} ${values.showLabel ? styles.switchOn : ""}`}
+              onClick={() => {
+                const updated = { ...values, showLabel: !values.showLabel };
+                setValues(updated);
+                onChange(updated);
+              }}
+            >
+              <span className={styles.switchThumb} />
+            </button>
+          </div>
+          <input id="label" name="label" type="text" className={styles.customTextInput}
+            value={values.label} onChange={handleChange}
+            placeholder={`${values.width}×${values.height}`}
+            disabled={!values.showLabel} />
+        </div>
+      )}
 
       <div className={styles.row}>
         <div className={styles.field}>
@@ -256,13 +297,15 @@ export default function DummyForm({ onChange }: DummyFormProps) {
         </div>
       </div>
 
+      <DevicePresets onSelect={handleDevicePreset} onReset={handleDevicePresetReset} />
+
       {values.design === "solid" && (
         <div className={styles.row}>
           <div className={styles.field}>
             <label htmlFor="bgColor">{t.form.bgColor}</label>
-            <div className={styles.colorInput}>
+            <div className={styles.colorInput} onClick={openColorPicker(bgColorPickerRef)}>
               <span className={styles.colorSwatch} style={{ background: `#${values.bgColor.replace(/^#/, "")}` }}>
-                <input type="color"
+                <input ref={bgColorPickerRef} type="color"
                   value={`#${values.bgColor.replace(/^#/, "")}`}
                   onChange={(e) => handleChange({
                     target: { name: "bgColor", value: e.target.value.replace("#", "") },
@@ -278,9 +321,9 @@ export default function DummyForm({ onChange }: DummyFormProps) {
 
           <div className={styles.field}>
             <label htmlFor="textColor">{t.form.textColor}</label>
-            <div className={styles.colorInput}>
+            <div className={styles.colorInput} onClick={openColorPicker(textColorPickerRef)}>
               <span className={styles.colorSwatch} style={{ background: `#${values.textColor.replace(/^#/, "")}` }}>
-                <input type="color"
+                <input ref={textColorPickerRef} type="color"
                   value={`#${values.textColor.replace(/^#/, "")}`}
                   onChange={(e) => handleChange({
                     target: { name: "textColor", value: e.target.value.replace("#", "") },
@@ -293,31 +336,6 @@ export default function DummyForm({ onChange }: DummyFormProps) {
                 value={values.textColor} onChange={handleChange} placeholder="333333" />
             </div>
           </div>
-        </div>
-      )}
-
-      {(values.design === "solid" || values.design === "texture") && (
-        <div className={styles.field}>
-          <div className={styles.labelRow}>
-            <label htmlFor="label">{t.form.customLabel}</label>
-            <button
-              type="button"
-              role="switch"
-              aria-checked={values.showLabel}
-              className={`${styles.switch} ${values.showLabel ? styles.switchOn : ""}`}
-              onClick={() => {
-                const updated = { ...values, showLabel: !values.showLabel };
-                setValues(updated);
-                onChange(updated);
-              }}
-            >
-              <span className={styles.switchThumb} />
-            </button>
-          </div>
-          <input id="label" name="label" type="text"
-            value={values.label} onChange={handleChange}
-            placeholder={`${values.width}×${values.height}`}
-            disabled={!values.showLabel} />
         </div>
       )}
     </form>

@@ -1,0 +1,21 @@
+.reset-link {
+  padding: 0.375rem 0;
+  border: none;
+  background: none;
+  color: var(--tool-accent, var(--accent));
+  font-size: 0.75rem;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+
+  &:hover {
+    opacity: 0.75;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+}

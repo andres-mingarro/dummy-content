@@ -3,6 +3,7 @@
 import { DEVICE_PRESETS, type DevicePresetId, type DevicePresetOrientation } from "@/lib/images/devicePresets";
 import { useLang } from "@/providers/LangProvider";
 import { RippleButton } from "@/components/shared/RippleButton/RippleButton";
+import ResetLink from "@/components/shared/ResetLink/ResetLink";
 import styles from "./DevicePresets.module.scss";
 
 interface DevicePresetsProps {
@@ -51,9 +52,7 @@ export default function DevicePresets({ onSelect, onReset }: DevicePresetsProps)
     <div className={`${styles["device-presets"]} DevicePresets`}>
       <div className={styles["device-presets__label-row"]}>
         <span className={styles["device-presets__label"]}>{t.form.devicePresetsLabel}</span>
-        <button type="button" className={styles["device-presets__reset"]} onClick={onReset}>
-          {t.form.devicePresetsReset}
-        </button>
+        <ResetLink onClick={onReset}>{t.form.reset}</ResetLink>
       </div>
       <div className={styles["device-presets__groups"]}>
         {ORIENTATIONS.map((orientation) => (

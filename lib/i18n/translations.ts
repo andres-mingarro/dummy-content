@@ -100,7 +100,7 @@ export const translations = {
         "zig-zag":           "Zig Zag",
       },
       devicePresetsLabel: "Device presets",
-      devicePresetsReset: "Reset",
+      reset: "Reset",
       devicePresetsLandscape: "Landscape",
       devicePresetsPortrait: "Portrait",
       devicePresets: {
@@ -227,7 +227,7 @@ export const translations = {
         "zig-zag":           "Zig Zag",
       },
       devicePresetsLabel: "Presets de dispositivo",
-      devicePresetsReset: "Restablecer",
+      reset: "Restablecer",
       devicePresetsLandscape: "Horizontal",
       devicePresetsPortrait: "Vertical",
       devicePresets: {
