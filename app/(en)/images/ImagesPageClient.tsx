@@ -16,7 +16,7 @@ const DEFAULT_FORM: FormValues = {
   label: "",
   showLabel: true,
   design: "solid",
-  landscapeSubType: "nature",
+  landscapeSubType: "forest",
   userSubType: "style-1",
   textureSubType: "bullseye-gradient",
 };

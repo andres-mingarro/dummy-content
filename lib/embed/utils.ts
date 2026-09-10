@@ -5,22 +5,22 @@ export type Palette = { bg: string; fg: string; design: string; subType?: string
 
 export const PALETTES: Palette[] = [
   { bg: "c7d2fe", fg: "4338ca", design: "solid" },
-  { bg: "86efac", fg: "166534", design: "landscape", subType: "nature" },
+  { bg: "86efac", fg: "166534", design: "landscape", subType: "forest" },
   { bg: "fca5a5", fg: "991b1b", design: "solid" },
   { bg: "fde68a", fg: "92400e", design: "texture",   subType: "liquid-cheese" },
-  { bg: "a5f3fc", fg: "0e7490", design: "landscape", subType: "mountain-river" },
+  { bg: "a5f3fc", fg: "0e7490", design: "landscape", subType: "valley" },
   { bg: "d8b4fe", fg: "6d28d9", design: "texture",   subType: "subtle-prism" },
   { bg: "fbcfe8", fg: "9d174d", design: "user",      subType: "style-3" },
   { bg: "fed7aa", fg: "9a3412", design: "solid" },
   { bg: "bfdbfe", fg: "1e40af", design: "texture",   subType: "bullseye-gradient" },
-  { bg: "bbf7d0", fg: "14532d", design: "landscape", subType: "waterfall" },
+  { bg: "bbf7d0", fg: "14532d", design: "landscape", subType: "ocean" },
   { bg: "fef08a", fg: "713f12", design: "texture",   subType: "zig-zag" },
   { bg: "e9d5ff", fg: "581c87", design: "user",      subType: "style-5" },
 ];
 
 export const HERO_PALETTES: Palette[] = [
-  { bg: "87ceeb", fg: "1565c0", design: "landscape", subType: "river" },
-  { bg: "a5d6a7", fg: "1b5e20", design: "landscape", subType: "tree-forest" },
+  { bg: "87ceeb", fg: "1565c0", design: "landscape", subType: "alpine" },
+  { bg: "a5d6a7", fg: "1b5e20", design: "landscape", subType: "park" },
   { bg: "c7d2fe", fg: "4338ca", design: "texture",   subType: "radiant-gradient" },
   { bg: "fde68a", fg: "92400e", design: "texture",   subType: "wavey-fingerprint" },
   { bg: "bfdbfe", fg: "1e40af", design: "landscape", subType: "desert" },
@@ -29,14 +29,14 @@ export const HERO_PALETTES: Palette[] = [
 
 export const IMAGES_LIST_PALETTES: Palette[] = [
   { bg: "c7d2fe", fg: "4338ca", design: "solid" },
-  { bg: "86efac", fg: "166534", design: "landscape", subType: "nature" },
+  { bg: "86efac", fg: "166534", design: "landscape", subType: "forest" },
   { bg: "fca5a5", fg: "991b1b", design: "solid" },
   { bg: "fde68a", fg: "92400e", design: "texture",   subType: "liquid-cheese" },
-  { bg: "a5f3fc", fg: "0e7490", design: "landscape", subType: "mountain-river" },
+  { bg: "a5f3fc", fg: "0e7490", design: "landscape", subType: "valley" },
   { bg: "d8b4fe", fg: "6d28d9", design: "texture",   subType: "subtle-prism" },
   { bg: "fed7aa", fg: "9a3412", design: "solid" },
   { bg: "bfdbfe", fg: "1e40af", design: "texture",   subType: "bullseye-gradient" },
-  { bg: "bbf7d0", fg: "14532d", design: "landscape", subType: "waterfall" },
+  { bg: "bbf7d0", fg: "14532d", design: "landscape", subType: "ocean" },
   { bg: "fef08a", fg: "713f12", design: "texture",   subType: "zig-zag" },
   { bg: "f0abfc", fg: "701a75", design: "landscape", subType: "desert" },
   { bg: "99f6e4", fg: "134e4a", design: "texture",   subType: "radiant-gradient" },
