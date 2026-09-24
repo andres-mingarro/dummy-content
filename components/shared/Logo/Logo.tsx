@@ -1,7 +1,8 @@
-import { Lobster } from "next/font/google";
+import { Bebas_Neue, Lobster } from "next/font/google";
 import BrandWordmark from "@/components/shared/BrandWordmark/BrandWordmark";
 
 export const lobster = Lobster({ weight: "400", subsets: ["latin"] });
+export const bebasNeue = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 
 interface LogoProps {
   logo?: boolean;

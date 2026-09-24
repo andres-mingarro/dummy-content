@@ -1,8 +1,7 @@
 import Link from "next/link";
-import { Bebas_Neue } from "next/font/google";
+import { bebasNeue } from "@/components/shared/Logo/Logo";
 import styles from "./ToolCard.module.scss";
 
-const display = Bebas_Neue({ weight: "400", subsets: ["latin"] });
 export type ToolVariant = "image" | "text" | "iframe";
 
 interface ToolCardProps { href:string; number:string; sample:string; label:string; description:string; action:string; variant:ToolVariant }
@@ -18,7 +17,7 @@ export default function ToolCard({ href, number, sample, label, description, act
     <Link href={href} className={`${styles["tool-card"]} ${styles[`tool-card--${variant}`]}`}>
       <div className={styles["tool-card__meta"]}><span>{number}</span><span>{sample}</span></div>
       <div className={styles["tool-card__content"]}>
-        <h3 className={`${display.className} ${styles["tool-card__title"]}`}>{label}</h3>
+        <h3 className={`${bebasNeue.className} ${styles["tool-card__title"]}`}>{label}</h3>
         <p className={styles["tool-card__description"]}>{description}</p>
         <span className={styles["tool-card__action"]}>{action}<i aria-hidden="true">↗</i></span>
       </div>
